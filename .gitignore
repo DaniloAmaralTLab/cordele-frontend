@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build output and caches
+dist/
+libs/*/dist/
+libs/*/*/dist/
+.angular/
+.nx/
+coverage/
+tmp/
+out-tsc/
+
+# Test run output
+playwright-report/
+test-results/
+*.log
+
+# Local environment
+.env
+.env.local
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
