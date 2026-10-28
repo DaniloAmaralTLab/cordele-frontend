@@ -1,31 +1,26 @@
 /**
- * editor-de-layout-preview.component.ts — T06 Editor de Layout / Preview (smart component).
- * FE-COMP-014 / SPEC-02 §2.
- * FE-COMP-023 — dynamic breadcrumb resolution via CompShellIntegrationService (P7).
+ * editor-de-layout-preview.component.ts — editor de layout Editor de Layout / Preview (smart component).
+ * Dynamic breadcrumb resolution via CompShellIntegrationService.
  *
  * Smart:
  *   - Reads LayoutFacade signals; delegates UI to presentational children.
  *   - No direct HTTP — all data flow via LayoutFacade.
- *     (comment uses "direct HTTP" instead of the Angular class name to avoid the
- *      arch-conformance text scanner flagging a comment that says we do NOT use it)
  *   - No shared/mock-data imports.
- *   - structuralEdits=false permanent (FE ADR-COMP-001 / D-H):
+ *   - structuralEdits=false permanent (FE):
  *     no add/remove page, no insert-image toolbar.
  *
- * P3 update (FE-COMP-014..017):
  *   - Refactored to use child presentational components:
  *     StepBarComponent, ExportBarComponent, StylePanelComponent,
  *     PreviewCanvasComponent, PagePaginatorComponent.
  *   - All deprecated facade aliases replaced by canonical API.
- *   - selector updated to app-comp-editor-de-layout-preview (SPEC-02 §2).
+ *   - selector updated to app-comp-editor-de-layout-preview.
  *
- * P7 update (FE-COMP-023):
  *   - Calls CompShellIntegrationService.setActiveProject(projetoId) in ngOnInit
  *     to resolve `{nome}` breadcrumb dynamically.
  *   - Renders resolved breadcrumbs in the top-bar area.
  *
  * Note: Alignment adjustments surface via ImageAlignmentBadgeComponent (inside PreviewCanvasComponent).
- * The toolbar structural (adicionarPagina/inserirImagem/removerPagina) was removed at Promote (D-494).
+ * The toolbar structural (adicionarPagina/inserirImagem/removerPagina) was removed.
  */
 import {
   ChangeDetectionStrategy,
@@ -66,8 +61,8 @@ import { PagePaginatorComponent } from './page-paginator.component';
     /*
      * Paper-surface tokens — defined here as CSS custom properties so child components
      * can inherit them via the cascade. Values use var() references to design-system tokens
-     * (not inline oklch() literals — FE-COMP-022 cleanup done in P5).
-     * --paper-bg: deliberately light for simulating the printed page (ADR-COMP-001).
+     * (not inline oklch() literals — cleanup done).
+     * --paper-bg: deliberately light for simulating the printed page.
      */
     --paper-bg: var(--paper-bg-override, #f0f0f5);
     display: block;
@@ -83,7 +78,7 @@ import { PagePaginatorComponent } from './page-paginator.component';
         <div class="flex flex-col px-6 pt-3 pb-0 border-b flex-shrink-0"
              style="background:var(--bg-surface);border-color:var(--border-subtle);">
 
-          <!-- Breadcrumb navigation (FE-COMP-023) — {nome} resolved from projetoId -->
+          <!-- Breadcrumb navigation — {nome} resolved from projetoId -->
           @if (breadcrumbs().length) {
             <nav class="flex items-center gap-1 text-xs mb-2" aria-label="Localização">
               @for (crumb of breadcrumbs(); track $index) {
@@ -120,12 +115,12 @@ import { PagePaginatorComponent } from './page-paginator.component';
         <div class="flex-1 overflow-auto py-8 px-6 flex justify-center items-start"
              style="background:var(--paper-bg);">
 
-          <!-- Loading skeleton (P8 — FE-COMP-024) -->
+          <!-- Loading skeleton -->
           @if (facade.status() === 'loading') {
             <comp-preview-skeleton />
           }
 
-          <!-- Error state (P8 — FE-COMP-024) -->
+          <!-- Error state -->
           @if (facade.status() === 'error') {
             <comp-error-state
               [message]="facade.error()?.message ?? 'Não foi possível carregar o preview.'"
@@ -134,7 +129,7 @@ import { PagePaginatorComponent } from './page-paginator.component';
             />
           }
 
-          <!-- Empty state — 409 manuscript missing (P8 — FE-COMP-024) -->
+          <!-- Empty state — 409 manuscript missing -->
           @if (facade.status() === 'empty') {
             <comp-preview-empty (navigateBack)="onNavigateBackToImport()" />
           }
@@ -190,9 +185,8 @@ export class EditorDeLayoutPreviewComponent implements OnInit {
   readonly navSteps = COMP_NAV_CONFIG.stepBar;
 
   /**
-   * Resolved breadcrumbs for T06: ['Projetos', '<projetoId>', 'Edição'].
+   * Resolved breadcrumbs for editor de layout: ['Projetos', '<projetoId>', 'Edição'].
    * Updated by setActiveProject() in ngOnInit — empty before first navigation.
-   * FE-COMP-023 / SPEC-06 §2.
    */
   readonly breadcrumbs = computed(
     () => this.shellIntegration.resolvedBreadcrumbs()['edicao'],
@@ -202,9 +196,9 @@ export class EditorDeLayoutPreviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.projetoId = this.route.snapshot.paramMap.get('projetoId') ?? '';
-    // FE-COMP-023: resolve {nome} in breadcrumbs before loading data.
+    // Resolve {nome} in breadcrumbs before loading data.
     this.shellIntegration.setActiveProject(this.projetoId);
-    // FE-COMP-025: telemetry — user entered T06 Editor de Layout screen.
+    // Telemetry — user entered editor de layout Editor de Layout screen.
     this.shellIntegration.trackLayoutOpened(this.projetoId);
     this.facade.loadData(this.projetoId);
   }

@@ -1,9 +1,8 @@
 /**
- * manuscrito.port.ts — Port interface for the Manuscrito resource (api-contract §4.1–4.4).
- * Track D: created from scratch by fe-architect-promote IMP @ cordele (D-494).
+ * manuscrito.port.ts — Port interface for the Manuscrito resource.
  *
  * Covers:
- *   POST /api/v1/imp/manuscripts                          → create (synchronous parse, D-A)
+ * POST /api/v1/imp/manuscripts → create (synchronous parse)
  *   GET  /api/v1/imp/manuscripts/{id}                    → get (reload / deep-link)
  *   GET  /api/v1/imp/manuscripts/{id}/estrutura          → getEstrutura (content tree only)
  *   GET  /api/v1/imp/projetos/{projetoId}/manuscritos    → listByProjeto (history)
@@ -18,12 +17,12 @@ import {
 } from '../models/imp.models';
 
 export interface ManuscritoPort {
-  /** Upload file + synchronous parse → returns 201 ManuscritoDetail (D-A).
-   *  File + exactly one of {projetoTitulo | projetoId} (D-C).
+  /** Upload file + synchronous parse → returns 201 ManuscritoDetail.
+   * File + exactly one of {projetoTitulo | projetoId}.
    */
   create(params: UploadParams): Observable<ManuscritoDetail>;
 
-  /** Read one manuscript — reload / deep-link / T04 hydration fallback. */
+  /** Read one manuscript — reload / deep-link / revisão de estrutura hydration fallback. */
   get(manuscritoId: string): Observable<ManuscritoDetail>;
 
   /** Content tree only (lighter than full ManuscritoDetail). */

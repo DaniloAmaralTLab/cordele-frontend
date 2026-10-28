@@ -1,11 +1,9 @@
 /**
  * imp.contract.ts — public module-level contract for the IMP module.
- * FE-IMP-001: ImpContract, shared type aliases for shell integration.
+ * ImpContract, shared type aliases for shell integration.
  *
  * IMP is the first-pipeline module (order:1), shown in global left-nav.
  * Accessed directly by users; default landing is /imp/upload.
- *
- * SPEC-01 §1–§3 / generator-config.yml §contract
  */
 import { Routes } from '@angular/router';
 
@@ -37,12 +35,11 @@ export interface ModuleFeatureFlagEntry {
 /** Feature flag map: flag key → ModuleFeatureFlagEntry. */
 export type ModuleFeatureFlags = Record<string, ModuleFeatureFlagEntry>;
 
-// ── FE-IMP-001: ImpContract ────────────────────────────────────────────────────
+// ── ImpContract ────────────────────────────────────────────────────
 
 /**
  * ImpContract — public contract surface of the IMP module.
  * Consumed by the shell to register routes, permissions and feature flags.
- * FE-IMP-001 (SPEC-01 §1).
  */
 export interface ImpContract {
   routes: Routes;

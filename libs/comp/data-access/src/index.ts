@@ -2,14 +2,12 @@
  * Public API barrel for @cordele/comp/data-access.
  * Non-lazy entry point for the COMP module — statically importable from apps.
  *
- * P6 (INT-FE-COMP-006): extracted from @cordele/comp (lazy barrel) to eliminate
+ * Extracted from @cordele/comp (lazy barrel) to eliminate
  * @nx/enforce-module-boundaries "Static imports of lazy-loaded libraries" violations.
  *
  * What to import from here vs @cordele/comp:
  *   @cordele/comp/data-access → provideComp, ports, models, constants (DI setup, static init)
  *   @cordele/comp             → COMP_ROUTES (via loadChildren only — dynamic import)
- *
- * Track D: created by fe-architect-promote COMP @ cordele (D-494) / P6.
  */
 
 // Providers factory — consumed by app.config.ts
@@ -59,7 +57,7 @@ export type {
   ModuleDescriptor,
 } from './lib/comp.constants';
 
-// Observability stub — FE-COMP-025 (P9)
+// Observability stub
 // TODO: remove stub once @cordele/shared/observability ships ObservabilityService.
 export { ObservabilityService, OBSERVABILITY_IS_MOCK } from './lib/observability.stub';
 export type { ObservabilityEvent } from './lib/observability.stub';

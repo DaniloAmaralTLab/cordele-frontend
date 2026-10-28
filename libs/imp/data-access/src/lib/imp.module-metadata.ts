@@ -7,8 +7,6 @@
  * Pattern: mirrors @cordele/comp/data-access (COMP_MENU_METADATA, etc.)
  * Fix: resolves lint boundary violation in apps/cordele-web/src/app/module-descriptors.ts
  * (rule: "Static imports of lazy-loaded libraries are forbidden").
- *
- * FE-IMP-003 / FE-IMP-005 / SPEC-06 §shell
  */
 
 /** Canonical module key for the IMP module. */
@@ -31,9 +29,9 @@ export const IMP_MENU_METADATA = {
 
 /**
  * IMP_PERMISSION_MAP_METADATA — maps FE permission keys to BE scopes.
- * Mirrors IMP_PERMISSION_MAP in imp-shell-entry (FE-IMP-002).
+ * Mirrors IMP_PERMISSION_MAP in imp-shell-entry.
  *   imp.import  → imp:write  (upload a new manuscript)
- *   imp.review  → imp:read   (view and curate the parsed structure T04)
+ *   imp.review  → imp:read   (view and curate the parsed structure revisão de estrutura)
  *   imp.confirm → imp:write  (confirm structure → triggers COMP job)
  */
 export const IMP_PERMISSION_MAP_METADATA = {
@@ -44,7 +42,7 @@ export const IMP_PERMISSION_MAP_METADATA = {
 
 /**
  * IMP_FEATURE_FLAGS_METADATA — default states for all IMP feature flags.
- * Mirrors IMP_FEATURE_FLAGS in imp-shell-entry (FE-IMP-004).
+ * Mirrors IMP_FEATURE_FLAGS in imp-shell-entry.
  *   imp.reimport        → on (re-upload to replace a failed import)
  *   imp.ignoreFragment  → on (reviewers can ignore individual fragments)
  *   imp.existingProject → on (upload can be linked to an existing project)

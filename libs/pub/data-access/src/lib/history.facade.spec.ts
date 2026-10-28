@@ -1,5 +1,5 @@
 /**
- * history.facade.spec.ts — Unit tests for HistoryFacade (FE-PUB-007 / FE-PUB-024 / FE-PUB-025).
+ * history.facade.spec.ts — Unit tests for HistoryFacade.
  *
  * Verifies:
  *   - load() calls listByProjeto and getStats, sets status to loaded.
@@ -7,9 +7,9 @@
  *   - download() delegates to ArtifactDownloadService; downloading signal clears on completion.
  *   - Stats null when getStats errors (tiles hidden, not a fatal error).
  *   - error state set on listByProjeto failure.
- *   - FE-PUB-024: errorTraceId populated from X-Correlation-Id on load failure.
- *   - FE-PUB-024: downloadTraceId populated on download failure.
- *   - FE-PUB-025: refetchNotice set on DownloadResult.status==='refetching'; cleared on success.
+ *   - errorTraceId populated from X-Correlation-Id on load failure.
+ *   - downloadTraceId populated on download failure.
+ *   - refetchNotice set on DownloadResult.status==='refetching'; cleared on success.
  */
 import { TestBed } from '@angular/core/testing';
 import { concat, of, throwError } from 'rxjs';
@@ -102,7 +102,7 @@ describe('HistoryFacade', () => {
       expect(facade.error()).toContain('network error');
     });
 
-    it('FE-PUB-024: errorTraceId populated from X-Correlation-Id header on load failure', () => {
+    it('errorTraceId populated from X-Correlation-Id header on load failure', () => {
       const mockHeaderErr = {
         message: 'Server error',
         status: 500,
@@ -119,7 +119,7 @@ describe('HistoryFacade', () => {
       expect(facade.errorTraceId()).toBe('trace-abc-123');
     });
 
-    it('FE-PUB-024: errorTraceId is null when no X-Correlation-Id header is present', () => {
+    it('errorTraceId is null when no X-Correlation-Id header is present', () => {
       apiMock.listByProjeto = (_projetoId: string) =>
         throwError(() => new Error('network error'));
 
@@ -129,7 +129,7 @@ describe('HistoryFacade', () => {
       expect(facade.errorTraceId()).toBeNull();
     });
 
-    it('FE-PUB-024: errorTraceId populated from AppError.correlationId on load failure', () => {
+    it('errorTraceId populated from AppError.correlationId on load failure', () => {
       const appErr = { code: 'SERVER_ERROR', message: 'fail', correlationId: 'corr-xyz-789' };
       apiMock.listByProjeto = (_projetoId: string) =>
         throwError(() => appErr);
@@ -180,7 +180,7 @@ describe('HistoryFacade', () => {
       expect(facade.downloadError()).toContain('expirou');
     });
 
-    it('FE-PUB-024: downloadTraceId populated from X-Correlation-Id header on download failure', () => {
+    it('downloadTraceId populated from X-Correlation-Id header on download failure', () => {
       const mockHeaderErr = {
         message: 'O link de download expirou.',
         status: 401,
@@ -197,7 +197,7 @@ describe('HistoryFacade', () => {
       expect(facade.downloadTraceId()).toBe('dl-trace-456');
     });
 
-    it('FE-PUB-025: refetchNotice set when DownloadResult.status=refetching, cleared on success', () => {
+    it('refetchNotice set when DownloadResult.status=refetching, cleared on success', () => {
       // Simulate ArtifactDownloadService emitting refetching then success (as _refetchAndOpen does)
       downloaderMock.download = (_projetoId: string, _publicacaoId: string) =>
         concat(
@@ -213,7 +213,7 @@ describe('HistoryFacade', () => {
       expect(facade.refetchNotice()).toBeNull();
     });
 
-    it('FE-PUB-025: refetchNotice cleared when download ultimately fails after refetch', () => {
+    it('refetchNotice cleared when download ultimately fails after refetch', () => {
       downloaderMock.download = (_projetoId: string, _publicacaoId: string) =>
         concat(
           of({ status: 'refetching' as const }),

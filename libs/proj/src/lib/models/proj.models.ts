@@ -1,8 +1,7 @@
 /**
  * proj.models.ts — domain types for the PROJ module.
- * Reconciled with api-contract.md §6 (ProjetoCard, ProjetoDetail, PublicacaoHistoryItem)
- * and SPEC-03 view-models (LibraryVM, HistoryVM, StatusBadgeVM).
- * Track D: created by fe-architect-promote PROJ @ cordele (D-494).
+ * Matches the backend shapes (ProjetoCard, ProjetoDetail, PublicacaoHistoryItem)
+ * and view-models (LibraryVM, HistoryVM, StatusBadgeVM).
  */
 
 // ── Status enums ──────────────────────────────────────────────────────────────
@@ -11,10 +10,10 @@ export type ProjetoStatus = 'rascunho' | 'em_composicao' | 'publicado' | 'com_er
 export type EpubcheckStatus = 'valido' | 'avisos' | 'erros_criticos' | 'pendente';
 export type BadgeTone = 'draft' | 'progress' | 'valid' | 'warn' | 'error' | 'pending';
 
-// ── API shapes (api-contract §6) ──────────────────────────────────────────────
+// ── API shapes ──────────────────────────────────────────────
 
 /**
- * api-contract §4.2 — paginated library page (GET /api/v1/proj/projetos).
+ * Paginated library page (GET /api/v1/proj/projetos).
  * `nextCursor` is opaque base64 keyset; pass as `?cursor=` on the next request.
  * `null` means this is the last page.
  */
@@ -31,11 +30,11 @@ export interface ProjetoListPage {
  */
 export interface ProjetoListResult {
   page: ProjetoListPage;
-  /** true when the backend set X-Degraded: true on the response (api-contract §3). */
+  /** True when the backend set X-Degraded: true on the response. */
   degraded: boolean;
 }
 
-/** api-contract §6.2 — library card (GET /api/v1/proj/projetos) */
+/** Library card (GET /api/v1/proj/projetos) */
 export interface ProjetoCard {
   id: string;
   nome: string;
@@ -48,7 +47,7 @@ export interface ProjetoCard {
   criadoEm: string;
 }
 
-/** api-contract §6.3 — one publication row (GET .../publicacoes) */
+/** One publication row (GET .../publicacoes) */
 export interface PublicacaoHistoryItem {
   publicacaoId: string;
   projetoId: string;
@@ -60,7 +59,7 @@ export interface PublicacaoHistoryItem {
   criadoEm: string;
 }
 
-/** api-contract §6.1 — full project aggregate (GET /api/v1/proj/projetos/{id} + reopen response) */
+/** Full project aggregate (GET /api/v1/proj/projetos/{id} + reopen response) */
 export interface ProjetoDetail {
   id: string;
   editoraId: string;
@@ -85,20 +84,20 @@ export interface ManuscriptSummary {
   criadoEm: string;
 }
 
-/** api-contract §4.5 — signed URL response */
+/** Signed URL response */
 export interface SignedDownloadUrl {
   publicacaoId: string;
   arquivoUrl: string;
   expiresAt: string;
 }
 
-/** api-contract §4.1 — project creation request */
+/** Project creation request */
 export interface CriarProjetoRequest {
   nome: string;
   descricao?: string;
 }
 
-// ── View-model types (SPEC-03) ────────────────────────────────────────────────
+// ── View-model types ────────────────────────────────────────────────
 
 export interface StatusBadgeVM {
   tone: BadgeTone;
@@ -112,7 +111,7 @@ export interface ProjetoCardVM extends ProjetoCard {
   openTarget: 'imp' | 'comp' | 'history';
 }
 
-/** Derives a StatusBadgeVM from api-contract §6.2 badge-derivation rule (SPEC-03 §3). */
+/** Derives a StatusBadgeVM from badge-derivation rule. */
 export function deriveBadge(
   status: ProjetoStatus,
   ultimoEpubcheckStatus: EpubcheckStatus | null,
@@ -132,7 +131,7 @@ export function deriveBadge(
   }
 }
 
-/** Derives openTarget from project status (SPEC-03 §1 — no dead ends). */
+/** Derives openTarget from project status (no dead ends). */
 export function deriveOpenTarget(status: ProjetoStatus): 'imp' | 'comp' | 'history' {
   if (status === 'rascunho')      return 'imp';
   if (status === 'em_composicao') return 'comp';

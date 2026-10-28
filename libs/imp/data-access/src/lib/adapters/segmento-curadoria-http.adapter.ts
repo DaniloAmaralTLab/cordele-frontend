@@ -1,11 +1,10 @@
 /**
- * segmento-curadoria-http.adapter.ts — HTTP adapter for T04 editorial actions.
+ * segmento-curadoria-http.adapter.ts — HTTP adapter for revisão de estrutura editorial actions.
  * Activated by imp.providers.ts when adapter: 'http'.
  *
- * Track D: created by fe-architect-promote IMP @ cordele (D-494).
- * P2: replaced HttpClient with ImpHttpClient (INT-FE-IMP-001 resolved).
+ * Replaced HttpClient with ImpHttpClient.
  *
- * Endpoints (api-contract §8 / addendum M4 — confirmed against imp.controller.ts):
+ * Endpoints (confirmed against imp.controller.ts):
  *   POST   /api/v1/imp/manuscripts/{id}/segmentos/{segId}/ignore   → ignore (with motivo body)
  *   DELETE /api/v1/imp/manuscripts/{id}/segmentos/{segId}/ignore   → restoreIgnore (204)
  *   GET    /api/v1/imp/manuscripts/{id}/segmentos/ignored          → getIgnored
@@ -28,7 +27,7 @@ interface IgnoreBody {
 
 @Injectable({ providedIn: 'root' })
 export class SegmentoCuradoriaHttpAdapter implements SegmentoCuradoriaPort {
-  /** ImpHttpClient (not HttpClient) per RULE-NX-05 — empresa context from JWT `empresa_id` claim. */
+  /** ImpHttpClient (not HttpClient) — empresa context from JWT `empresa_id` claim. */
   private readonly http = inject(ImpHttpClient);
 
   /**
@@ -54,10 +53,10 @@ export class SegmentoCuradoriaHttpAdapter implements SegmentoCuradoriaPort {
 
   /**
    * GET /api/v1/imp/manuscripts/{manuscritoId}/segmentos/ignored
-   * Returns the current set of ignored segmentoIds for T04 hydration (deep-link path).
+   * Returns the current set of ignored segmentoIds for revisão de estrutura hydration (deep-link path).
    *
-   * NOTE: This endpoint was not found in imp.controller.ts at time of P2 implementation.
-   * If it returns 404 in integration, report as BLOQUEADOR DE BACKEND before advancing to P3.
+   * NOTE: This endpoint was not found in imp.controller.ts at time of implementation.
+   * If it returns 404 in integration, the backend endpoint is missing.
    */
   getIgnored(manuscritoId: string): Observable<IgnoredSegmentsResponse> {
     return this.http.get<IgnoredSegmentsResponse>(

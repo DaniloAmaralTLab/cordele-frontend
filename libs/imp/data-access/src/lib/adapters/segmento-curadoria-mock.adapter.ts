@@ -1,7 +1,6 @@
 /**
  * segmento-curadoria-mock.adapter.ts — In-memory mock (dev default, 400ms delay).
- * Implements persistent rollback semantics (FE-IMP-011 / api-contract §8).
- * Track D: created by fe-architect-promote IMP @ cordele (D-494).
+ * Implements persistent rollback semantics.
  * NOTE: This adapter is a DI test double used only in dev/test via imp.providers.ts.
  *       It must NOT be used in production; production uses SegmentoCuradoriaHttpAdapter.
  */
@@ -47,7 +46,7 @@ export class SegmentoCuradoriaMockAdapter implements SegmentoCuradoriaPort {
   }
 
   confirmEstrutura(_manuscritoId: string): Observable<void> {
-    // Mock: always succeeds. Real adapter calls POST /confirm-estrutura (§8.2).
+    // Mock: always succeeds. Real adapter calls POST /confirm-estrutura.
     return of(undefined as void).pipe(delay(MOCK_DELAY));
   }
 }

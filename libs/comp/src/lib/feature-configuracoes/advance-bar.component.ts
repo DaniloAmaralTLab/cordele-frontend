@@ -1,6 +1,5 @@
 /**
- * advance-bar.component.ts — "Ir para preview" CTA for T05 Configurações.
- * FE-COMP-012 / SPEC-02 §1.
+ * advance-bar.component.ts — "Ir para preview" CTA for configurações Configurações.
  *
  * Presentational — button disabled when canAdvance=false or saving=true.
  * The back-navigation slot is projected via <ng-content>.

@@ -1,11 +1,10 @@
 /**
  * metadados.port.ts — Port interface for the Metadados resource.
- * Covers api-contract §4.1 / §4.3:
- *   GET  /api/v1/comp/projetos/{projetoId}/metadados  → get (T05 form pre-fill)
- *   PUT  /api/v1/comp/projetos/{projetoId}/metadados  → update (T05 save / lazy materialise)
- *   POST /api/v1/comp/projetos/{projetoId}/capa       → uploadCapa (T05 cover image ≤10MB)
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Moved to @cordele/comp/data-access (P6 boundary fix — INT-FE-COMP-006).
+ * Covers:
+ *   GET  /api/v1/comp/projetos/{projetoId}/metadados  → get (configurações form pre-fill)
+ *   PUT  /api/v1/comp/projetos/{projetoId}/metadados  → update (configurações save / lazy materialise)
+ *   POST /api/v1/comp/projetos/{projetoId}/capa       → uploadCapa (configurações cover image ≤10MB)
+ * Moved to @cordele/comp/data-access.
  */
 import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';

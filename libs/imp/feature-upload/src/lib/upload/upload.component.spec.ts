@@ -1,8 +1,8 @@
 /**
- * upload.component.spec.ts — Unit tests for UploadComponent (FE-IMP-016).
+ * upload.component.spec.ts — Unit tests for UploadComponent.
  *
  * Strategy: spy on ImportFacade via TestBed.overrideProvider — no HTTP involved.
- * Criterios de aceite (plan §3 P4):
+ * Criterios de aceite:
  *   - submit válido → ImportFacade.importar() chamado
  *   - estado erro → UploadProgressCard mostra retry → reset()
  *   - reset() limpa seleção de arquivo

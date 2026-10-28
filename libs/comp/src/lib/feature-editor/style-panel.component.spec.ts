@@ -1,6 +1,6 @@
 /**
  * style-panel.component.spec.ts
- * FE-COMP-015: StylePanelComponent — 7 parameters, h1≥h2≥h3 enforcement.
+ * StylePanelComponent — 7 parameters, h1≥h2≥h3 enforcement.
  */
 import { TestBed } from '@angular/core/testing';
 import { Component, signal } from '@angular/core';

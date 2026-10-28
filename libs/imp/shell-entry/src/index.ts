@@ -1,6 +1,6 @@
 /**
  * Public API barrel for @cordele/imp/shell-entry.
- * P3 — Shell Entry + Bootstrap (FE-IMP-001..005).
+ * Shell Entry + Bootstrap.
  *
  * Exports all public artifacts of the IMP shell-entry:
  *   - Routes barrel — consumed by app.routes.ts loadChildren
@@ -13,7 +13,7 @@
 // Routes — consumed by app.routes.ts loadChildren
 export { IMP_ROUTES } from './lib/imp.routes';
 
-// Contract — FE-IMP-001
+// Contract
 export type { ImpContract } from './lib/imp.contract';
 export type {
   ModuleMenuMetadata,
@@ -23,12 +23,12 @@ export type {
   ModuleFeatureFlags,
 } from './lib/imp.contract';
 
-// Permission map — FE-IMP-002
+// Permission map
 export { IMP_PERMISSION_MAP } from './lib/imp.permission-map';
 
-// Feature flags — FE-IMP-004
+// Feature flags
 export { IMP_FEATURE_FLAGS } from './lib/imp.feature-flags';
 
-// Module descriptor — FE-IMP-003 / FE-IMP-005
+// Module descriptor
 export { IMP_MODULE_DESCRIPTOR } from './lib/imp.module-descriptor';
 export type { ImpModuleDescriptor } from './lib/imp.module-descriptor';

@@ -1,36 +1,7 @@
 /**
- * app.config.ts — root ApplicationConfig for cordele-web.
- * P2 shell setup (first module promoted — IMP, D-494).
- * - No withHashLocation() (P2.4: removed, deep-linkable routes).
- * - provideHttpClient: required by all HTTP adapters.
- * - COMP: adapter='http' — comp-service is available; real API, no mocks.
- *
- * Updated: INT-FE-COMP-001/006 (P4) — empresa context is resolved server-side from the
- * JWT `empresa_id` claim via EmpresaContextInterceptor. The FE does NOT send X-Empresa-Id;
- * ACCESS_EMPRESA_ID provider removed (token no longer wired to HTTP headers).
- *
- * Updated: P7 (E2E fix A) — adds APP_INITIALIZER that reads localStorage['cordele_access_token']
- * at bootstrap so AuthSessionService.isAuthenticated is true when authGuard runs.
- * This covers both real users (token persisted from login) and E2E tests that inject
- * the token via page.addInitScript() before the Angular app bootstraps.
- *
- * Updated: P7 (E2E fix B) — adds APP_INITIALIZER that registers IMP_PERMISSION_MAP_METADATA
- * and IMP_FEATURE_FLAGS_METADATA into AccessDecisionService so that accessGuard('imp.import')
- * and accessGuard('imp.review') can resolve the BE scope from the JWT and pass for authed users.
- *
- * Updated: P7 (lint fix) — removed provideProj (static import of lazy @cordele/proj).
- * provideProj is now self-provided inside PROJ_ROUTES lazy route scope (proj.routes.ts).
- *
- * Updated: PUB P4 (INT-FE-PUB-001/006):
- * - INT-FE-PUB-001: provider order verified — provideHttpClient + interceptors declared before
- *   all module providers (provideImp, provideComp, providePub).
- * - INT-FE-PUB-006: PUB_EMPRESA_CHANGED token wired to PubShellIntegrationService.empresaChanged
- *   so that ExportFacade cancels in-flight polls on empresa switch.
- *
- * Updated: PUB P6 (FE-PUB-023 — Navigation / Breadcrumbs):
- * - PUB_UPDATE_BREADCRUMB token wired to PubShellIntegrationService.updateBreadcrumb.
- *   Feature components (T07/T08) inject this token (type:domain) to call updateBreadcrumb
- *   without violating Nx boundary (type:feature cannot import type:feature).
+ * Root ApplicationConfig for cordele-web: router, HttpClient with DI interceptors,
+ * bootstrap initializers (session token, module permissions) and module providers.
+ * Empresa context is resolved server-side from the JWT, so no X-Empresa-Id header is sent.
  */
 import {
   ApplicationConfig,
@@ -41,24 +12,21 @@ import {
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { appRoutes } from './app.routes';
-// FE-IMP-003 (P3): import directly from canonical sublib (bypasses legacy @cordele/imp barrel)
+// Import from the sublib directly (bypasses the legacy @cordele/imp barrel)
 import {
   provideImp,
   IMP_PERMISSION_MAP_METADATA,
   IMP_FEATURE_FLAGS_METADATA,
 } from '@cordele/imp/data-access';
-// INT-FE-COMP-006 (P6): import from canonical non-lazy sublib to avoid boundary violation
+// Non-lazy sublib, to stay within the module boundaries
 import { provideComp } from '@cordele/comp/data-access';
-// P2 (FE-PUB-007): import from canonical sub-lib — real pub-service integration, no mocks
 import { PUB_BREADCRUMB, PUB_EMPRESA_CHANGED, providePub, PUB_UPDATE_BREADCRUMB, PUB_PERMISSION_MAP_STATIC, PUB_FEATURE_FLAGS_STATIC } from '@cordele/pub-data-access';
-// PUB P4 (INT-FE-PUB-006): wire empresaChanged signal so ExportFacade cancels poll on empresa switch
-// PUB P6 (FE-PUB-023): wire PUB_UPDATE_BREADCRUMB token to PubShellIntegrationService.updateBreadcrumb
 import { PubShellIntegrationService } from '@cordele/pub-integration';
 import { AuthSessionService } from '@cordele/shared/auth-session';
 import { AccessDecisionService } from '@cordele/shared/access-decision';
 
 /**
- * initAuthSession — APP_INITIALIZER factory (Fix A).
+ * initAuthSession — APP_INITIALIZER factory.
  * Reads localStorage['cordele_access_token'] at bootstrap and calls setToken()
  * so AuthSessionService.isAuthenticated is true before any route guard runs.
  *
@@ -84,7 +52,7 @@ function initAuthSession(): () => void {
 }
 
 /**
- * initImpPermissions — APP_INITIALIZER factory (Fix B).
+ * initImpPermissions — APP_INITIALIZER factory.
  * Registers IMP_PERMISSION_MAP and IMP_FEATURE_FLAGS in AccessDecisionService
  * so that accessGuard('imp.import') and accessGuard('imp.review') can resolve
  * the BE scope from JWT claims and evaluate correctly.
@@ -102,7 +70,7 @@ function initImpPermissions(): () => void {
 }
 
 /**
- * initPubPermissions — APP_INITIALIZER factory (P9 E2E hardening).
+ * initPubPermissions — APP_INITIALIZER factory.
  * Registers PUB_PERMISSION_MAP_STATIC and PUB_FEATURE_FLAGS_STATIC in AccessDecisionService
  * so that accessGuard('pub.export'), accessGuard('pub.view'), and accessGuard('pub.download')
  * can resolve BE scopes from JWT claims and evaluate correctly.
@@ -130,34 +98,31 @@ export const appConfig: ApplicationConfig = {
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(appRoutes),
     provideHttpClient(withInterceptorsFromDi()),
-    // P7 (E2E fix A): reads localStorage token at bootstrap → authGuard sees isAuthenticated = true.
+    // Reads localStorage token at bootstrap → authGuard sees isAuthenticated = true.
     {
       provide: APP_INITIALIZER,
       useFactory: initAuthSession,
       multi: true,
     },
-    // P7 (E2E fix B): registers IMP permissions so accessGuard('imp.import') evaluates correctly.
+    // Registers IMP permissions so accessGuard('imp.import') evaluates correctly.
     {
       provide: APP_INITIALIZER,
       useFactory: initImpPermissions,
       multi: true,
     },
-    // P9 (E2E hardening): registers PUB permissions so accessGuard('pub.export') evaluates correctly.
+    // Registers PUB permissions so accessGuard('pub.export') evaluates correctly.
     // Without this, pub.export → pub:write lookup returns false (unknown perm) → guard redirect.
     {
       provide: APP_INITIALIZER,
       useFactory: initPubPermissions,
       multi: true,
     },
-    // P7 (E2E fix C): adapter='http' — IMP e2e tests use page.route() Playwright intercepts
-    // at the network boundary. With adapter='mock', no HTTP requests are made and Playwright
-    // intercepts never fire. Switching to 'http' enables the e2e suite to control responses.
+    // HTTP adapters: the e2e suite intercepts requests at the network layer.
     provideImp({ adapter: 'http' }),
     provideComp({ adapter: 'http' }),
     // provideProj removed — now self-provided inside PROJ_ROUTES lazy route scope (proj.routes.ts).
-    // P2 (FE-PUB-007): adapter='http' — pub-service is complete; real API, no mocks.
     providePub({ adapter: 'http' }),
-    // PUB P4 (INT-FE-PUB-006): wire PUB_EMPRESA_CHANGED to PubShellIntegrationService.empresaChanged.
+    // Wire PUB_EMPRESA_CHANGED to PubShellIntegrationService.empresaChanged.
     // ExportFacade watches this signal; when empresa switches, it cancels any in-flight export poll.
     // PubShellIntegrationService is scope:pub type:feature — importable from type:app (no scope restriction on app).
     // provideHttpClient is declared above, so interceptors are active before this DI factory runs.
@@ -165,8 +130,8 @@ export const appConfig: ApplicationConfig = {
       provide: PUB_EMPRESA_CHANGED,
       useFactory: () => inject(PubShellIntegrationService).empresaChanged,
     },
-    // PUB P6 (FE-PUB-023): wire PUB_UPDATE_BREADCRUMB to PubShellIntegrationService.updateBreadcrumb.
-    // Feature components (T07/T08) inject PUB_UPDATE_BREADCRUMB from @cordele/pub-data-access and call
+    // Wire PUB_UPDATE_BREADCRUMB to PubShellIntegrationService.updateBreadcrumb.
+    // Feature components inject PUB_UPDATE_BREADCRUMB from @cordele/pub-data-access and call
     // it with the projetoId/nomeProjeto to resolve breadcrumb segments for the active screen.
     // This avoids the Nx boundary violation: type:feature (pub-feature-*) cannot import type:feature (pub-integration).
     {
@@ -176,7 +141,7 @@ export const appConfig: ApplicationConfig = {
         return (nomeProjeto: string) => svc.updateBreadcrumb(nomeProjeto);
       },
     },
-    // PUB P8 (FE-PUB-026): wire PUB_BREADCRUMB to PubShellIntegrationService.publishBreadcrumb.
+    // Wire PUB_BREADCRUMB to PubShellIntegrationService.publishBreadcrumb.
     // ExportFacade, HistoryFacade (type:data-access) and ExportacaoEValidacaoComponent (type:feature)
     // inject PUB_BREADCRUMB from @cordele/pub-data-access and call it to emit lifecycle telemetry events.
     // Token in pub-data-access (not pub-integration) because data-access cannot import feature — same

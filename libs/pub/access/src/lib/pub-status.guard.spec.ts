@@ -1,5 +1,5 @@
 /**
- * pub-status.guard.spec.ts — Unit tests for pubStatusGuard (FE-PUB-022 / P5).
+ * pub-status.guard.spec.ts — Unit tests for pubStatusGuard.
  *
  * Verifies:
  *   history mode:

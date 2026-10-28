@@ -1,29 +1,25 @@
 /**
- * pub-shell-integration.service.ts -- PUB shell bridge (FE-PUB-006, INT-FE-PUB-006).
- * Updated: FE-PUB-023 (P6 -- Navigation / Breadcrumbs).
+ * pub-shell-integration.service.ts -- PUB shell bridge (navigation / breadcrumbs).
  *
  * Responsibilities:
  *   - start(): registers PUB_NAV_CONFIG locally (stores _registeredConfig); tracks empresa changes.
- *   - stop(): deregisters nav config; resets breadcrumbs; cancels polls (INT-FE-PUB-006).
- *   - updateBreadcrumb(nomeProjeto): resolves T07/T08 breadcrumbs; called via token.
+ *   - stop(): deregisters nav config; resets breadcrumbs; cancels polls.
+ *   - updateBreadcrumb(nomeProjeto): resolves exportação/histórico breadcrumbs; called via token.
  *   - Callers (ExportFacade) react to empresaChanged to cancel polls.
  *
- * INT-FE-PUB-006 (P4): PUB_EMPRESA_CHANGED token wired in app.config.ts.
- * FE-PUB-023 (P6): PUB_UPDATE_BREADCRUMB token wired in app.config.ts.
+ * PUB_EMPRESA_CHANGED token wired in app.config.ts.
+ * PUB_UPDATE_BREADCRUMB token wired in app.config.ts.
  *
- * Boundaries (RULE-NX-01 / RULE-NX-05):
+ * Boundaries:
  *   - scope:pub, type:feature -- imports scope:shared type:domain libs only.
  *   - No HttpClient. No imports from pub-data-access, pub-shell-entry, or pub-navigation.
  *     (ng-packagr-lite fails when tsconfig path aliases resolve to another lib source.)
  *   - NavConfig + PUB_NAV_CONFIG inlined to avoid cross-lib source import.
  *
- * NavigationService: shared service does not yet exist (TODO[INT-FE-PUB-NAV]).
- * Registration stored locally until available -- mirrors CompShellIntegrationService.
+ * TODO: navegação compartilhada entre módulos
+ * Registration stored locally -- mirrors CompShellIntegrationService.
  *
- * Updated: FE-PUB-026 (P8 — Observability): publishBreadcrumb() added;
- *   delegates to ObservabilityService.event() (no-op stub, no console.log).
- *
- * Track D: FE-PUB-006 (P1). Updated: INT-FE-PUB-006 (P4). FE-PUB-023 (P6). FE-PUB-026 (P8).
+ * publishBreadcrumb() delegates to ObservabilityService.event() (no-op stub, no console.log).
  */
 import { Injectable, effect, inject, signal } from '@angular/core';
 import { EmpresaContextService } from '@cordele/shared/empresa-context';
@@ -45,7 +41,7 @@ const PUB_NAV_CONFIG_LOCAL: NavConfig = {
   breadcrumbLabel: 'Publicação',
 };
 
-// -- Breadcrumb resolution (P6 -- FE-PUB-023) --
+// -- Breadcrumb resolution  --
 
 type PubNavScreen = 'exportar' | 'download-historico';
 
@@ -65,7 +61,7 @@ export class PubShellIntegrationService {
   private readonly empresaCtx    = inject(EmpresaContextService);
   private readonly observability = inject(ObservabilityService);
 
-  // Navigation registration (P6 -- FE-PUB-023)
+  // Navigation registration
   private _registeredConfig: NavConfig | null = null;
 
   get registeredConfig(): NavConfig | null {
@@ -79,7 +75,7 @@ export class PubShellIntegrationService {
 
   readonly resolvedBreadcrumbs = this._resolvedBreadcrumbs.asReadonly();
 
-  // Empresa-changed counter (P1 / P4 -- INT-FE-PUB-006)
+  // Empresa-changed counter
   private readonly _empresaChangedCount = signal(0);
 
   readonly empresaChanged = this._empresaChangedCount.asReadonly();
@@ -101,22 +97,22 @@ export class PubShellIntegrationService {
   start(): void {
     if (this._active) return;
     this._active = true;
-    // FE-PUB-023: register nav config locally until shared NavigationService is available.
+    // Register nav config locally.
     this._registeredConfig = PUB_NAV_CONFIG_LOCAL;
   }
 
   stop(): void {
     if (!this._active) return;
     this._active = false;
-    // FE-PUB-023: clear nav registration and breadcrumbs.
+    // Clear nav registration and breadcrumbs.
     this._registeredConfig = null;
     this._resolvedBreadcrumbs.set({ 'exportar': [], 'download-historico': [] });
-    // INT-FE-PUB-006: signal poll cancellation.
+    // Signal poll cancellation.
     this._empresaChangedCount.update(n => n + 1);
   }
 
   /**
-   * updateBreadcrumb() -- FE-PUB-023 (P6).
+   * updateBreadcrumb()
    * Called via PUB_UPDATE_BREADCRUMB token (pub-data-access) from feature components.
    * Token pattern decouples type:feature -> type:feature (Nx boundary rule).
    */
@@ -128,12 +124,12 @@ export class PubShellIntegrationService {
   }
 
   /**
-   * publishBreadcrumb() -- FE-PUB-026 (P8 Observability).
+   * publishBreadcrumb()
    * Called via PUB_BREADCRUMB token from ExportFacade, ExportacaoEValidacaoComponent,
    * and HistoryFacade to emit lifecycle telemetry events.
    *
-   * Delegates to ObservabilityService.event() — a no-op stub in P8 (real backend wired later).
-   * No console.log: the stub is silent by design; arch-conformance gate enforces this.
+   * Delegates to ObservabilityService.event() — a no-op stub (real backend wired later).
+   * No console.log: the stub is silent by design; lint enforces this.
    *
    * @param event        Telemetry event name (e.g. 'export-requested', 'verdict-shown', 'downloaded').
    * @param projetoId    The project identifier associated with the event.

@@ -1,7 +1,6 @@
 /**
  * proj.providers.ts — DI factory for the PROJ data layer.
  * Default: adapter='mock' (dev). Set adapter='http' in production app.config.ts.
- * Track D: created by fe-architect-promote PROJ @ cordele (D-494).
  */
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
 import { ProjetoHttpAdapter } from './api/projeto-http.adapter';

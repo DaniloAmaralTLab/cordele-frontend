@@ -1,8 +1,8 @@
 /**
  * biblioteca-de-projetos.component.spec.ts — smoke tests for BibliotecaDeProjetosComponent.
- * FE-PROJ-017 (P1): instantiation, loading state rendering, empty state rendering.
+ * Instantiation, loading state rendering, empty state rendering.
  *
- * Contract change (api-contract §4.2, 2026-09):
+ * Contract change (2026-09):
  *   Mock facade updated with hasMore, loadMore, and degraded signal.
  *   New test: degraded notice renders when degraded()=true.
  *   New test: "Carregar mais" button renders when hasMore()=true.

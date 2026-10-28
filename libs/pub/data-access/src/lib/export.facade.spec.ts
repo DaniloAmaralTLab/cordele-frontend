@@ -1,5 +1,5 @@
 /**
- * export.facade.spec.ts — Unit tests for ExportFacade (FE-PUB-007 / INT-FE-PUB-004 / FE-PUB-024).
+ * export.facade.spec.ts — Unit tests for ExportFacade.
  *
  * Verifies:
  *   - startExport triggers the API and transitions phase to correct terminal state.
@@ -7,11 +7,11 @@
  *   - resumeFromHistory reads history and resolves phase from newest entry.
  *   - reset() cancels poll and clears state.
  *   - No setInterval usage (all async via timer/Observable).
- *   - avisos signal populated after terminal state (INT-FE-PUB-004).
+ *   - avisos signal populated after terminal state.
  *   - avisos signal cleared on reset().
- *   - FE-PUB-024: errorTraceId populated from X-Correlation-Id header on startExport failure.
- *   - FE-PUB-024: errorTraceId populated from AppError.correlationId.
- *   - FE-PUB-024: errorTraceId cleared on reset().
+ *   - errorTraceId populated from X-Correlation-Id header on startExport failure.
+ *   - errorTraceId populated from AppError.correlationId.
+ *   - errorTraceId cleared on reset().
  */
 import { TestBed } from '@angular/core/testing';
 import { Router } from '@angular/router';
@@ -58,7 +58,7 @@ describe('ExportFacade', () => {
       triggerExport: (_projetoId: string) => of(makeStatus({ status: 'gerando', epubcheckStatus: 'pendente' })),
       pollStatus: (_projetoId: string, _publicacaoId: string) => of(makeStatus({ status: 'publicado', epubcheckStatus: 'valido', arquivoDisponivel: true, concluidaEm: '2026-01-01T00:01:00Z' })),
       listByProjeto: (_projetoId: string) => of([]),
-      // INT-FE-PUB-004: stub required; _loadAvisos is called after terminal state.
+      // Stub required; _loadAvisos is called after terminal state.
       // Returns empty list by default; individual tests override when needed.
       getValidationMessages: (_projetoId: string, _publicacaoId: string) => of([]),
     };
@@ -78,7 +78,7 @@ describe('ExportFacade', () => {
 
   describe('startExport', () => {
     it('should set status to publicado when triggerExport returns terminal publicado directly', () => {
-      // Test case: trigger returns a terminal status directly (200 idempotent in-flight, D-R)
+      // Test case: trigger returns a terminal status directly (200 idempotent in-flight)
       const publicado = makeStatus({
         status: 'publicado',
         epubcheckStatus: 'valido',
@@ -245,15 +245,15 @@ describe('ExportFacade', () => {
 
   describe('no setInterval', () => {
     it('ExportFacade constructor source should NOT contain setInterval', () => {
-      // All polling uses timer() + switchMap — never setInterval (FE-PUB-012 requirement).
+      // All polling uses timer() + switchMap — never setInterval.
       const source = ExportFacade.toString();
       expect(source).not.toContain('setInterval');
     });
   });
 
-  // ── INT-FE-PUB-004: avisos signal ────────────────────────────────────────
+  // ── avisos signal ────────────────────────────────────────
 
-  describe('avisos signal (INT-FE-PUB-004)', () => {
+  describe('avisos signal', () => {
     const MOCK_MSG: ValidationMessageItem = {
       id:       'msg-001',
       severity: 'warning',
@@ -336,7 +336,7 @@ describe('ExportFacade', () => {
     });
   });
 
-  describe('FE-PUB-024 — errorTraceId', () => {
+  describe('errorTraceId', () => {
     it('populates errorTraceId from X-Correlation-Id header when startExport fails', () => {
       const mockHeaderErr = {
         message: 'Server error',

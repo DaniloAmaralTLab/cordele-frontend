@@ -1,8 +1,8 @@
 /**
- * download-e-historico.component.ts — T08 — Download e Histórico.
- * Migrated from libs/pub (flat lib) to libs/pub/feature-history (P3 — FE-PUB-018).
+ * download-e-historico.component.ts — histórico — Download e Histórico.
+ * Migrated from libs/pub (flat lib) to libs/pub/feature-history.
  *
- * Removals vs prototype (FE-PUB-018):
+ * Removed:
  *   ✗ projetos[0] / metadados[0] / publicacoes mock imports  — replaced by HistoryFacade
  *   ✗ signal<Publicacao[]>(publicacoes) static               — facade.lista() (live)
  *   ✗ arquivoUrl <a href> download link                      — signed-URL via facade.download()
@@ -10,18 +10,16 @@
  *                                                              from @cordele/pub-data-access
  *
  * Download: facade.download(projetoId, publicacaoId) → ArtifactDownloadService →
- *           signed URL via SPEC-04 §4.4 → window.open (never proxied bytes).
- * canDownload(pub): epubcheckStatus ∈ {valido, avisos} — mirrors podeBaixar per-row (SPEC-03 §2).
+ * signed URL → window.open (never proxied bytes).
+ * canDownload(pub): epubcheckStatus ∈ {valido, avisos} — mirrors podeBaixar per-row.
  *
- * EpubSummaryGrid (FE-PUB-015): KPI tiles omitted when stats=null (INT-FE-PUB-005 BLOCKED).
+ * EpubSummaryGrid: KPI tiles omitted when stats=null.
  *
  * Boundary: type:feature → imports type:data-access (@cordele/pub-data-access)
  *           and type:ui (@cordele/pub-ui). No mock adapters in production path.
  *
  * Multi-empresa: HistoryFacade is providedIn:'root' and inherits empresa context
- * via @cordele/shared/access-http-base interceptor (INT-FE-PUB-001).
- *
- * Track D: FE-PUB-018 — P3 Feature Libs. Updated: FE-PUB-023 (P6 — breadcrumb wiring).
+ * via @cordele/shared/access-http-base interceptor.
  */
 import {
   ChangeDetectionStrategy,
@@ -76,7 +74,7 @@ function fmtDatetime(iso: string): string {
             {{ facade.error() ?? 'Erro ao carregar histórico.' }}
           </p>
           @if (facade.errorTraceId()) {
-            <!-- FE-PUB-024 / SPEC-07 §4: correlation id for support reference -->
+            <!-- Correlation id for support reference -->
             <p class="text-xs font-mono" style="color:var(--text-tertiary)">
               Trace: {{ facade.errorTraceId() }}
             </p>
@@ -128,7 +126,7 @@ function fmtDatetime(iso: string): string {
           </div>
         </div>
 
-        <!-- Grid de estatísticas — FE-PUB-015 (tiles omitidos se stats=null — INT-FE-PUB-005) -->
+        <!-- Grid de estatísticas (tiles omitidos se stats=null) -->
         <pub-epub-summary-grid
           [total]="facade.stats()?.total ?? null"
           [publicadas]="facade.stats()?.publicadas ?? null"
@@ -167,7 +165,7 @@ function fmtDatetime(iso: string): string {
           </div>
         }
 
-        <!-- Re-fetch notice (FE-PUB-025): signed URL expired, re-fetching in progress -->
+        <!-- Re-fetch notice: signed URL expired, re-fetching in progress -->
         @if (facade.refetchNotice()) {
           <div class="mb-3 rounded-lg px-4 py-3 text-sm flex items-center gap-2" data-testid="refetch-notice"
                style="background:oklch(58% 0.19 245 / 0.10);border:1px solid oklch(58% 0.19 245 / 0.3);color:var(--text-primary);"
@@ -187,7 +185,7 @@ function fmtDatetime(iso: string): string {
             <span class="material-symbols-outlined" style="font-size:16px;">error</span>
             {{ facade.downloadError() }}
             @if (facade.downloadTraceId()) {
-              <!-- FE-PUB-024 / SPEC-07 §4: correlation id for support reference -->
+              <!-- Correlation id for support reference -->
               <span class="ml-auto text-xs font-mono shrink-0" data-testid="download-trace-id" style="color:var(--color-error-ink);opacity:0.7">
                 Trace: {{ facade.downloadTraceId() }}
               </span>
@@ -238,7 +236,7 @@ function fmtDatetime(iso: string): string {
                   }
                 </div>
 
-                <!-- Download: signed URL via facade (SPEC-04 §4.4) — nunca href estático -->
+                <!-- Download: signed URL via facade — nunca href estático -->
                 @if (canDownload(pub)) {
                   <button
                     (click)="download(pub.publicacaoId)"
@@ -285,7 +283,7 @@ function fmtDatetime(iso: string): string {
 export class DownloadEHistoricoComponent implements OnInit {
   protected readonly facade = inject(HistoryFacade);
   private  readonly  route  = inject(ActivatedRoute);
-  /** P6 (FE-PUB-023): breadcrumb update via token — avoids type:feature → type:feature boundary. */
+  /** Breadcrumb update via token — avoids type:feature → type:feature boundary. */
   private  readonly  doUpdateBreadcrumb = inject(PUB_UPDATE_BREADCRUMB);
 
   fmtDatetime = fmtDatetime;
@@ -296,7 +294,7 @@ export class DownloadEHistoricoComponent implements OnInit {
 
   ngOnInit(): void {
     this.load();
-    // P6 (FE-PUB-023): resolve T08 breadcrumb — "Projetos › {projetoId} › Download e Histórico"
+    // Resolve histórico breadcrumb — "Projetos › {projetoId} › Download e Histórico"
     // projetoId used as display label until ProjFacade exposes the project name.
     this.doUpdateBreadcrumb(this.projetoId);
   }
@@ -309,7 +307,7 @@ export class DownloadEHistoricoComponent implements OnInit {
     this.facade.download(this.projetoId, publicacaoId);
   }
 
-  /** Row is downloadable if epubcheckStatus ∈ {valido, avisos} — mirrors podeBaixar (SPEC-03 §2). */
+  /** Row is downloadable if epubcheckStatus ∈ {valido, avisos} — mirrors podeBaixar. */
   canDownload(pub: PublicacaoHistoryItem): boolean {
     return pub.epubcheckStatus === 'valido' || pub.epubcheckStatus === 'avisos';
   }

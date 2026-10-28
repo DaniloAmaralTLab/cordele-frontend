@@ -1,10 +1,9 @@
 /**
- * step-bar.component.ts — pipeline step bar for COMP screens T05 and T06.
- * FE-COMP-018 / SPEC-02 §1–§2.
+ * step-bar.component.ts — pipeline step bar for COMP screens configurações and editor de layout.
  *
  * Presentational — receives `steps` (from COMP_NAV_CONFIG.stepBar) and `current` (step key).
  * Computes state: done (before current), active (current), pending (after current).
- * Reused in T05 (current='configurar') and T06 (current='edicao').
+ * Reused in configurações (current='configurar') and editor de layout (current='edicao').
  */
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 

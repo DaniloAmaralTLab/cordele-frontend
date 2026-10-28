@@ -1,6 +1,5 @@
 /**
- * preview-empty.component.ts — empty state for T06 when manuscript is missing (409).
- * FE-COMP-024 / SPEC-02 §2 / SPEC-07 §3 / P8 UX Polish.
+ * preview-empty.component.ts — empty state for editor de layout when manuscript is missing (409).
  *
  * Rendered inside the canvas area of EditorDeLayoutPreviewComponent when status='empty'
  * (i.e. urn:cordele:comp:manuscript-missing — the project has no uploaded manuscript yet).
@@ -11,7 +10,7 @@
  *     can navigate without this component knowing about routes.
  *   - The style panel remains visible (it is rendered by the parent, not here).
  *
- * Contract (plan §3 P8):
+ * Contract:
  *   readonly navigateBack = output<void>()
  */
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';

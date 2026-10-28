@@ -1,7 +1,6 @@
 /**
  * Public API barrel for @cordele/pub-navigation.
- * P1 -- Foundation (FE-PUB-005).
- * P6 -- Navigation / Breadcrumbs (FE-PUB-023): breadcrumb screen resolution helpers.
+ *  -- Navigation / Breadcrumbs: breadcrumb screen resolution helpers.
  *
  * Exports navigation config consumed by the shell and PubShellIntegrationService.
  * Exports PubNavScreen type and resolvePubBreadcrumbs helper for future NavigationService use.

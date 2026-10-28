@@ -1,6 +1,5 @@
 /**
  * pub-nav.config.spec.ts — contract test for PUB_NAV_CONFIG.
- * FE-PUB-005 / SPEC-06 §navigation.
  *
  * Tests what would break the shell if changed:
  *   - moduleKey: used by PubShellIntegrationService to register with NavigationService.

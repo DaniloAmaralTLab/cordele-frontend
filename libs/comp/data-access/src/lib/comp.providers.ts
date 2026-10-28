@@ -2,8 +2,7 @@
  * comp.providers.ts — DI factory for the COMP data layer.
  * Default: adapter='http' — comp-service is available (no mocks in production).
  * Mock adapters are retained for unit-test overrides only.
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Moved to @cordele/comp/data-access (P6 boundary fix — INT-FE-COMP-006).
+ * Moved to @cordele/comp/data-access.
  */
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
 import { LayoutHttpAdapter } from './api/layout-http.adapter';

@@ -1,6 +1,6 @@
 /**
  * layout.facade.spec.ts — unit tests for LayoutFacade state machine.
- * FE-COMP-009: forkJoin, 409→empty, canExport, onExport stale override filtering,
+ * forkJoin, 409→empty, canExport, onExport stale override filtering,
  *              onStyleChange clamping (h1≥h2≥h3), onAlignmentChange local-only.
  *
  * Pattern: each describe block has its own beforeEach that calls
@@ -223,7 +223,7 @@ describe('LayoutFacade — canExport', () => {
     TestBed.flushEffects();
   });
 
-  it('true with the §7.2 default layout', () => {
+  it('true with the default layout', () => {
     expect(facade.canExport()).toBe(true);
   });
 
@@ -262,7 +262,7 @@ describe('LayoutFacade — onExport: 200 success', () => {
     expect(facade.saving()).toBe(false);
   });
 
-  it('PUT body never contains tipo=em-branco (D-H)', () => {
+  it('PUT body never contains tipo=em-branco', () => {
     facade.onAlignmentChange('node-img-1', 'junto-direita');
     facade.onExport();
     TestBed.flushEffects();

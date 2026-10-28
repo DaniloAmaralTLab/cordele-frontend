@@ -1,6 +1,6 @@
 /**
  * cover-drop-zone.component.spec.ts
- * FE-COMP-013: CoverDropZoneComponent — file validation and visibility.
+ * CoverDropZoneComponent — file validation and visibility.
  */
 import { TestBed } from '@angular/core/testing';
 import { Component, signal } from '@angular/core';

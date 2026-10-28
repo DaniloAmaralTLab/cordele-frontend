@@ -1,7 +1,6 @@
 /**
  * pub-nav.config.ts — navigation config for the PUB module.
- * FE-PUB-005 / SPEC-06 §navigation
- * FE-PUB-023 — breadcrumb screen resolution (P6).
+ * Breadcrumb screen resolution.
  *
  * Defines how PUB integrates with the shell step-bar:
  * pipeline steps (Importar › Compor › Exportar) and breadcrumb label.
@@ -13,10 +12,8 @@
  *   3: Exportar (PUB)
  *
  * Consumed by:
- *   - PubShellIntegrationService (to register with NavigationService — P6)
+ *   - PubShellIntegrationService (to register with NavigationService)
  *   - Shell step-bar component (to highlight active step)
- *
- * Track D: FE-PUB-005 (P1 Foundation). Updated: FE-PUB-023 (P6 Navigation).
  */
 
 // ── NavConfig type (local until @cordele/shared/navigation defines it) ────────
@@ -44,8 +41,8 @@ export interface NavConfig {
  * stageIndex: 3 → "Exportar" is the 4th step (0-indexed) in the pipeline step-bar.
  * breadcrumbLabel: "Publicação" — root breadcrumb for all PUB screens.
  *
- * SPEC-06 §navigation: breadcrumb for T07 = "Publicação › Exportação e Validação".
- * SPEC-06 §navigation: breadcrumb for T08 = "Publicação › Download e Histórico".
+ * Breadcrumb for exportação = "Publicação › Exportação e Validação".
+ * Breadcrumb for histórico = "Publicação › Download e Histórico".
  */
 export const PUB_NAV_CONFIG: NavConfig = {
   moduleKey: 'pub',
@@ -54,13 +51,13 @@ export const PUB_NAV_CONFIG: NavConfig = {
   breadcrumbLabel: 'Publicação',
 };
 
-// ── Breadcrumb resolution (P6 — FE-PUB-023) ───────────────────────────────────
+// ── Breadcrumb resolution ───────────────────────────────────
 
 /**
  * PubNavScreen — identifies a PUB screen for breadcrumb resolution.
  *
- * T07: exportar          → "Projetos › {nomeProjeto} › Exportar"
- * T08: download-historico → "Projetos › {nomeProjeto} › Download e Histórico"
+ * exportação: exportar          → "Projetos › {nomeProjeto} › Exportar"
+ * histórico: download-historico → "Projetos › {nomeProjeto} › Download e Histórico"
  */
 export type PubNavScreen = 'exportar' | 'download-historico';
 
@@ -77,7 +74,7 @@ const BREADCRUMB_TEMPLATES: Record<PubNavScreen, string[]> = {
  * resolvePubBreadcrumbs — resolves breadcrumb segments for a given PUB screen.
  *
  * Replaces `{nomeProjeto}` with the provided project name (or projetoId when the
- * name is not yet available — mirrors the COMP pattern, SPEC-06 §navigation).
+ * name is not yet available — mirrors the COMP pattern).
  *
  * @param screen      - The active PUB screen.
  * @param nomeProjeto - Project display name or projetoId fallback.

@@ -1,13 +1,12 @@
 /**
  * @cordele/shared/access-http-base — AccessHttpClient base HTTP client.
- * D-328/FE-4: flesh-out in execute cycle (P2).
  *
  * All module-level HTTP clients (ImpHttpClient, etc.) MUST extend AccessHttpClient.
- * Never use HttpClient directly in module adapters — RULE-NX-05.
+ * Never use HttpClient directly in module adapters.
  *
  * Empresa context is resolved server-side exclusively from the `empresa_id` claim
  * in the JWT (via EmpresaContextInterceptor). The FE does NOT send X-Empresa-Id;
- * the backend never reads it from FE requests. See docs/architecture/shared/multi-empresa.md.
+ * the backend never reads it from FE requests.
  */
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable, InjectionToken, inject } from '@angular/core';
@@ -87,7 +86,7 @@ export class AccessHttpClient {
   /**
    * GET with full HTTP response — emits `HttpResponse<T>` so callers can read
    * response headers (e.g. `X-Degraded`) while carrying the Authorization JWT.
-   * Use when a response header drives business logic (api-contract §3).
+   * Use when a response header drives business logic.
    */
   getResponse<T>(url: string): Observable<HttpResponse<T>> {
     return this.http.get<T>(url, { observe: 'response' });

@@ -6,12 +6,12 @@
  *   - Evaluate feature flags (hasFlag) from registered module flags + runtime overrides.
  *   - Provide `authGuard` (valid session) and `accessGuard(perm)` (scope check).
  *
- * Access-layer-contracts.md:
+ * Rules:
  *   - Components NEVER test roles directly — always via AccessDecisionService.can(perm).
  *   - Permissions map FE perm keys (e.g. 'comp.view') to BE scopes (e.g. 'comp:read').
  *   - Feature flags default to 'on' unless explicitly disabled at runtime.
  *
- * INT-FE-COMP-005: initial implementation reading scopes from JWT claims.
+ * Initial implementation reading scopes from JWT claims.
  */
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
@@ -123,7 +123,7 @@ export class AccessDecisionService implements AccessDecision {
 
 /**
  * authGuard — blocks routes when no valid session is present.
- * Source: @cordele/shared/access-decision (SPEC-01 §3 / INT-FE-COMP-001).
+ * Source: @cordele/shared/access-decision.
  */
 export const authGuard: CanActivateFn = () => {
   const svc = inject(AccessDecisionService);
@@ -133,7 +133,7 @@ export const authGuard: CanActivateFn = () => {
 
 /**
  * accessGuard — factory guard that checks a named permission.
- * Source: @cordele/shared/access-decision (SPEC-01 §3 / INT-FE-COMP-005).
+ * Source: @cordele/shared/access-decision.
  *
  * @example canActivate: [accessGuard('comp.view')]
  */

@@ -1,8 +1,7 @@
 /**
  * metadados-mock.adapter.ts — In-memory mock for MetadadosPort (dev default, 400ms delay).
- * Seed data aligned with design-reference shared/data-model shapes.
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Moved to @cordele/comp/data-access (P6 boundary fix — INT-FE-COMP-006).
+ * Dados de exemplo.
+ * Moved to @cordele/comp/data-access.
  */
 import { Injectable } from '@angular/core';
 import { Observable, delay, of } from 'rxjs';

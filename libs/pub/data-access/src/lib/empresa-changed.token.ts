@@ -1,5 +1,5 @@
 /**
- * empresa-changed.token.ts — Injection token for the empresaChanged signal (FE-PUB-007).
+ * empresa-changed.token.ts — Injection token for the empresaChanged signal.
  *
  * Provides the pub-data-access layer (ExportFacade) with a signal that increments
  * each time the active empresa changes. This decouples data-access from feature libs
@@ -8,7 +8,7 @@
  * Default factory: signal(0) — no empresa changes detected (no-op, safe default).
  * Override: PubShellIntegrationService (pub-integration, type:feature) provides
  * its own empresaChanged signal via route-level providers or environment providers
- * in app.config.ts (INT-FE-PUB-006, wired in P4).
+ * in app.config.ts (wired).
  *
  * Wiring pattern (app.config.ts / providePub consumers):
  *   { provide: PUB_EMPRESA_CHANGED, useFactory: () => inject(PubShellIntegrationService).empresaChanged }

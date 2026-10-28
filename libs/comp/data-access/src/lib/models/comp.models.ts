@@ -1,8 +1,7 @@
 /**
  * comp.models.ts — domain types for the COMP module.
- * Reconciled with api-contract.md §2–7 (MetadadosDto, ConfiguracaoLayoutDto, PreviewContextDto).
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Moved to @cordele/comp/data-access (P6 boundary fix — INT-FE-COMP-006).
+ * Reconciled with the backend DTOs (MetadadosDto, ConfiguracaoLayoutDto, PreviewContextDto).
+ * Moved to @cordele/comp/data-access.
  */
 
 // ── Metadados ─────────────────────────────────────────────────────────────────
@@ -10,7 +9,7 @@
 export type MetadadosIdioma = 'pt' | 'en' | 'es' | 'fr';
 
 /**
- * api-contract §4.1 / §5.1 — Metadados do projeto editorial.
+ * Metadados do projeto editorial.
  * Singleton 1:1 with projetoId. Defaults lazy (materialized:false until first PUT).
  */
 export interface MetadadosDto {
@@ -30,7 +29,7 @@ export type FonteCorpoFamilia = 'serif' | 'sans-serif';
 export type Alinhamento = 'full' | 'centralizado' | 'junto-esquerda' | 'junto-direita';
 
 /**
- * api-contract §4.2 / §5.2 — Configuração de layout tipográfico.
+ * Configuração de layout tipográfico.
  * Singleton 1:1 with projetoId. Defaults lazy.
  */
 export interface ConfiguracaoLayoutDto {
@@ -45,7 +44,7 @@ export interface ConfiguracaoLayoutDto {
   materialized: boolean;
 }
 
-/** Layout override for a single image node (api-contract §4.2 §7.2). */
+/** Layout override for a single image node. */
 export interface LayoutOverride {
   nodeId: string;
   tipo: 'imagem';
@@ -53,9 +52,9 @@ export interface LayoutOverride {
 }
 
 /**
- * api-contract §4.6 — PUT /layout body.
+ * PUT /layout body.
  * Typography params + image-alignment overrides (tipo='imagem' only).
- * Never send tipo='em-branco' (ADR-COMP-001 / D-H).
+ * Never send tipo='em-branco'.
  */
 export interface UpsertLayoutBody {
   fonteCorpoFamilia: FonteCorpoFamilia;
@@ -71,9 +70,9 @@ export interface UpsertLayoutBody {
 // ── PreviewContext ────────────────────────────────────────────────────────────
 
 /**
- * api-contract §4.7 — GET /preview-context response.
+ * GET /preview-context response.
  * Contains the full manuscript tree + current layout + override list.
- * FE renders client-side; never calls imp-service (D-K).
+ * FE renders client-side; never calls imp-service.
  */
 export interface PreviewContextDto {
   projetoId: string;
@@ -83,7 +82,7 @@ export interface PreviewContextDto {
 }
 
 /**
- * A node in the manuscript tree (api-contract §3 / §7.1).
+ * A node in the manuscript tree.
  * tipo: 'capitulo' | 'imagem' — extensible; FE renders what it knows, ignores the rest.
  */
 export interface PreviewNode {

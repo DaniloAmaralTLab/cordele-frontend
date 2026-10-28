@@ -1,9 +1,8 @@
 /**
- * metadados.facade.ts — drives the T05 Configurações screen (signals-based, ADR-007).
- * VM contract: SPEC-03 §1 MetadadosVM / SPEC-04 §2 MetadataFacade state machine.
- * FE-COMP-008: signals, state machine, pessimistic advance, cover sub-state.
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Updated: FE-COMP-008 (P2) — complete state machine; pessimistic advance; cover sub-state;
+ * metadados.facade.ts — drives the configurações Configurações screen (signals-based).
+ * VM contract: MetadadosVM / MetadataFacade state machine.
+ * Signals, state machine, pessimistic advance, cover sub-state.
+ * Complete state machine; pessimistic advance; cover sub-state;
  *          removeCapa; canAdvance (idioma validation); error mapper integration.
  */
 import { DestroyRef, Injectable, inject, signal, computed } from '@angular/core';
@@ -79,7 +78,6 @@ export class MetadadosFacade {
    *   - titulo non-empty
    *   - autor non-empty
    *   - idioma ∈ { pt, en, es, fr }
-   * FE-COMP-008 / SPEC-04 §2.
    */
   readonly canAdvance = computed(() => {
     const f = this._form();
@@ -93,7 +91,7 @@ export class MetadadosFacade {
   // ── Actions ───────────────────────────────────────────────────────────────
 
   /**
-   * Load metadados from the server on T05 entry.
+   * Load metadados from the server on configurações entry.
    * materialized:false → form hydrated with defaults (idioma='pt').
    */
   load(projetoId: string): void {
@@ -128,7 +126,7 @@ export class MetadadosFacade {
 
   /**
    * Update a single form field locally — no network call.
-   * SPEC-04 §2: live repaint is client-only; persistence happens on advance.
+   * Live repaint is client-only; persistence happens on advance.
    */
   onFieldChange<K extends keyof MetadadosDto>(field: K, value: MetadadosDto[K]): void {
     this._form.update(f => ({ ...f, [field]: value }));
@@ -145,7 +143,7 @@ export class MetadadosFacade {
   /**
    * Upload a cover image.
    * Creates a transient objectUrl for immediate preview, then POSTs to the server.
-   * On 413/415: sets cover.error inline; form remains intact (D-L).
+   * On 413/415: sets cover.error inline; form remains intact.
    * On success: swaps objectUrl → capaUrl; revokes the objectUrl.
    */
   onCoverSelect(file: File): void {
@@ -222,9 +220,8 @@ export class MetadadosFacade {
   }
 
   /**
-   * Pessimistic advance from T05 → T06.
+   * Pessimistic advance from configurações → editor de layout.
    * PUT metadados and AWAIT 200 before navigating; on failure, local edits are preserved.
-   * SPEC-04 §2 [comp-advance-persist] / [comp-advance-persist-fail].
    */
   onAdvanceToLayout(): void {
     if (!this.canAdvance()) return;
@@ -259,11 +256,11 @@ export class MetadadosFacade {
       });
   }
 
-  // ── Legacy aliases (backward-compat with P1 callers / feature components) ──
+  // ── Legacy aliases (backward-compat with callers / feature components) ──
 
   /**
    * @deprecated Use `cover().objectUrl ?? cover().capaUrl` in templates.
-   * Kept for prototype component compatibility; remove when P3 rewires T05 template.
+   * Kept for backward compatibility; remove once the configurações template is rewired.
    */
   readonly capaPreview = computed(
     () => this._cover().objectUrl ?? this._cover().capaUrl ?? '',
@@ -271,7 +268,7 @@ export class MetadadosFacade {
 
   /**
    * @deprecated Use canAdvance.
-   * Kept for prototype component compatibility; remove when P3 rewires T05 template.
+   * Kept for backward compatibility; remove once the configurações template is rewired.
    */
   readonly valido = computed(() => this.canAdvance());
 

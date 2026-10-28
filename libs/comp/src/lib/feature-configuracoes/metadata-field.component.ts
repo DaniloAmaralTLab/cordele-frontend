@@ -1,6 +1,5 @@
 /**
- * metadata-field.component.ts — generic text field for metadados form (T05).
- * FE-COMP-012 / SPEC-02 §1.
+ * metadata-field.component.ts — generic text field for metadados form (configurações).
  *
  * Presentational only — receives value via input() and emits changes via output().
  * Covers: titulo, autor, isbn, categoria fields.

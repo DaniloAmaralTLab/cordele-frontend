@@ -1,9 +1,9 @@
 /**
- * revisao-de-estrutura.component.spec.ts — Unit tests (FE-IMP-016 / P4).
+ * revisao-de-estrutura.component.spec.ts — Unit tests.
  *
  * Strategy: spy on ReviewFacade via TestBed.overrideProvider — no HTTP involved.
  *
- * Criterios de aceite (plan §3 P4):
+ * Criterios de aceite:
  *   - loadStructure chamado no init (deep-link path)
  *   - ignore → ReviewFacade.ignorarSegmento()
  *   - confirm → ReviewFacade.confirmarEstrutura()

@@ -1,6 +1,6 @@
 /**
  * download-e-historico.component.spec.ts — smoke tests for DownloadEHistoricoComponent.
- * FE-PROJ-017 (P1): instantiation with mocked HistoryFacade and ActivatedRoute.
+ * Instantiation with mocked HistoryFacade and ActivatedRoute.
  */
 import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';

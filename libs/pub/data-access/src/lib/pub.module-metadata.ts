@@ -7,8 +7,6 @@
  * Pattern: mirrors @cordele/comp/data-access (COMP_MENU_METADATA, etc.)
  * Fix: resolves lint boundary violation in apps/cordele-web/src/app/module-descriptors.ts
  * (rule: "Static imports of lazy-loaded libraries are forbidden").
- *
- * FE-PUB-003 / FE-PUB-004 / SPEC-06 §shell
  */
 
 /** Canonical module key for the PUB module. */
@@ -30,7 +28,7 @@ export const PUB_MENU_METADATA_STATIC = {
 
 /**
  * PUB_PERMISSION_MAP_STATIC — maps FE permission keys to BE scopes.
- * Mirrors PUB_PERMISSION_MAP in pub-shell-entry (FE-PUB-001).
+ * Mirrors PUB_PERMISSION_MAP in pub-shell-entry.
  *   pub.view     → pub:read  (view publications and history)
  *   pub.export   → pub:write (trigger ePub generation)
  *   pub.download → pub:read  (download ePub via signed URL)

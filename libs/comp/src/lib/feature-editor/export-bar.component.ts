@@ -1,10 +1,9 @@
 /**
- * export-bar.component.ts — "Exportar" CTA for T06 Editor de Layout Preview.
- * FE-COMP-017 / SPEC-02 §2 / SPEC-01 §2.
+ * export-bar.component.ts — "Exportar" CTA for editor de layout Editor de Layout Preview.
  *
  * Presentational:
  *   - Button disabled when !canExport or saving=true.
- *   - "Exportar" = navigation to PUB (SPEC-01 §2, D-M); never changes project status.
+ *   - "Exportar" = navigation to PUB; never changes project status.
  *   - No HTTP calls from this component.
  */
 import {

@@ -1,21 +1,21 @@
 /**
- * exportacao-e-validacao.component.ts — T07 — Exportação e Validação.
- * Migrated from libs/pub (flat lib) to libs/pub/feature-export (P3 — FE-PUB-012).
- * Updated: FE-PUB-023 (P6 — breadcrumb resolution via PUB_UPDATE_BREADCRUMB token).
+ * exportacao-e-validacao.component.ts — exportação — Exportação e Validação.
+ * Migrated from libs/pub (flat lib) to libs/pub/feature-export.
+ * (breadcrumb resolution via PUB_UPDATE_BREADCRUMB token).
  *
- * Removals vs prototype (FE-PUB-012):
- *   ✗ setInterval timer                — replaced by ExportFacade bounded poll (ADR-PUB-001)
- *   ✗ AVISOS_MOCK hard-coded array     — avisos now loaded from §4.6 via ExportFacade.avisos (INT-FE-PUB-004)
- *   ✗ "Simular estado" selector        — FE-PUB-018 removal; state driven by facade only
- *   ✗ progresso% numeric bar           — indeterminate only (SPEC-03)
- *   ✗ kpis[] with hard-coded values    — KPI tiles omitted (INT-FE-PUB-005 BLOCKED)
+ * Removed:
+ *   ✗ setInterval timer — replaced by ExportFacade bounded poll
+ *   ✗ AVISOS_MOCK hard-coded array — avisos now loaded via ExportFacade.avisos
+ *   ✗ "Simular estado" selector — removal; state driven by facade only
+ *   ✗ progresso% numeric bar — indeterminate only
+ *   ✗ kpis[] with hard-coded values — KPI tiles omitted
  *   ✗ mock-data imports               — zero; consumes ExportFacade from @cordele/pub-data-access
  *
- * podeBaixar = ExportFacade.podeBaixar (computed signal — R4, SPEC-03).
- * baixar() navigates to T08; never directly downloads bytes.
- * startExport() on ngOnInit always triggers a fresh build (SPEC-04 §1).
+ * podeBaixar = ExportFacade.podeBaixar (computed signal).
+ * baixar() navigates to histórico; never directly downloads bytes.
+ * startExport() on ngOnInit always triggers a fresh build.
  *
- * Warnings / Errors: delegated to <pub-warnings-details> (FE-PUB-016, pub-ui).
+ * Warnings / Errors: delegated to <pub-warnings-details> (pub-ui).
  *
  * Boundary: type:feature → imports type:data-access (@cordele/pub-data-access),
  *           type:ui (@cordele/pub-ui), and type:domain (@cordele/pub-navigation).
@@ -23,9 +23,7 @@
  *           Cannot import PubShellIntegrationService (type:feature) directly.
  *
  * Multi-empresa: ExportFacade injects PUB_EMPRESA_CHANGED token; cancels poll on
- * empresa switch (INT-FE-PUB-006, P2). No additional wiring needed here.
- *
- * Track D: FE-PUB-012 — P3 Feature Libs. Updated: FE-PUB-023 (P6).
+ * Empresa switch. No additional wiring needed here.
  */
 import {
   ChangeDetectionStrategy,
@@ -73,7 +71,7 @@ const STEPS = [
         }
       </nav>
 
-      <!-- ESTADO: GERANDO (indeterminate — sem barra de progresso percentual, SPEC-03) -->
+      <!-- ESTADO: GERANDO (indeterminate — sem barra de progresso percentual) -->
       @if (facade.phase() === 'gerando') {
         <div class="flex flex-col items-center justify-center py-16 text-center" data-testid="pub-estado-gerando">
           <div class="relative mb-8">
@@ -110,14 +108,14 @@ const STEPS = [
             </div>
           </div>
 
-          <!-- KPI grid: ePub summary (INT-FE-PUB-005 resolved — ADR-004) -->
+          <!-- KPI grid: ePub summary -->
           <pub-epub-summary-grid
             [tamanho]="facade.summary()?.tamanho ?? null"
             [capitulos]="facade.summary()?.capitulos ?? null"
             [imagens]="facade.summary()?.imagens ?? null"
           />
 
-          <!-- Avisos / Erros: delegados a WarningsDetailsComponent (FE-PUB-016 / INT-FE-PUB-004) -->
+          <!-- Avisos / Erros: delegados a WarningsDetailsComponent -->
           <pub-warnings-details
             [totalErros]="facade.totalErros()"
             [totalAvisos]="facade.totalAvisos()"
@@ -163,7 +161,7 @@ const STEPS = [
             </div>
           </div>
 
-          <!-- Avisos / Erros detalhados (FE-PUB-016 / INT-FE-PUB-004) -->
+          <!-- Avisos / Erros detalhados -->
           <pub-warnings-details
             [totalErros]="facade.totalErros()"
             [totalAvisos]="facade.totalAvisos()"
@@ -198,7 +196,7 @@ const STEPS = [
             {{ facade.error() ?? 'Erro ao exportar. Tente novamente.' }}
           </p>
           @if (facade.errorTraceId()) {
-            <!-- FE-PUB-024 / SPEC-07 §4: correlation id for support reference -->
+            <!-- Correlation id for support reference -->
             <p class="text-xs font-mono" data-testid="error-trace-id" style="color:var(--text-tertiary)">
               Trace: {{ facade.errorTraceId() }}
             </p>
@@ -220,13 +218,13 @@ const STEPS = [
 export class ExportacaoEValidacaoComponent implements OnInit {
   protected readonly facade = inject(ExportFacade);
   private  readonly  route  = inject(ActivatedRoute);
-  /** P6 (FE-PUB-023): breadcrumb update via token — avoids type:feature → type:feature boundary. */
+  /** Breadcrumb update via token — avoids type:feature → type:feature boundary. */
   private  readonly  doUpdateBreadcrumb = inject(PUB_UPDATE_BREADCRUMB);
-  /** P8 (FE-PUB-026): telemetry breadcrumb via token — avoids type:feature → type:feature boundary. */
+  /** Telemetry breadcrumb via token — avoids type:feature → type:feature boundary. */
   private  readonly  doBreadcrumb = inject(PUB_BREADCRUMB);
 
   constructor() {
-    // FE-PUB-026 (P8): emit 'verdict-shown' when the phase transitions to a terminal verdict.
+    // Emit 'verdict-shown' when the phase transitions to a terminal verdict.
     // Terminal phases: 'valido' (epubcheck passed) or 'erros' (epubcheck critical errors).
     // 'error' is a network/timeout error — not a verdict from epubcheck; not emitted here.
     effect(() => {
@@ -249,7 +247,7 @@ export class ExportacaoEValidacaoComponent implements OnInit {
 
   ngOnInit(): void {
     this.startExport();
-    // P6 (FE-PUB-023): resolve T07 breadcrumb — "Projetos › {projetoId} › Exportar"
+    // Resolve exportação breadcrumb — "Projetos › {projetoId} › Exportar"
     // projetoId used as display label until ProjFacade exposes the project name.
     this.doUpdateBreadcrumb(this.projetoId);
   }

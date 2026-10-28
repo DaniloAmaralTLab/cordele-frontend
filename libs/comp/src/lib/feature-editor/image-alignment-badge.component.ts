@@ -1,6 +1,5 @@
 /**
- * image-alignment-badge.component.ts — alignment control for image pages in T06.
- * FE-COMP-017 / SPEC-02 §2 / SPEC-05 §3.
+ * image-alignment-badge.component.ts — alignment control for image pages in editor de layout.
  *
  * Presentational:
  *   - 4 alignment options: full | centralizado | junto-esquerda | junto-direita.
@@ -71,7 +70,7 @@ export class ImageAlignmentBadgeComponent {
   readonly stale    = input<boolean>(false);
   /**
    * Gates rendering: set to false when comp.imageAlignment flag is off OR
-   * the principal lacks comp.edit (INT-FE-COMP-005, P4).
+   * the principal lacks comp.edit.
    */
   readonly canEdit  = input<boolean>(true);
 

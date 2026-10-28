@@ -1,12 +1,10 @@
 /**
  * comp.contract.ts — module-level constants for the COMP module.
- * FE-COMP-001: MODULE_KEY, COMP_MENU_METADATA, COMP_PERMISSION_MAP, COMP_FEATURE_FLAGS
- * FE-COMP-003: COMP_MODULE_DESCRIPTOR
+ * MODULE_KEY, COMP_MENU_METADATA, COMP_PERMISSION_MAP, COMP_FEATURE_FLAGS
+ * COMP_MODULE_DESCRIPTOR
  *
  * COMP is a mid-pipeline module (hiddenFromNav: true), accessed via handoff from PROJ/IMP
  * with a projetoId parameter. It is NEVER a landing page.
- *
- * SPEC-05 §1–§4 / api-contract §0 §2
  */
 
 // ── Shared type definitions (local until @cordele/shared defines them) ─────────
@@ -40,7 +38,7 @@ export interface ModuleDescriptor {
   loadChildren: () => Promise<unknown>;
 }
 
-// ── FE-COMP-001: Module constants ─────────────────────────────────────────────
+// ── Module constants ─────────────────────────────────────────────
 
 /** Canonical key for the COMP module (matches BE module prefix). */
 export const MODULE_KEY = 'comp';
@@ -61,7 +59,7 @@ export const COMP_MENU_METADATA: ModuleMenuMetadata = {
 
 /**
  * COMP_PERMISSION_MAP — maps FE permission keys to BE scopes.
- * comp.view  → comp:read  (required to access T05/T06)
+ * comp.view  → comp:read  (required to access configurações/editor de layout)
  * comp.edit  → comp:write (required to save metadados/layout)
  */
 export const COMP_PERMISSION_MAP: ModulePermissionMap = {
@@ -71,21 +69,21 @@ export const COMP_PERMISSION_MAP: ModulePermissionMap = {
 
 /**
  * COMP_FEATURE_FLAGS — feature flags for COMP.
- * comp.coverUpload     → capa upload enabled by default (T05, SPEC-04 §4)
- * comp.imageAlignment  → image alignment badge enabled by default (T06, SPEC-02 §5)
+ * comp.coverUpload → capa upload enabled by default (configurações)
+ * comp.imageAlignment → image alignment badge enabled by default (editor de layout)
  */
 export const COMP_FEATURE_FLAGS: ModuleFeatureFlags = {
   'comp.coverUpload': { defaultState: 'on' },
   'comp.imageAlignment': { defaultState: 'on' },
 };
 
-// ── FE-COMP-003: Module descriptor ────────────────────────────────────────────
+// ── Module descriptor ────────────────────────────────────────────
 
 /**
  * COMP_MODULE_DESCRIPTOR — static descriptor for shell lazy-loading and step-bar registration.
- * Consumed by module-descriptors.ts (FE-COMP-005) and comp.bootstrap.ts (FE-COMP-003).
+ * Consumed by module-descriptors.ts and comp.bootstrap.ts.
  * loadChildren → resolves COMP_ROUTES from @cordele/comp.
- * ADR-COMP-001: no prefetch; each screen loads its own data on route entry.
+ * No prefetch; each screen loads its own data on route entry.
  */
 export const COMP_MODULE_DESCRIPTOR: ModuleDescriptor = {
   key: MODULE_KEY,

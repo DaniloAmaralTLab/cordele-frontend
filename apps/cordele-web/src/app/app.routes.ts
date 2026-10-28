@@ -8,7 +8,7 @@ export const appRoutes: Routes = [
     children: [
       {
         path: 'imp',
-        // FE-IMP-003: load from canonical shell-entry path (P3)
+        // Load from canonical shell-entry path
         loadChildren: () =>
           import('@cordele/imp/shell-entry').then(m => m.IMP_ROUTES),
       },
@@ -19,7 +19,7 @@ export const appRoutes: Routes = [
       },
       {
         path: 'pub',
-        // FE-PUB-002: load from canonical shell-entry (P1 Foundation)
+        // Load from canonical shell-entry (Foundation)
         loadChildren: () =>
           import('@cordele/pub-shell-entry').then(r => r.PUB_ROUTES),
       },

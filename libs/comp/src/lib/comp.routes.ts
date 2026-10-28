@@ -1,23 +1,21 @@
 /**
  * comp.routes.ts — COMP module routes (exported as COMP_ROUTES for loadChildren).
- * FE-COMP-002 / SPEC-01 §1–§3
  *
  * Registered in app.routes.ts as:
  *   { path: 'comp', loadChildren: () => import('@cordele/comp').then(r => r.COMP_ROUTES) }
  *
  * Routes:
- *   /comp/projetos/:projetoId/config                    → ConfiguracoesComponent (T05)
- *   /comp/projetos/:projetoId/editor-de-layout-preview  → EditorDeLayoutPreviewComponent (T06)
+ *   /comp/projetos/:projetoId/config                    → ConfiguracoesComponent (configurações)
+ *   /comp/projetos/:projetoId/editor-de-layout-preview  → EditorDeLayoutPreviewComponent (editor de layout)
  *
  * Guards (ordered — all 5 must pass):
- *   authGuard         — JWT present and valid (stub, INT-FE-COMP-001)
- *   empresaGuard      — EmpresaContext resolved (stub, INT-FE-COMP-006)
- *   accessGuard       — comp:read scope (stub, INT-FE-COMP-005)
- *   compProjetoGuard  — projetoId resolves to existing project (stub, FE-COMP-019)
- *   compStatusGuard   — project status = em_composicao (stub, FE-COMP-020)
+ * authGuard — JWT present and valid (stub)
+ * empresaGuard — EmpresaContext resolved (stub)
+ * accessGuard — comp:read scope (stub)
+ * compProjetoGuard — projetoId resolves to existing project (stub)
+ * compStatusGuard — project status = em_composicao (stub)
  *
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Updated: FE-COMP-002 — added auth/empresa/access guards + breadcrumb titles.
+ * Added auth/empresa/access guards + breadcrumb titles.
  */
 import { Routes } from '@angular/router';
 import { authGuard } from './access/auth.guard';

@@ -1,5 +1,5 @@
 /**
- * breadcrumb-dynamic.component.ts — Dynamic breadcrumb for IMP routes (FE-IMP-020).
+ * breadcrumb-dynamic.component.ts — Dynamic breadcrumb for IMP routes.
  *
  * Presentational component that renders a breadcrumb trail from an array of
  * {label, route} tuples. Each item (except the last) is a link; the last is

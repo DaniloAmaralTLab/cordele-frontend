@@ -1,6 +1,6 @@
 /**
  * pub.providers.ts — DI factory for the PUB data layer.
- * Migrated from libs/pub (flat lib) to libs/pub/data-access (P2 — FE-PUB-007).
+ * Migrated from libs/pub (flat lib) to libs/pub/data-access.
  *
  * Default: adapter='http' (real pub-service — isMock: false).
  * Override adapter='mock' in specs or Storybook.
@@ -8,7 +8,7 @@
  * IMPORTANT: app.config.ts must call providePub({ adapter: 'http' }) in production.
  * The mock adapter is kept for testing only — it is NOT the default.
  *
- * PUB_EMPRESA_CHANGED wiring (INT-FE-PUB-006):
+ * PUB_EMPRESA_CHANGED wiring:
  *   To wire ExportFacade's empresaChanged to PubShellIntegrationService, override the token:
  *     { provide: PUB_EMPRESA_CHANGED, useFactory: () => inject(PubShellIntegrationService).empresaChanged }
  *   This can be done in app.config.ts alongside providePub({ adapter: 'http' }).

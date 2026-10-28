@@ -1,7 +1,6 @@
 /**
  * publicacao-mock.adapter.ts — In-memory mock for PublicacaoPort (dev default, 400ms delay).
- * Seed data aligned with design-reference/shared/mock-data.ts (publicacoes array).
- * Track D: created by fe-architect-promote PROJ @ cordele (D-494).
+ * Dados de exemplo (publicações).
  */
 import { Injectable } from '@angular/core';
 import { Observable, delay, of, throwError } from 'rxjs';
@@ -56,7 +55,7 @@ export class PublicacaoMockAdapter implements PublicacaoPort {
         message: 'Artefato não disponível para download',
       }));
     }
-    // In mock, return a stub signed URL (D-F: SPA opens this directly, never proxies bytes)
+    // In mock, return a stub signed URL (SPA opens this directly, never proxies bytes)
     const signed: SignedDownloadUrl = {
       publicacaoId,
       arquivoUrl:  `${pub.arquivoUrl}?sig=mock-token-${Date.now()}&expires=1800`,

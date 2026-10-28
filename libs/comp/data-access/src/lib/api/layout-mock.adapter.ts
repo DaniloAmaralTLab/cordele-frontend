@@ -1,9 +1,8 @@
 /**
  * layout-mock.adapter.ts — In-memory mock for LayoutPort (unit-test adapter).
- * Seed data aligned with editor-de-layout-preview prototype (LAYOUT_INICIAL).
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Updated: FE-COMP-007 — upsertLayout replaces updateLayout (P2).
- * Moved to @cordele/comp/data-access (P6 boundary fix — INT-FE-COMP-006).
+ * Dados de exemplo (LAYOUT_INICIAL).
+ * upsertLayout replaces updateLayout.
+ * Moved to @cordele/comp/data-access.
  */
 import { Injectable } from '@angular/core';
 import { Observable, delay, of } from 'rxjs';
@@ -19,7 +18,7 @@ import { LayoutPort } from './layout.port';
 
 const MOCK_DELAY = 400;
 
-/** §7.2 defaults — serif/12/1.5/20/28/22/18 (FE-COMP-009). */
+/** Defaults — serif/12/1.5/20/28/22/18. */
 const DEFAULT_LAYOUT: ConfiguracaoLayoutDto = {
   fonteCorpoFamilia: 'serif',
   fonteCorpoTamanho: 12,

@@ -1,7 +1,7 @@
 /**
  * Public API barrel for @cordele/imp (legacy monolithic project).
  * Re-exports from the new sublibs — consumers should migrate to @cordele/imp/<sublib> directly.
- * This barrel is preserved for backwards-compatibility during the P1→P3 migration window.
+ * This barrel is preserved for backwards-compatibility during the migration window.
  */
 
 // Facades — consumed by shell/host integrations if needed

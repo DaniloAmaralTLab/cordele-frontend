@@ -1,6 +1,6 @@
 /**
  * step-bar.component.spec.ts
- * FE-COMP-018: StepBarComponent state logic.
+ * StepBarComponent state logic.
  */
 import { TestBed } from '@angular/core/testing';
 import { Component } from '@angular/core';

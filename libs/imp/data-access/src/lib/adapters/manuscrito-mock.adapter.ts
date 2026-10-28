@@ -1,7 +1,6 @@
 /**
  * manuscrito-mock.adapter.ts — In-memory mock (dev default, 400ms delay).
- * Seed data from design-reference/shared/mock-data.ts (adapted to ManuscritoDetail shape).
- * Track D: created by fe-architect-promote IMP @ cordele (D-494).
+ * Dados de exemplo (formato ManuscritoDetail).
  * NOTE: This adapter is a DI test double used only in dev/test via imp.providers.ts.
  *       It must NOT be used in production; production uses ManuscritoHttpAdapter.
  */
@@ -81,7 +80,7 @@ export class ManuscritoMockAdapter implements ManuscritoPort {
   private readonly store: ManuscritoDetail[] = [MOCK_MANUSCRITO];
 
   create(params: UploadParams): Observable<ManuscritoDetail> {
-    // Validate XOR binding (mirrors api-contract §0 D-C)
+    // Validate XOR binding
     const hasTitulo = !!params.projetoTitulo?.trim();
     const hasId     = !!params.projetoId?.trim();
     if (hasTitulo === hasId) {

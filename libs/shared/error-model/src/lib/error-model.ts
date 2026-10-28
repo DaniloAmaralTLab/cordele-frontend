@@ -1,4 +1,4 @@
-// @cordele/shared/error-model — extended in the implement cycle (FE-COMP-010).
+// @cordele/shared/error-model.
 // Covers RFC 7807 ProblemDetail fields normalised by the ErrorNormalize interceptor.
 export interface AppError {
   readonly code: string;

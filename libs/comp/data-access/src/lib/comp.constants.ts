@@ -3,8 +3,8 @@
  * Extracted from comp.contract.ts to allow static import from apps/cordele-web
  * without triggering @nx/enforce-module-boundaries "lazy-loaded" violation.
  *
- * FE-COMP-001: MODULE_KEY, COMP_MENU_METADATA, COMP_PERMISSION_MAP, COMP_FEATURE_FLAGS
- * INT-FE-COMP-006 (P6): extracted so module-descriptors.ts can statically import these
+ * MODULE_KEY, COMP_MENU_METADATA, COMP_PERMISSION_MAP, COMP_FEATURE_FLAGS
+ * extracted so module-descriptors.ts can statically import these
  * constants from @cordele/comp/data-access (non-lazy) and then assemble the descriptor
  * inline using a dynamic loadChildren: () => import('@cordele/comp') (allowed in type:app).
  *
@@ -13,8 +13,7 @@
  * cannot depend on type:feature per @nx/enforce-module-boundaries.
  * module-descriptors.ts (type:app) assembles the full descriptor inline.
  *
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Created in @cordele/comp/data-access (P6 boundary fix — INT-FE-COMP-006).
+ * Created in @cordele/comp/data-access.
  */
 
 // ── Shared type definitions ────────────────────────────────────────────────────
@@ -49,7 +48,7 @@ export interface ModuleDescriptor {
   loadChildren: () => Promise<unknown>;
 }
 
-// ── FE-COMP-001: Module constants ─────────────────────────────────────────────
+// ── Module constants ─────────────────────────────────────────────
 
 /** Canonical key for the COMP module (matches BE module prefix). */
 export const MODULE_KEY = 'comp';
@@ -70,7 +69,7 @@ export const COMP_MENU_METADATA: ModuleMenuMetadata = {
 
 /**
  * COMP_PERMISSION_MAP — maps FE permission keys to BE scopes.
- * comp.view  → comp:read  (required to access T05/T06)
+ * comp.view  → comp:read  (required to access configurações/editor de layout)
  * comp.edit  → comp:write (required to save metadados/layout)
  */
 export const COMP_PERMISSION_MAP: ModulePermissionMap = {
@@ -80,8 +79,8 @@ export const COMP_PERMISSION_MAP: ModulePermissionMap = {
 
 /**
  * COMP_FEATURE_FLAGS — feature flags for COMP.
- * comp.coverUpload     → capa upload enabled by default (T05, SPEC-04 §4)
- * comp.imageAlignment  → image alignment badge enabled by default (T06, SPEC-02 §5)
+ * comp.coverUpload → capa upload enabled by default (configurações)
+ * comp.imageAlignment → image alignment badge enabled by default (editor de layout)
  */
 export const COMP_FEATURE_FLAGS: ModuleFeatureFlags = {
   'comp.coverUpload': { defaultState: 'on' },

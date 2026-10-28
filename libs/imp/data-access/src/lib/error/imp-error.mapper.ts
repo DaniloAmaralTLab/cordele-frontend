@@ -1,7 +1,6 @@
 /**
  * imp-error.mapper.ts — Centralised failure-code → UI message mapper for the IMP module.
  *
- * Authority: SPEC-07-error-handling.md §2 (failure-code table).
  * The BE returns RFC-7807 `application/problem+json`; Angular's HttpErrorResponse carries
  * the parsed body in `error.type` (the stable URN) and `error.traceId` (correlation id).
  * The `ErrorNormalize` interceptor may normalise to AppError, but adapters receive the
@@ -10,12 +9,10 @@
  * Usage in facades:
  *   const { message } = mapImpError(err);
  *   this._error.set(message);
- *
- * FE-IMP-021 / SPEC-07 §2 §3 §4.
  */
 import { HttpErrorResponse } from '@angular/common/http';
 
-/** Display channel for the rendered error (SPEC-07 §3). */
+/** Display channel for the rendered error. */
 export type ImpErrorChannel = 'inline' | 'banner' | 'modal' | 'toast';
 
 /** Result returned by mapImpError; facades typically use only `.message`. */
@@ -24,15 +21,15 @@ export interface ImpErrorResult {
   readonly channel: ImpErrorChannel;
   /** pt-BR user-facing message. Always present (fallback for unknown errors). */
   readonly message: string;
-  /** Correlation id for support. Attached to every rendered error (SPEC-07 "attach traceId"). */
+  /** Correlation id for support. Attached to every rendered error ("attach traceId"). */
   readonly traceId?: string;
 }
 
-// ── URN constants (api-contract §5 / SPEC-07 §2) ─────────────────────────────
+// ── URN constants ─────────────────────────────
 
 const URN_UNSUPPORTED_FORMAT    = 'urn:cordele:imp:unsupported-format';
 const URN_FILE_TOO_LARGE        = 'urn:cordele:imp:file-too-large';
-// FIX(imp-invalid-binding): api-contract uses 'invalid-binding', not 'invalid-project-binding'.
+// FIX(imp-invalid-binding): uses 'invalid-binding', not 'invalid-project-binding'.
 // The E2E mock and the backend both send urn:cordele:imp:invalid-binding; the previous
 // 'invalid-project-binding' constant never matched, so the localized message was never shown.
 const URN_INVALID_BINDING       = 'urn:cordele:imp:invalid-binding';
@@ -56,7 +53,7 @@ export const IMP_KNOWN_URNS = [
   URN_NOT_FOUND,
 ] as const;
 
-// ── URN table (SPEC-07 §2) ────────────────────────────────────────────────────
+// ── URN table ────────────────────────────────────────────────────
 
 const URN_MAP: Record<string, { channel: ImpErrorChannel; message: string }> = {
   [URN_UNSUPPORTED_FORMAT]: {
@@ -85,7 +82,7 @@ const URN_MAP: Record<string, { channel: ImpErrorChannel; message: string }> = {
     channel: 'inline',
     message: 'Requisição inválida. Verifique o arquivo e os campos e tente novamente.',
   },
-  // 401 is handled globally by the Access Layer — IMP does not map it (SPEC-07 §2).
+  // 401 is handled globally by the Access Layer — IMP does not map it.
   [URN_UNAUTHORIZED]: {
     channel: 'banner',
     message: 'Sessão expirada. Faça login novamente.',
@@ -100,7 +97,7 @@ const URN_MAP: Record<string, { channel: ImpErrorChannel; message: string }> = {
   },
 };
 
-// ── HTTP-status fallbacks (SPEC-07 §2 — for errors without a typed URN) ───────
+// ── HTTP-status fallbacks (for errors without a typed URN) ───────
 
 const STATUS_MAP: Array<[(s: number) => boolean, { channel: ImpErrorChannel; message: string }]> =
   [
@@ -130,7 +127,7 @@ const STATUS_MAP: Array<[(s: number) => boolean, { channel: ImpErrorChannel; mes
       (s) => s === 504 || s === 0,
       { channel: 'banner', message: 'A análise demorou demais. Tente reimportar.' },
     ],
-    // 5xx generic (network / server error) — SPEC-07 §2 "network / 5xx"
+    // 5xx generic (network / server error) — "network / 5xx"
     [
       (s) => s >= 500 && s < 600,
       { channel: 'banner', message: 'Falha temporária. Tente novamente em instantes.' },
@@ -161,7 +158,7 @@ function extractTraceId(err: HttpErrorResponse): string | undefined {
  * mapImpError — maps an HttpErrorResponse to a user-facing channel + message (pt-BR).
  *
  * Priority: RFC-7807 `type` URN → HTTP status fallback → generic fallback.
- * Always includes `traceId` when the response carries a correlation id (SPEC-07 §4).
+ * Always includes `traceId` when the response carries a correlation id.
  *
  * @param err - Angular HttpErrorResponse from the HTTP layer.
  * @returns ImpErrorResult with channel, message, and optional traceId.
@@ -182,6 +179,6 @@ export function mapImpError(err: HttpErrorResponse): ImpErrorResult {
     }
   }
 
-  // 3. Generic fallback ("network / 5xx" SPEC-07 §2)
+  // 3. Generic fallback ("network / 5xx")
   return { ...FALLBACK, traceId };
 }

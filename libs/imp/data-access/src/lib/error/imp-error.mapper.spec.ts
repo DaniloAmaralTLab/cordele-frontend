@@ -1,7 +1,7 @@
 /**
- * imp-error.mapper.spec.ts — unit tests for the IMP error mapper (FE-IMP-021).
+ * imp-error.mapper.spec.ts — unit tests for the IMP error mapper.
  *
- * Coverage target (SPEC-07 §2):
+ * Coverage target:
  *   1. Every known URN maps to the correct channel + message.
  *   2. Unknown URN → generic fallback ('banner', network/5xx message).
  *   3. HTTP status fallbacks (413, 415, 504, 5xx) when no URN present.
@@ -27,7 +27,7 @@ function makeErr(
   });
 }
 
-// ── URN mapping — all 9 known URNs (SPEC-07 §2) ───────────────────────────────
+// ── URN mapping — all 9 known URNs ───────────────────────────────
 
 describe('mapImpError — URN-based mapping', () => {
   it('urn:cordele:imp:unsupported-format → inline channel', () => {
@@ -42,7 +42,7 @@ describe('mapImpError — URN-based mapping', () => {
     expect(result.message).toContain('50 MB');
   });
 
-  // FIX(imp-invalid-binding): api-contract uses 'invalid-binding', not 'invalid-project-binding'.
+  // FIX(imp-invalid-binding): uses 'invalid-binding', not 'invalid-project-binding'.
   // Updated to match the corrected URN constant in imp-error.mapper.ts.
   it('urn:cordele:imp:invalid-binding → inline channel', () => {
     const result = mapImpError(
@@ -90,7 +90,7 @@ describe('mapImpError — URN-based mapping', () => {
     expect(result.message).toContain('não encontrado');
   });
 
-  it('IMP_KNOWN_URNS contains exactly 9 URNs (SPEC-07 §2 completeness)', () => {
+  it('IMP_KNOWN_URNS contains exactly 9 URNs (completeness)', () => {
     expect(IMP_KNOWN_URNS).toHaveLength(9);
     // Every URN in the list must produce a non-fallback message
     for (const urn of IMP_KNOWN_URNS) {
@@ -163,7 +163,7 @@ describe('mapImpError — unknown/missing URN', () => {
   });
 });
 
-// ── traceId extraction (SPEC-07 §4 "attach traceId") ─────────────────────────
+// ── traceId extraction ("attach traceId") ─────────────────────────
 
 describe('mapImpError — traceId', () => {
   it('returns traceId from body.traceId when present', () => {

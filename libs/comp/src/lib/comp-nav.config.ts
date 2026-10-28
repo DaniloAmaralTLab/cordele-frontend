@@ -1,11 +1,10 @@
 /**
  * comp-nav.config.ts — navigation config for the COMP module.
- * FE-COMP-004 / SPEC-06 §2 §4
- * FE-COMP-023 — dynamic breadcrumb resolution (P7).
+ * Dynamic breadcrumb resolution.
  *
  * Defines the step-bar positions for the pipeline
  * (Importar › Configurar › Edição › Exportar)
- * and breadcrumb templates for T05 and T06.
+ * and breadcrumb templates for configurações and editor de layout.
  *
  * Consumed by CompShellIntegrationService.register() / setActiveProject().
  */
@@ -36,10 +35,10 @@ export type CompNavScreen = 'configurar' | 'edicao';
  * resolveNavBreadcrumbs — replaces the `{nome}` placeholder with the actual project id
  * (or project name when available). Used by CompShellIntegrationService.setActiveProject().
  *
- * FE-COMP-023: SPEC-06 §2 — breadcrumbs are dynamic; `{nome}` is resolved at runtime.
+ * Breadcrumbs are dynamic; `{nome}` is resolved at runtime.
  * Fallback: use projetoId (route param) when project name store is unavailable.
  *
- * @param screen  - 'configurar' (T05) or 'edicao' (T06)
+ * @param screen  - 'configurar' (configurações) or 'edicao' (editor de layout)
  * @param projetoId - raw route param; used as display label when project name unavailable
  * @returns resolved label array, e.g. ['Projetos', 'abc-123', 'Configurar']
  */
@@ -62,7 +61,7 @@ export function resolveNavBreadcrumbs(screen: CompNavScreen, projetoId: string):
  * Step-bar: the 4 pipeline steps visible at the top of every COMP screen.
  * Breadcrumbs: resolved per screen with {nome} substituted from the project title.
  *
- * SPEC-06 §4: "Exportar" = navigation to PUB — NOT a status change.
+ * "Exportar" = navigation to PUB — NOT a status change.
  */
 export const COMP_NAV_CONFIG: ModuleNavConfig = {
   stepBar: [

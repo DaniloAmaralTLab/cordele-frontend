@@ -1,5 +1,5 @@
 /**
- * warnings-details.component.spec.ts — FE-PUB-016 — Unit tests for WarningsDetailsComponent.
+ * warnings-details.component.spec.ts — Unit tests for WarningsDetailsComponent.
  *
  * Verifies:
  *   - Component creates without errors.
@@ -8,13 +8,11 @@
  *   - Warnings count banner rendered when totalAvisos > 0 and avisos=[].
  *   - Empty state rendered when totalErros=0 AND totalAvisos=0 AND avisos=[] (default inputs).
  *   - Error and warnings blocks absent when counters are zero.
- *   - Detailed aviso list rendered when avisos.length > 0 (INT-FE-PUB-004).
+ *   - Detailed aviso list rendered when avisos.length > 0.
  *   - location: null rendered as "—" (never "null").
  *
  * Boundary: type:ui — component receives data via @Input (primitives + AvisoRow[]).
  * No mocks of data-access services needed (pure presentational).
- *
- * Track D: FE-PUB-016 — P3 Feature Libs / INT-FE-PUB-004 — P4 Hub Integrations.
  */
 import { TestBed } from '@angular/core/testing';
 import { AvisoRow, WarningsDetailsComponent } from './warnings-details.component';
@@ -106,9 +104,9 @@ describe('WarningsDetailsComponent', () => {
     expect(el.textContent).toContain('4 aviso(s)');
   });
 
-  // ── INT-FE-PUB-004: detailed avisos list ────────────────────────────────
+  // ── detailed avisos list ────────────────────────────────
 
-  it('renders detail table when avisos.length > 0 (INT-FE-PUB-004)', async () => {
+  it('renders detail table when avisos.length > 0', async () => {
     const fixture = await build({ avisos: [AVISO_WARNING] });
     const el: HTMLElement = fixture.nativeElement;
     expect(el.querySelector('table')).toBeTruthy();

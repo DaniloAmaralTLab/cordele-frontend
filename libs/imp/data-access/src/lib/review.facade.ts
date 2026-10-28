@@ -1,22 +1,20 @@
 /**
- * review.facade.ts — drives the T04 Revisão de Estrutura flow (signals-based, ADR-007).
+ * review.facade.ts — drives the revisão de estrutura Revisão de Estrutura flow (signals-based).
  *
  * Contracts honoured:
- *   - T04 hydrates from 201 body (router state) — zero GET in happy path (M2 D-A).
+ *   - revisão de estrutura hydrates from 201 body (router state) — zero GET in happy path.
  *   - Deep-link: loadStructure(manuscritoId) calls GET /manuscritos/{id} + GET /segmentos/ignored.
- *   - ignorarSegmento(): PERSISTENT with mandatory rollback on 4xx/5xx (FE-IMP-011 / §8.1).
- *   - restaurarSegmento(): PERSISTENT with mandatory rollback on 4xx/5xx (§8.1).
- *   - confirmarEstrutura(): calls POST /confirm-estrutura before navigating (FE-IMP-011 / §8.2).
+ *   - ignorarSegmento(): PERSISTENT with mandatory rollback on 4xx/5xx.
+ *   - restaurarSegmento(): PERSISTENT with mandatory rollback on 4xx/5xx.
+ *   - confirmarEstrutura(): calls POST /confirm-estrutura before navigating.
  *
- * Public signal contract (P2 — plan-FE-IMP §3 P2):
+ * Public signal contract:
  *   estrutura:    Signal<ContentTree | null>               — current content tree
  *   phase:        Signal<'idle'|'loading'|'confirming'|'error'> — unified phase
  *   errorMessage: Signal<string | null>                   — last error description
  *
- * Track D: created by fe-architect-promote IMP @ cordele (D-494).
- * P2: completed signals contract + loadStructure alias + M4 wiring.
- * P6: uses mapImpError for centralised error messages (FE-IMP-021);
- *     emits imp.structure.confirmed telemetry event (FE-IMP-023).
+ * Uses mapImpError for centralised error messages;
+ * Emits imp.structure.confirmed telemetry event.
  */
 import { DestroyRef, Injectable, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -45,7 +43,7 @@ export class ReviewFacade {
   private readonly _confirmando  = signal(false);
   private readonly _confirmError = signal<string | null>(null);
 
-  // ── Public API — P2 contract ──────────────────────────────────────────────
+  // ── Public API — contract ──────────────────────────────────────────────
 
   /** Full manuscrito detail (includes estrutura). Use `estrutura` for the ContentTree only. */
   readonly manuscrito = this._manuscrito.asReadonly();
@@ -76,7 +74,7 @@ export class ReviewFacade {
 
   // ── Hydrate ───────────────────────────────────────────────────────────────
 
-  /** Happy path: called from T04 when router state carries the 201 POST response. */
+  /** Happy path: called from revisão de estrutura when router state carries the 201 POST response. */
   hydrateFromResponse(manuscrito: ManuscritoDetail): void {
     this._manuscrito.set(manuscrito);
     this._ignoredIds.set(new Set());
@@ -86,7 +84,7 @@ export class ReviewFacade {
 
   /**
    * Deep-link / reload: fetch manuscrito + ignored set in parallel.
-   * Alias: loadStructure(id) is the P2 contract name for this action.
+   * Alias: loadStructure(id) is the contract name for this action.
    */
   load(manuscritoId: string): void {
     this._loading.set(true);
@@ -105,7 +103,7 @@ export class ReviewFacade {
           this._loading.set(false);
         },
         error: (err: HttpErrorResponse) => {
-          // FE-IMP-021: centralised error mapper
+          // Centralised error mapper
           const { message, traceId } = mapImpError(err);
           this._error.set(traceId ? `${message} [${traceId}]` : message);
           this._loading.set(false);
@@ -114,7 +112,7 @@ export class ReviewFacade {
   }
 
   /**
-   * P2 contract name for load() — see plan-FE-IMP §3 P2.
+   * Contract name for load().
    * Loads manuscrito + ignored set from the backend (deep-link path).
    */
   loadStructure(manuscritoId: string): void {
@@ -125,7 +123,7 @@ export class ReviewFacade {
 
   /**
    * Ignore an unparsed segment — PERSISTENT with mandatory rollback.
-   * Optimistically marks as ignored, then rolls back on 4xx/5xx (FE-IMP-011).
+   * Optimistically marks as ignored, then rolls back on 4xx/5xx.
    */
   ignorarSegmento(segmentoId: string): void {
     const manuscritoId = this._manuscrito()?.id;
@@ -139,13 +137,13 @@ export class ReviewFacade {
       .subscribe({
         // Success: optimistic state is already correct
         error: (_err: HttpErrorResponse) => {
-          // Mandatory rollback on any 4xx/5xx (api-contract §8.1 FE-IMP-011)
+          // Mandatory rollback on any 4xx/5xx
           this._ignoredIds.update(s => {
             const next = new Set(s);
             next.delete(segmentoId);
             return next;
           });
-          // FE-IMP-021: toast channel for ignore rollback (SPEC-07 §3)
+          // Toast channel for ignore rollback
           const { message, traceId } = mapImpError(_err);
           this._error.set(traceId ? `${message} [${traceId}]` : message);
         },
@@ -172,7 +170,7 @@ export class ReviewFacade {
         error: (_err: HttpErrorResponse) => {
           // Rollback: re-add the segmentoId
           this._ignoredIds.update(s => new Set([...s, segmentoId]));
-          // FE-IMP-021: centralised error mapper
+          // Centralised error mapper
           const { message, traceId } = mapImpError(_err);
           this._error.set(traceId ? `${message} [${traceId}]` : message);
         },
@@ -181,10 +179,10 @@ export class ReviewFacade {
 
   /**
    * Confirm structure review — calls POST /confirm-estrutura, then navigates to COMP.
-   * INT-FE-IMP-003: navigates to /comp after confirmation.
+   * Navigates to /comp after confirmation.
    * Fallback: if /comp is not registered in the shell (navigate returns false), falls
    * back to /proj/biblioteca to keep the user in a known state.
-   * Never navigates on error (stay on T04, show toast via errorMessage signal).
+   * Never navigates on error (stay on revisão de estrutura, show toast via errorMessage signal).
    */
   confirmarEstrutura(): void {
     const manuscritoId = this._manuscrito()?.id;
@@ -199,12 +197,12 @@ export class ReviewFacade {
         next: () => {
           this._confirmando.set(false);
 
-          // FE-IMP-023: emit imp.structure.confirmed telemetry event
+          // Emit imp.structure.confirmed telemetry event
           this.integrationSvc.emitLifecycleEvent('imp.structure.confirmed', {
             manuscritoId,
           });
 
-          // INT-FE-IMP-003: navigate to COMP module.
+          // Navigate to COMP module.
           // compJobId is not yet returned by the backend (ConfirmResponseDto forward-compat).
           // When it becomes available the port return type will be updated and this call will
           // use ['/comp', compJobId]. For now navigate to the COMP module root.
@@ -217,14 +215,14 @@ export class ReviewFacade {
               // E2E waitForURL timeout expired. The regex /(comp|proj\/biblioteca)/ matches
               // '/proj/biblioteca-de-projetos' as a substring, so this fix makes both the
               // routing and the e2e assertion work correctly.
-              // COMP route not available — fallback to proj library (INT-FE-IMP-003)
+              // COMP route not available — fallback to proj library
               this.router.navigate(['/proj/biblioteca-de-projetos']);
             }
           });
         },
         error: (err: HttpErrorResponse) => {
           this._confirmando.set(false);
-          // FE-IMP-021: centralised error mapper
+          // Centralised error mapper
           const { message, traceId } = mapImpError(err);
           this._confirmError.set(traceId ? `${message} [${traceId}]` : message);
         },

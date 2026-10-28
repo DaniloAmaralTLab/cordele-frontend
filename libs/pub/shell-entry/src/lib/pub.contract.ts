@@ -1,13 +1,11 @@
 /**
  * pub.contract.ts — public module-level contract for the PUB module.
- * FE-PUB-001: MODULE_KEY, PUB_MENU_METADATA, PUB_PERMISSION_MAP, PUB_FEATURE_FLAGS.
+ * MODULE_KEY, PUB_MENU_METADATA, PUB_PERMISSION_MAP, PUB_FEATURE_FLAGS.
  *
  * PUB is the final step of the editorial pipeline: export → epubcheck → download.
- * Accessed only with a projetoId from COMP (T06 "Exportar") or PROJ.
+ * Accessed only with a projetoId from COMP (editor de layout "Exportar") or PROJ.
  * order: 3 → third pipeline step (IMP=1, COMP=2, PUB=3).
  * hiddenFromNav: false → PUB is visible in the left-nav sidebar.
- *
- * SPEC-05 §tool-contract / FE-PUB-001
  */
 import { Routes } from '@angular/router';
 
@@ -39,12 +37,11 @@ export interface ModuleFeatureFlagEntry {
 /** Feature flag map: flag key → ModuleFeatureFlagEntry. */
 export type ModuleFeatureFlags = Record<string, ModuleFeatureFlagEntry>;
 
-// ── FE-PUB-001: PubContract ────────────────────────────────────────────────────
+// ── PubContract ────────────────────────────────────────────────────
 
 /**
  * PubContract — public contract surface of the PUB module.
  * Consumed by the shell to register routes, permissions and feature flags.
- * FE-PUB-001 (SPEC-05 §tool-contract).
  */
 export interface PubContract {
   routes: Routes;
@@ -52,7 +49,7 @@ export interface PubContract {
   featureFlags: readonly ['pub.rexport', 'pub.pdfExport'];
 }
 
-// ── FE-PUB-001: Module constants ───────────────────────────────────────────────
+// ── Module constants ───────────────────────────────────────────────
 
 /** Canonical key for the PUB module (matches BE module prefix). */
 export const MODULE_KEY = 'pub' as const;

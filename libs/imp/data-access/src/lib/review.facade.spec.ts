@@ -1,10 +1,10 @@
 /**
- * review.facade.spec.ts — unit tests for ReviewFacade (FE-IMP-011).
+ * review.facade.spec.ts — unit tests for ReviewFacade.
  *
  * Uses HttpClientTestingModule + HttpTestingController to exercise the real
- * adapter chain. Does NOT use mock adapters in production-path tests (plan §3 P2).
+ * adapter chain. Does NOT use mock adapters in production-path tests.
  *
- * Covers (plan §3 P2 — criterios de aceite):
+ * Covers:
  *   - loadStructure hydrates `estrutura` signal from GET /manuscritos/:id
  *   - ignorarSegmento rolls back on HTTP 500
  *   - confirmarEstrutura navigates to /comp on success
@@ -63,7 +63,7 @@ describe('ReviewFacade', () => {
   let router: Router;
 
   beforeEach(() => {
-    // FE-IMP-023: include emitLifecycleEvent in the mock (P6 addition)
+    // Include emitLifecycleEvent in the mock
     const mockIntegrationSvc = {
       empresaChanged: signal(0),
       emitLifecycleEvent: vi.fn(),

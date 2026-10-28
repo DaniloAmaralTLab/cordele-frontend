@@ -1,19 +1,18 @@
 /**
  * layout-http.adapter.ts — HTTP adapter for LayoutPort.
- * URLs from api-contract.md §4.5/§4.6/§4.7 (base: /api/v1/comp/projetos/{projetoId}).
+ * URLs (base: /api/v1/comp/projetos/{projetoId}).
  * Activate via provideComp({ adapter: 'http' }) — the default for production.
  *
- * INT-FE-COMP-001 (P4): injects AccessHttpClient per RULE-NX-05 — no module adapter
+ * Injects AccessHttpClient — no module adapter
  * may inject HttpClient directly. Empresa context is resolved server-side from the JWT
  * `empresa_id` claim; AccessHttpClient does not send X-Empresa-Id.
  *
  * Pattern: composition (inject AccessHttpClient) rather than inheritance.
- * Key constraint: PUT /layout body NEVER contains tipo='em-branco' (D-H / ADR-COMP-001).
+ * Key constraint: PUT /layout body NEVER contains tipo='em-branco'.
  *
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Updated: FE-COMP-007 — upsertLayout with UpsertLayoutBody (P2).
- * Updated: INT-FE-COMP-001 (P4) — delegates to AccessHttpClient (RULE-NX-05).
- * Moved to @cordele/comp/data-access (P6 boundary fix — INT-FE-COMP-006).
+ * upsertLayout with UpsertLayoutBody.
+ * Delegates to AccessHttpClient.
+ * Moved to @cordele/comp/data-access.
  */
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -36,7 +35,7 @@ export class LayoutHttpAdapter implements LayoutPort {
 
   /**
    * PUT /layout — body includes typography params + non-stale overrides (tipo='imagem' only).
-   * Never sends tipo='em-branco' — callers must filter before invoking (D-H / ADR-COMP-001).
+   * Never sends tipo='em-branco' — callers must filter before invoking.
    */
   upsertLayout(projetoId: string, body: UpsertLayoutBody): Observable<ConfiguracaoLayoutDto> {
     return this.http.put<ConfiguracaoLayoutDto>(`${this.baseUrl(projetoId)}/layout`, body);

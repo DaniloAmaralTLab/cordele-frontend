@@ -1,7 +1,7 @@
 /**
  * metadados-http.adapter.spec.ts — HttpTestingController tests for MetadadosHttpAdapter.
- * FE-COMP-006: GET/PUT metadados, POST/DELETE capa — URL, method and body verification.
- * INT-FE-COMP-001 (P4): verifies X-Empresa-Id header is NOT sent — empresa context comes from JWT claim.
+ * GET/PUT metadados, POST/DELETE capa — URL, method and body verification.
+ * Verifies X-Empresa-Id header is NOT sent — empresa context comes from JWT claim.
  */
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
@@ -59,7 +59,7 @@ describe('MetadadosHttpAdapter', () => {
     expect(received?.titulo).toBe('Livro Teste');
   });
 
-  it('GET /metadados — does NOT send X-Empresa-Id header (INT-FE-COMP-001 — empresa from JWT)', () => {
+  it('GET /metadados — does NOT send X-Empresa-Id header (empresa from JWT)', () => {
     // Even when ACCESS_EMPRESA_ID token is provided, the header must be absent.
     // Server resolves empresa from JWT `empresa_id` claim (EmpresaContextInterceptor).
     adapter.get(PROJECT_ID).subscribe();

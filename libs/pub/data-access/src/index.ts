@@ -1,6 +1,5 @@
 /**
  * Public API barrel for @cordele/pub-data-access.
- * P2 — FE-PUB-007..011
  *
  * Only export what other libs/apps may consume.
  * HTTP adapter is intentionally NOT exported (internal implementation detail).
@@ -17,7 +16,7 @@ export type {
   SignedDownloadUrl,
   ProjetoHeaderInfo,
   EpubSummaryVM,
-  // INT-FE-PUB-004 — validation detail list (§4.6 / PUB-016)
+  // Validation detail list
   ValidationMessageSeverity,
   ValidationMessageItem,
   AvisoVM,
@@ -37,7 +36,7 @@ export { PublicacaoApiService } from './lib/publicacao-api.service';
 export { ArtifactDownloadService } from './lib/artifact-download.service';
 export type { DownloadResult } from './lib/artifact-download.service';
 
-// Facades — consumed by feature libs (T07 / T08 components)
+// Facades — consumed by feature libs (exportação / histórico components)
 export { ExportFacade } from './lib/export.facade';
 export { HistoryFacade } from './lib/history.facade';
 export type { HistoryStatus } from './lib/history.facade';
@@ -50,11 +49,11 @@ export type { PubFeatureConfig } from './lib/pub.providers';
 export { PUB_ERROR_MAP, PUB_FALLBACK_ERROR, resolvePubError } from './lib/error-mapping';
 export type { PubErrorMapping } from './lib/error-mapping';
 
-// Empresa changed token — override to wire PubShellIntegrationService.empresaChanged (INT-FE-PUB-006)
+// Empresa changed token — override to wire PubShellIntegrationService.empresaChanged
 export { PUB_EMPRESA_CHANGED } from './lib/empresa-changed.token';
 export { PUB_UPDATE_BREADCRUMB } from './lib/update-breadcrumb.token';
 export type { PubUpdateBreadcrumbFn } from './lib/update-breadcrumb.token';
-// Breadcrumb telemetry token — override to wire PubShellIntegrationService.publishBreadcrumb (FE-PUB-026)
+// Breadcrumb telemetry token — override to wire PubShellIntegrationService.publishBreadcrumb
 export { PUB_BREADCRUMB } from './lib/pub-breadcrumb.token';
 export type { PubBreadcrumbFn } from './lib/pub-breadcrumb.token';
 

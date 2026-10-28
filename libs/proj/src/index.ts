@@ -1,7 +1,6 @@
 /**
  * Public API barrel for @cordele/proj.
  * Only export what other libs/apps may consume.
- * Track D: created by fe-architect-promote PROJ @ cordele (D-494).
  */
 
 // Routes — consumed by app.routes.ts loadChildren
@@ -15,7 +14,7 @@ export { HistoryFacade } from './lib/history.facade';
 export { provideProj } from './lib/proj.providers';
 export type { ProjFeatureConfig } from './lib/proj.providers';
 
-// API service (P2 — standardised HTTP client for proj-service)
+// API service (standardised HTTP client for proj-service)
 export { ProjetoApiService } from './lib/api/projeto-api.service';
 
 // Port tokens — for testing overrides

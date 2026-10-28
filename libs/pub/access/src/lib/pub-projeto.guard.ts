@@ -1,8 +1,8 @@
 /**
  * pub-projeto.guard.ts — Guards that :projetoId is a well-formed UUID before
- * activating any PUB route. Full implementation for FE-PUB-021 (P5).
+ * activating any PUB route.
  *
- * Strategy (SPEC-01 §3):
+ * Strategy:
  *   1. Extract projetoId from ActivatedRouteSnapshot.params.
  *   2. Validate UUID format (regex). If malformed or absent → redirect to
  *      /proj/biblioteca-de-projetos without making any HTTP call.
@@ -10,10 +10,8 @@
  *      non-existent projects; pubStatusGuard handles the status check via proj-service.
  *
  * Non-goals:
- *   - Does NOT call pub-service or proj-service (FE-PUB-021 requirement: client-side UUID check only).
- *   - Does NOT verify project status (responsibility of pubStatusGuard, FE-PUB-022).
- *
- * Track D: FE-PUB-021 (P5) — real implementation replacing P1 stub from @cordele/pub flat lib.
+ *   - Does NOT call pub-service or proj-service (client-side UUID check only).
+ *   - Does NOT verify project status (responsibility of pubStatusGuard).
  */
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';

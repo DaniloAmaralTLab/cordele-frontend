@@ -1,6 +1,6 @@
 /**
  * metadados.facade.spec.ts — unit tests for MetadadosFacade state machine.
- * FE-COMP-008: canAdvance, state transitions, cover sub-state, pessimistic advance.
+ * canAdvance, state transitions, cover sub-state, pessimistic advance.
  *
  * Pattern: each describe block that needs a different port configuration calls
  * TestBed.configureTestingModule in its own beforeEach so the module is
@@ -211,7 +211,7 @@ describe('MetadadosFacade — onAdvanceToLayout: 200 success', () => {
     TestBed.flushEffects();
   });
 
-  it('calls port.update and navigates to T06 on 200', () => {
+  it('calls port.update and navigates to editor de layout on 200', () => {
     facade.onAdvanceToLayout();
     TestBed.flushEffects();
     expect(vi.mocked(port.update)).toHaveBeenCalledOnce();

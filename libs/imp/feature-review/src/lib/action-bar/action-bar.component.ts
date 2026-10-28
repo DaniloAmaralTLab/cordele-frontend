@@ -1,6 +1,6 @@
 /**
- * action-bar.component.ts — Presentational (FE-IMP-017).
- * Bottom action bar for T04: "Reimportar outro arquivo" link + "Confirmar estrutura" CTA.
+ * action-bar.component.ts — Presentational.
+ * Bottom action bar for revisão de estrutura: "Reimportar outro arquivo" link + "Confirmar estrutura" CTA.
  *
  * Inputs:
  *   canConfirm  — true when the structure is loaded and no confirmation is in flight

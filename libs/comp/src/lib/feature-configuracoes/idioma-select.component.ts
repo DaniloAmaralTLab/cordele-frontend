@@ -1,6 +1,5 @@
 /**
- * idioma-select.component.ts — language selector for metadados T05.
- * FE-COMP-012 / SPEC-02 §1.
+ * idioma-select.component.ts — language selector for metadados configurações.
  *
  * Presentational — lists pt|en|es|fr options; default value is 'pt'.
  * No business logic; delegates selection upstream via change output.
@@ -18,7 +17,7 @@ interface IdiomaOption {
   label: string;
 }
 
-/** Exactly the four idiomas honoured by the COMP/PUB pipeline (SPEC-02 §1). */
+/** Exactly the four idiomas honoured by the COMP/PUB pipeline. */
 const IDIOMAS: IdiomaOption[] = [
   { value: 'pt', label: 'Português' },
   { value: 'en', label: 'English' },

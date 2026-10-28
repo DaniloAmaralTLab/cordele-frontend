@@ -1,10 +1,10 @@
 /**
  * history.facade.spec.ts — unit tests for HistoryFacade state machine.
- * FE-PROJ-017 (P1): load states, degraded, pessimistic reopen, 409, onBack.
- * FE-PROJ-007 (P2): updated to mock ProjetoApiService (replaces PROJETO_PORT / PUBLICACAO_PORT).
+ * Load states, degraded, pessimistic reopen, 409, onBack.
+ * Updated to mock ProjetoApiService (replaces PROJETO_PORT / PUBLICACAO_PORT).
  *
  * Pattern: TestBed with mocked ProjetoApiService (no HTTP).
- * Covers api-contract §4.3 (degraded) and SPEC-03 §2 (reopen pessimistic).
+ * Covers degraded state and pessimistic reopen.
  * Errors from ProjetoApiService carry httpStatus (AppError shape from mapProblemDetailToAppError).
  */
 import { TestBed } from '@angular/core/testing';
@@ -125,7 +125,7 @@ describe('HistoryFacade — load: 404 → status not-found', () => {
 
 // ── load: publicações falham → degraded ──────────────────────────────────────
 
-describe('HistoryFacade — load: publicações falham → degraded (api-contract §4.3)', () => {
+describe('HistoryFacade — load: publicações falham → degraded', () => {
   let facade: HistoryFacade;
 
   beforeEach(() => {
@@ -141,7 +141,7 @@ describe('HistoryFacade — load: publicações falham → degraded (api-contrac
     expect(facade.degraded()).toBe(true);
   });
 
-  it('status() permanece "ready" quando publicacoes falham (degraded — api-contract §4.3)', () => {
+  it('status() permanece "ready" quando publicacoes falham (degraded)', () => {
     facade.load(PROJETO_ID);
     TestBed.flushEffects();
     expect(facade.status()).toBe('ready');

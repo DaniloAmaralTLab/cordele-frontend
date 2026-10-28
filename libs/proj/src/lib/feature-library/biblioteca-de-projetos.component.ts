@@ -1,19 +1,17 @@
 /**
- * biblioteca-de-projetos.component.ts — T02 Biblioteca de Projetos.
- * Promoted from design-reference/angular-prototype (D-493/D-494).
- * Connected to LibraryFacade (signals-based, ADR-007). Mock data removed.
+ * biblioteca-de-projetos.component.ts — Biblioteca de Projetos.
+ * Connected to LibraryFacade (signals-based). Mock data removed.
  * OnPush + standalone (required by policy).
  *
- * Behaviours preserved from prototype:
- *   - Badge derivation: rascunho/em_composicao → project status; publication exists → epubcheck (SPEC-03 §3)
- *   - degraded=true: renders discrete, honest notice — never hides or alarms (api-contract §3)
- *   - Loading skeletons during 'loading' state (CLS-safe, SPEC-03 EARS)
+ * Behaviours:
+ *   - Badge derivation: rascunho/em_composicao → project status; publication exists → epubcheck
+ *   - degraded=true: renders discrete, honest notice — never hides or alarms
+ *   - Loading skeletons during 'loading' state (CLS-safe)
  *   - Empty state only when status==='empty' (no flicker while loading)
- *   - Quick download opens signed URL directly in new tab (D-F)
+ *   - Quick download opens signed URL directly in new tab
  *   - Pagination: "Carregar mais" button — cursor-based keyset, no arbitrary page jump
- * Track D: promoted by fe-architect-promote PROJ @ cordele (D-494).
  *
- * Pagination UI decision (api-contract §4.2):
+ * Pagination UI decision:
  *   The backend uses opaque keyset cursors — only sequential forward traversal is
  *   possible. Numbered pagination with arbitrary jump is not feasible without storing
  *   all previous cursors. "Carregar mais" (load more / infinite scroll variant) is the
@@ -56,7 +54,7 @@ import { ProjetoCardVM } from '../models/proj.models';
         </button>
       </div>
 
-      <!-- Degraded notice — discrete, honest; never alarmist (api-contract §3) -->
+      <!-- Degraded notice — discrete, honest; never alarmist -->
       @if (facade.degraded()) {
         <div class="mb-4 flex items-center gap-2 rounded-lg px-4 py-2.5 text-sm"
              style="background:oklch(78% 0.16 75 / 0.14);border:1px solid oklch(78% 0.16 75 / 0.40);color:oklch(40% 0.14 75);"
@@ -198,7 +196,7 @@ export class BibliotecaDeProjetosComponent implements OnInit {
     return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
   }
 
-  /** Map badge tone → border-left accent colour (same palette as prototype). */
+  /** Map badge tone → border-left accent colour. */
   cardAccent(proj: ProjetoCardVM): string {
     const map: Record<string, string> = {
       draft:    'oklch(78% 0.16 75)',

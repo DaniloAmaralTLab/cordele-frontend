@@ -1,7 +1,6 @@
 /**
  * imp.providers.ts — DI factory for the IMP data layer.
  * Default: adapter='mock' (dev). Set adapter='http' in production app.config.ts.
- * Track D: created by fe-architect-promote IMP @ cordele (D-494).
  */
 import { EnvironmentProviders, makeEnvironmentProviders } from '@angular/core';
 import { ManuscritoHttpAdapter } from './adapters/manuscrito-http.adapter';

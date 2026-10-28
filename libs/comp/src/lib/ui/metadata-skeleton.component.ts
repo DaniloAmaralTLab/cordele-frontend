@@ -1,6 +1,5 @@
 /**
- * metadata-skeleton.component.ts — CLS-safe loading skeleton for T05 Configurações.
- * FE-COMP-024 / SPEC-02 §1 / P8 UX Polish.
+ * metadata-skeleton.component.ts — CLS-safe loading skeleton for configurações Configurações.
  *
  * Matches the layout of ConfiguracoesComponent when status='loading':
  *   - Title placeholder (1/3 width)

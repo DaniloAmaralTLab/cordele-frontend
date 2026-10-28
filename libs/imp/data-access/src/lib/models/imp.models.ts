@@ -1,6 +1,5 @@
 /**
- * imp.models.ts — IMP domain models aligned with api-contract.md §6 (M2/M4 authoritative).
- * Promoted: fe-architect-promote IMP @ cordele (D-494).
+ * imp.models.ts — IMP domain models.
  */
 
 // ─── Manuscrito ───────────────────────────────────────────────────────────────
@@ -36,7 +35,7 @@ export interface ManuscritoSummary {
   criadoEm: string;
 }
 
-// ─── Content tree (api-contract §6.2) ────────────────────────────────────────
+// ─── Content tree ────────────────────────────────────────
 
 export interface ContentTree {
   schemaVersion: '1.0';
@@ -79,7 +78,7 @@ export interface ImageBlock {
   originalName: string;
 }
 
-/** api-contract §6.3 — reason is a closed enum; never dropped (ADR-002). */
+/** Reason is a closed enum; never dropped. */
 export type UnparsedReason =
   | 'complex_table'
   | 'math_equation'
@@ -115,16 +114,16 @@ export interface Run {
   marks: Array<'bold' | 'italic' | 'underline' | 'strikethrough' | 'code' | 'superscript' | 'subscript'>;
 }
 
-// ─── Upload form (T03) ────────────────────────────────────────────────────────
+// ─── Upload form (upload) ────────────────────────────────────────────────────────
 
-/** Exactly one of projetoTitulo | projetoId must be set (D-C). */
+/** Exactly one of projetoTitulo | projetoId must be set. */
 export interface UploadParams {
   file: File;
   projetoTitulo?: string;
   projetoId?: string;
 }
 
-// ─── Segmento curadoria (api-contract §8) ────────────────────────────────────
+// ─── Segmento curadoria ────────────────────────────────────
 
 export interface SegmentoCuradoriaDto {
   id: string;
@@ -138,7 +137,7 @@ export interface IgnoredSegmentsResponse {
   ignoredSegmentoIds: string[];
 }
 
-// ─── P2 additions (FE-IMP-006..011, INT-FE-IMP-001..002) ─────────────────────
+// ─── additions ─────────────────────
 
 /**
  * ManuscritoHistoryDto — entry in the immutable import history list.
@@ -173,7 +172,7 @@ export interface FragmentIgnoreDto {
   ignored: boolean;
 }
 
-// ─── Portuguese reason labels (T04 UI, SPEC-04) ──────────────────────────────
+// ─── Portuguese reason labels (revisão de estrutura UI) ──────────────────────────────
 
 export const UNPARSED_REASON_LABEL: Record<UnparsedReason, string> = {
   complex_table:       'Tabela complexa',

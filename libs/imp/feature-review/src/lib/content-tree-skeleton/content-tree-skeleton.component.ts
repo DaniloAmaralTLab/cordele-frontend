@@ -1,5 +1,5 @@
 /**
- * content-tree-skeleton.component.ts — Presentational skeleton (FE-IMP-022).
+ * content-tree-skeleton.component.ts — Presentational skeleton.
  * Shown while ReviewFacade.phase() === 'loading' (deep-link / reload path).
  * Pure pulse animation; no inputs or outputs.
  */

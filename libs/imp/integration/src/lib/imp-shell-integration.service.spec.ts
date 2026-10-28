@@ -1,5 +1,5 @@
 /**
- * imp-shell-integration.service.spec.ts — unit tests (INT-FE-IMP-005, INT-FE-IMP-006, FE-IMP-023).
+ * imp-shell-integration.service.spec.ts — unit tests.
  *
  * Tests:
  *   1. init() registers IMP permissions with AccessDecisionService.
@@ -7,7 +7,7 @@
  *   3. empresaChanged signal starts at 0 (no change on boot).
  *   4. empresaChanged signal increments when the active empresa changes.
  *   5. empresaChanged signal increments again on subsequent changes.
- *   6. emitLifecycleEvent() calls console.info with event name and data (FE-IMP-023).
+ * 6. emitLifecycleEvent() calls console.info with event name and data.
  *   7. emitLifecycleEvent() without data omits payload gracefully.
  *
  * Uses signal-based effect() tracking — no zone.js / fakeAsync required.
@@ -110,7 +110,7 @@ describe('ImpShellIntegrationService', () => {
     });
   });
 
-  // ── emitLifecycleEvent (FE-IMP-023) ────────────────────────────────────────
+  // ── emitLifecycleEvent ────────────────────────────────────────
 
   describe('emitLifecycleEvent()', () => {
     it('calls console.info with the event name and data payload', () => {

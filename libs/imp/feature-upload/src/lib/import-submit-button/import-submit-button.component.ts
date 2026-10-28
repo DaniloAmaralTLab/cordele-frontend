@@ -1,5 +1,5 @@
 /**
- * import-submit-button.component.ts — Presentational (FE-IMP-015).
+ * import-submit-button.component.ts — Presentational.
  * Primary CTA for the Upload form. Shows busy state while the upload is in flight.
  *
  * Inputs:

@@ -1,11 +1,11 @@
 /**
- * error-mapping.ts — AppError URN → user-facing pt-BR messages (SPEC-07 / FE-PUB-011).
+ * error-mapping.ts — AppError URN → user-facing pt-BR messages.
  *
  * The ErrorNormalize interceptor in @cordele/shared/access-http-base converts
  * RFC-7807 ProblemDetail → AppError { type, title, status, detail, traceId }.
- * The `type` URN (from api-contract §5) is the stable switch key used here.
+ * The `type` URN is the stable switch key used here.
  *
- * Critical rule (SPEC-07 §1):
+ * Critical rule:
  *   A successful export with epubcheckStatus=erros_criticos is NOT an HTTP error.
  *   It is domain data — the 200-body drives the red result banner. Never map it here.
  *
@@ -74,7 +74,7 @@ export const PUB_ERROR_MAP: Record<string, PubErrorMapping> = {
 
 /**
  * Fallback for network errors and unrecognised 5xx responses.
- * Used when the URN is absent or unknown (SPEC-07 §2 / §4).
+ * Used when the URN is absent or unknown.
  */
 export const PUB_FALLBACK_ERROR: PubErrorMapping = {
   message:   'Falha temporária. Tente novamente em instantes.',

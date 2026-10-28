@@ -1,16 +1,16 @@
 /**
- * artifact-download.service.ts — Signed-URL download service (FE-PUB-010 / SPEC-04 §4.4).
+ * artifact-download.service.ts — Signed-URL download service.
  *
  * Responsibilities:
  *   - Mint a fresh short-TTL signed URL via PublicacaoApiService.
- *   - Open the URL in a new tab (window.open). SPA never proxies bytes (D-F).
+ *   - Open the URL in a new tab (window.open). SPA never proxies bytes.
  *   - On expired/401/404 signed URL: auto re-fetch once, then surface inline error.
  *   - Never reuses a stale arquivoUrl beyond its TTL.
  *   - Gate: only called when podeBaixar is true (pre-empts 409 artifact-not-available).
  *
- * RULE-NX-05: no raw HttpClient — delegates to PublicacaoApiService (which delegates to port).
+ * No raw HttpClient — delegates to PublicacaoApiService (which delegates to port).
  *
- * FE-PUB-025: DownloadResult now carries `status` instead of `success`:
+ * DownloadResult now carries `status` instead of `success`:
  *   'refetching' — emitted immediately when a 401/404 triggers the auto re-fetch,
  *                  before the second API call is made. Callers use this to show a notice.
  *   'success'    — emitted once the file is open in a new tab.
@@ -43,8 +43,8 @@ export class ArtifactDownloadService {
    * Mint a signed URL and open it in a new browser context.
    * On expiry (401/404), emits {status:'refetching'} then re-fetches once.
    *
-   * SPEC-04 §4.4: SPA never proxies bytes. Never falls back to a public link.
-   * FE-PUB-025: emits 'refetching' before the second attempt so callers can show a notice.
+   * SPA never proxies bytes. Never falls back to a public link.
+   * Emits 'refetching' before the second attempt so callers can show a notice.
    */
   download(projetoId: string, publicacaoId: string): Observable<DownloadResult> {
     return this.api.getDownloadUrl(projetoId, publicacaoId).pipe(
@@ -54,7 +54,7 @@ export class ArtifactDownloadService {
       }),
       catchError(err => {
         const status = (err as { status?: number }).status;
-        // 401 / 404 on the signed URL = expired → re-fetch once (SPEC-04 §4.4)
+        // 401 / 404 on the signed URL = expired → re-fetch once
         if (status === 401 || status === 404) {
           return this._refetchAndOpen(projetoId, publicacaoId);
         }
@@ -66,7 +66,7 @@ export class ArtifactDownloadService {
 
   /**
    * Re-fetch a fresh signed URL once (auto-retry on expiry).
-   * Emits {status:'refetching'} synchronously before the second API call (FE-PUB-025)
+   * Emits {status:'refetching'} synchronously before the second API call
    * so that the caller can show a notice without waiting for the network round-trip.
    * If the second attempt also fails, the error propagates to the caller.
    */

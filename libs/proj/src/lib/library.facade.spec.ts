@@ -1,9 +1,9 @@
 /**
  * library.facade.spec.ts — unit tests for LibraryFacade state machine.
- * FE-PROJ-017 (P1): load states, computed canQuickDownload, navigation actions.
- * FE-PROJ-007 (P2): isEmpty fix, empresa-switch via ProjetoApiService.
+ * Load states, computed canQuickDownload, navigation actions.
+ * isEmpty fix, empresa-switch via ProjetoApiService.
  *
- * Contract change (api-contract §4.2, 2026-09):
+ * Contract change (2026-09):
  *   listProjetos() returns ProjetoListResult { page, degraded }.
  *   Tests updated: makeApiService now returns envelope; new tests cover:
  *     - degraded=true propagation from header
@@ -127,7 +127,7 @@ describe('LibraryFacade — load: retorna [] → status empty, isEmpty() true', 
     expect(facade.status()).toBe('empty');
   });
 
-  it('isEmpty() é true quando status="empty" (fix do bug isEmpty P2)', () => {
+  it('isEmpty() é true quando status="empty" (fix do bug isEmpty)', () => {
     facade.load();
     TestBed.flushEffects();
     expect(facade.isEmpty()).toBe(true);
@@ -183,7 +183,7 @@ describe('LibraryFacade — load: erro de rede → status error', () => {
   });
 });
 
-// ── degraded signal (api-contract §3) ────────────────────────────────────────
+// ── degraded signal ────────────────────────────────────────
 
 describe('LibraryFacade — degraded: X-Degraded header propagado', () => {
   it('degraded() é false quando API retorna degraded=false', () => {
@@ -368,7 +368,7 @@ describe('LibraryFacade — onNewProject()', () => {
   });
 });
 
-// ── empresa-switch (INT-FE-PROJ-002, P2) ─────────────────────────────────────
+// ── empresa-switch ─────────────────────────────────────
 
 describe('LibraryFacade — empresa-switch: reload ao trocar empresa', () => {
   it('re-chama listProjetos() quando empresa muda após load() (switchMap cancela in-flight)', () => {

@@ -56,5 +56,5 @@
       "@cordele/pub-feature-history": ["./libs/pub/feature-history/src/index.ts"]
     }
   },
-  "//": "extend paths as additional libs (feature/data-access/ui) are scaffolded"
+  "//": "path aliases for every lib in libs/"
 }

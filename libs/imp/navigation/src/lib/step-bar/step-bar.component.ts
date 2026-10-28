@@ -1,7 +1,7 @@
 /**
- * step-bar.component.ts — IMP step-bar (FE-IMP-018 / FE-IMP-020).
+ * step-bar.component.ts — IMP step-bar.
  *
- * Production component (replaces the P4 stub in feature-upload).
+ * Production component (replaces the stub in feature-upload).
  * Renders a horizontal step indicator for the IMP pipeline:
  *   Importar → Configurar → Visualizar → Exportar
  *

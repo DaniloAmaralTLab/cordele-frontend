@@ -1,20 +1,18 @@
 /**
- * download-e-historico.component.ts — T08 Download e Histórico.
- * Promoted from design-reference/angular-prototype (D-493/D-494).
- * Connected to HistoryFacade (signals-based, ADR-007). Mock data removed.
+ * download-e-historico.component.ts — histórico Download e Histórico.
+ * Connected to HistoryFacade (signals-based). Mock data removed.
  * OnPush + standalone (required by policy).
  *
- * Route: /proj/projetos/:projetoId/historico (parametrized — replaces flat prototype route).
+ * Route: /proj/projetos/:projetoId/historico (parametrized).
  *
  * Behaviours preserved from prompt specification:
  *   1. Reopen pessimistic: "Ajustar metadados"/"Ajustar layout" → POST .../reopen,
  *      await 200 ProjetoDetail, then navigate to COMP. 409 (rascunho) → reset pending, toast.
- *   2. Badge derived from header status + epubcheck fold (SPEC-03 §3).
- *   3. degraded=true: render identity + status, never error state (api-contract §4.3).
- *   4. Download via signed URL opened in new tab (D-F — no proxy).
- *   5. canDownload derived solely from arquivoUrl != null (SPEC-03 §2).
- *   6. reopenPending gates both reopen CTAs (SPEC-03 §2 — no double-click fire).
- * Track D: promoted by fe-architect-promote PROJ @ cordele (D-494).
+ * 2. Badge derived from header status + epubcheck fold.
+ * 3. degraded=true: render identity + status, never error state.
+ * 4. Download via signed URL opened in new tab (no proxy).
+ * 5. canDownload derived solely from arquivoUrl != null.
+ * 6. reopenPending gates both reopen CTAs (no double-click fire).
  */
 import {
   ChangeDetectionStrategy,
@@ -84,7 +82,7 @@ function fmtDatetime(iso: string): string {
                 <h1 class="font-display font-semibold text-2xl" style="color:var(--text-primary)">
                   {{ h.nome }}
                 </h1>
-                <!-- degraded: always show badge (identity + status preserved — api-contract §4.3) -->
+                <!-- degraded: always show badge (identity + status preserved) -->
                 <span class="inline-flex items-center gap-1 rounded-full px-3 py-1 text-xs font-bold"
                       [style]="headerBadgeStyle(h.badge.tone)">
                   <span class="material-symbols-outlined" style="font-size:13px;">{{ h.badge.icon }}</span>
@@ -192,7 +190,7 @@ function fmtDatetime(iso: string): string {
                   }
                 </div>
 
-                <!-- Download button (D-F: opens signed URL directly, no proxy) -->
+                <!-- Download button (opens signed URL directly, no proxy) -->
                 @if (pub.canDownload) {
                   <button
                     (click)="facade.onDownload(pub)"

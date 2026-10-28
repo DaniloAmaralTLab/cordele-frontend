@@ -1,10 +1,10 @@
 /**
- * projeto-api.service.spec.ts — unit tests for ProjetoApiService (FE-PROJ-007, P2).
+ * projeto-api.service.spec.ts — unit tests for ProjetoApiService.
  *
  * Strategy: mock AccessHttpClient methods via TestBed so no real HTTP occurs.
  * Verifies: correct URLs, ProblemDetail→AppError mapping on error, method delegation.
  *
- * Contract change (api-contract §4.2, 2026-09):
+ * Contract change (2026-09):
  *   listProjetos() now returns ProjetoListResult { page: ProjetoListPage, degraded: boolean }
  *   instead of ProjetoCard[]. Tests updated to assert on the envelope shape and X-Degraded.
  */
@@ -231,7 +231,7 @@ describe('ProjetoApiService — URL prefix regression guard', () => {
     httpMock.expectNone(r => r.url.startsWith('/api/proj/'));
     const req = httpMock.expectOne(r => r.url.startsWith('/api/v1/proj/'));
     expect(req.request.url).toBe(PROJ_BASE);
-    // Flush with envelope shape (api-contract §4.2)
+    // Flush with envelope shape
     req.flush({ items: [], nextCursor: null });
   });
 

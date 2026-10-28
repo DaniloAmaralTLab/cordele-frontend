@@ -1,6 +1,6 @@
 /**
  * image-alignment-badge.component.spec.ts
- * FE-COMP-017: ImageAlignmentBadgeComponent — 4 options, hidden when canEdit=false.
+ * ImageAlignmentBadgeComponent — 4 options, hidden when canEdit=false.
  */
 import { TestBed } from '@angular/core/testing';
 import { Component, signal } from '@angular/core';

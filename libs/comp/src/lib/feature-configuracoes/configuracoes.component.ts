@@ -1,23 +1,18 @@
 /**
- * configuracoes.component.ts — T05 Configuração de Metadados (smart component).
- * FE-COMP-011 / SPEC-02 §1.
- * FE-COMP-023 — dynamic breadcrumb resolution via CompShellIntegrationService (P7).
+ * configuracoes.component.ts — configurações Configuração de Metadados (smart component).
+ * Dynamic breadcrumb resolution via CompShellIntegrationService.
  *
  * Smart:
  *   - Reads MetadadosFacade signals; delegates UI to presentational children.
  *   - No direct HTTP — all data flow via MetadadosFacade.
- *     (comment uses "direct HTTP" instead of the Angular class name to avoid the
- *      arch-conformance text scanner flagging a comment that says we do NOT use it)
  *   - No shared/mock-data imports.
  *
- * P3 update (FE-COMP-011..013):
  *   - Refactored to use child presentational components:
  *     StepBarComponent, MetadataFieldComponent, IdiomaSelectComponent,
  *     CoverDropZoneComponent, AdvanceBarComponent.
  *   - All deprecated facade aliases replaced by canonical API.
- *   - selector updated to app-comp-configuracoes (SPEC-02 §1).
+ *   - selector updated to app-comp-configuracoes.
  *
- * P7 update (FE-COMP-023):
  *   - Calls CompShellIntegrationService.setActiveProject(projetoId) in ngOnInit
  *     to resolve `{nome}` breadcrumb dynamically.
  *   - Renders resolved breadcrumbs above the step-bar.
@@ -60,7 +55,7 @@ import { CoverDropZoneComponent } from './cover-drop-zone.component';
   template: `
     <div class="px-8 py-8 max-w-[var(--content-max-width,960px)] mx-auto">
 
-      <!-- Breadcrumb navigation (FE-COMP-023) — {nome} resolved from projetoId -->
+      <!-- Breadcrumb navigation — {nome} resolved from projetoId -->
       @if (breadcrumbs().length) {
         <nav class="flex items-center gap-1 text-xs mb-4" aria-label="Localização">
           @for (crumb of breadcrumbs(); track $index) {
@@ -81,12 +76,12 @@ import { CoverDropZoneComponent } from './cover-drop-zone.component';
         <comp-step-bar [steps]="navSteps" [current]="'configurar'" />
       </div>
 
-      <!-- Loading skeleton (P8 — FE-COMP-024) -->
+      <!-- Loading skeleton -->
       @if (facade.status() === 'loading') {
         <comp-metadata-skeleton />
       }
 
-      <!-- Error state (P8 — FE-COMP-024) -->
+      <!-- Error state -->
       @if (facade.status() === 'error' && facade.error()) {
         <comp-error-state
           [message]="facade.error()!.message"
@@ -210,9 +205,8 @@ export class ConfiguracoesComponent implements OnInit {
   readonly navSteps = COMP_NAV_CONFIG.stepBar;
 
   /**
-   * Resolved breadcrumbs for T05: ['Projetos', '<projetoId>', 'Configurar'].
+   * Resolved breadcrumbs for configurações: ['Projetos', '<projetoId>', 'Configurar'].
    * Updated by setActiveProject() in ngOnInit — empty before first navigation.
-   * FE-COMP-023 / SPEC-06 §2.
    */
   readonly breadcrumbs = computed(
     () => this.shellIntegration.resolvedBreadcrumbs()['configurar'],
@@ -223,9 +217,9 @@ export class ConfiguracoesComponent implements OnInit {
 
   ngOnInit(): void {
     this.projetoId = this.route.snapshot.paramMap.get('projetoId') ?? '';
-    // FE-COMP-023: resolve {nome} in breadcrumbs before loading data.
+    // Resolve {nome} in breadcrumbs before loading data.
     this.shellIntegration.setActiveProject(this.projetoId);
-    // FE-COMP-025: telemetry — user entered T05 Configurações screen.
+    // Telemetry — user entered configurações Configurações screen.
     this.shellIntegration.trackMetadataOpened(this.projetoId);
     this.facade.load(this.projetoId);
   }

@@ -1,25 +1,24 @@
 /**
  * comp-status.guard.ts — Guards that the resolved project is in em_composicao status.
  *
- * INT-FE-COMP-003 (P4): real implementation using GET to proj-service.
- * FE-COMP-020 (P5) will refine with ProjetoStore integration if @cordele/proj exports one.
+ * Real implementation using GET to proj-service.
+ * Will refine with ProjetoStore integration if @cordele/proj exports one.
  *
  * Strategy:
  *   1. Extract projetoId from ActivatedRouteSnapshot.
- *   2. GET /api/v1/proj/projetos/{projetoId} via AccessHttpClient (RULE-NX-05).
+ *   2. GET /api/v1/proj/projetos/{projetoId} via AccessHttpClient.
  *   3. em_composicao → allow.
  *   4. rascunho → redirect to /imp/projetos/:projetoId/importar.
  *   5. publicado / com_erros → redirect to /proj/projetos/:projetoId/historico.
  *   6. Error (404 / 5xx) → redirect to /proj/biblioteca-de-projetos.
  *
- * This is a FE-only UX guard (SPEC-01 §3): the BE api-contract defines no COMP
+ * This is a FE-only UX guard: the BE defines no COMP
  * illegal-status error. The guard pre-empts the navigation; it is not a security boundary.
  *
- * HTTP: uses AccessHttpClient (not HttpClient directly) per RULE-NX-05 — empresa context
- * is resolved server-side from the JWT `empresa_id` claim (INT-FE-COMP-001).
+ * HTTP: uses AccessHttpClient (not HttpClient directly) — empresa context
+ * is resolved server-side from the JWT `empresa_id` claim.
  *
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Updated: INT-FE-COMP-003 (P4) — real proj-service integration via AccessHttpClient.
+ * Real proj-service integration via AccessHttpClient.
  */
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';

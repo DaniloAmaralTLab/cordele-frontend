@@ -1,8 +1,8 @@
 /**
  * publicacao-mock.adapter.ts — In-memory mock for PublicacaoPort (dev/test only).
- * Migrated from libs/pub (flat lib) to libs/pub/data-access (P2 — FE-PUB-009).
+ * Migrated from libs/pub (flat lib) to libs/pub/data-access.
  *
- * Seed data aligned with design-reference/shared/mock-data.ts (publicacao / publicacoes arrays).
+ * Dados de exemplo (publicação / publicações).
  * Simulates the bounded-poll flow: triggerExport returns gerando; after 2 pollStatus calls returns publicado.
  *
  * isMock: true — do NOT use as default adapter in production (app.config.ts must use adapter='http').
@@ -21,7 +21,7 @@ import { PublicacaoPort } from './publicacao.port';
 
 const MOCK_DELAY = 400;
 
-// ─── Seed data (aligned with prototype shared/mock-data.ts) ──────────────────
+// ─── Dados de exemplo ───────────────────────────────────────────────────
 
 const MOCK_STATUS_PUBLICADO: PublicacaoStatus = {
   publicacaoId: 'pub-001',
@@ -35,7 +35,7 @@ const MOCK_STATUS_PUBLICADO: PublicacaoStatus = {
   arquivoDisponivel: true,
   iniciadaEm:   '2026-06-19T16:28:00Z',
   concluidaEm:  '2026-06-19T16:30:00Z',
-  // ADR-004: KPI fields — non-null when status = 'publicado' (mock values for dev/test)
+  // KPI fields — non-null when status = 'publicado' (mock values for dev/test)
   tamanhoBytes:   1_470_000,  // ~1.4 MB
   totalCapitulos: 12,
   totalImagens:   8,

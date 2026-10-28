@@ -1,13 +1,12 @@
 /**
  * comp-error.mapper.ts — maps AppError (normalized by ErrorNormalize interceptor) to COMP UI error state.
- * FE-COMP-010 / SPEC-07 §1–§4.
  *
  * This module covers two concerns:
  *   1. normalizeError(err) — converts Angular HttpErrorResponse or AppError to AppError
  *      (transition helper until @cordele/shared/access-http-base provides ErrorNormalize interceptor).
  *   2. mapCompError(appErr) — maps AppError.code URN to CompUiError { channel, message, correlationId }.
  *
- * URNs (9 total, api-contract §5 / SPEC-07 §1):
+ * URNs (9 total):
  *   urn:cordele:comp:validation                (400) → inline field errors
  *   urn:cordele:comp:unauthorized              (401) → session expired (handled by shell)
  *   urn:cordele:comp:forbidden                 (403) → access-denied banner
@@ -18,8 +17,8 @@
  *   urn:cordele:comp:override-ref-not-found    (422) → defensive toast
  *   urn:cordele:comp:structural-edit-deferred  (422) → defensive toast (unreachable by construction)
  *
- * NOTE: urn:cordele:comp:illegal-status does NOT exist (api-contract §5 / SPEC-07 §2);
- *       the em_composicao gate is handled by compStatusGuard (FE-COMP-020).
+ * NOTE: urn:cordele:comp:illegal-status does NOT exist;
+ * The em_composicao gate is handled by compStatusGuard.
  *
  * NOTE: AppError is defined locally here (not imported from @cordele/shared/error-model) because
  * comp is a buildable lib and error-model is non-buildable (@nx/enforce-module-boundaries).
@@ -108,7 +107,7 @@ interface HttpLike {
  *   - Angular HttpErrorResponse carrying RFC 7807 ProblemDetail body
  *   - Generic errors
  * This helper will become a thin wrapper once the ErrorNormalize interceptor
- * in `@cordele/shared/access-http-base` is fully implemented (INT-FE-COMP-001).
+ * in `@cordele/shared/access-http-base` is fully implemented.
  */
 export function normalizeError(err: unknown): AppError {
   // Already an AppError
@@ -150,7 +149,7 @@ function deriveUrnFromStatus(status: number): string {
 
 /**
  * Maps a normalized `AppError` to a `CompUiError` that facades expose to templates.
- * The switch is exhaustive over the 9 URNs defined in api-contract §5 / SPEC-07 §1.
+ * The switch is exhaustive over the 9 URNs defined in
  */
 export function mapCompError(err: AppError): CompUiError {
   const correlationId = err.correlationId ?? null;

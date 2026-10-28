@@ -1,12 +1,11 @@
 /**
  * projeto.port.ts — Port interface for the Projeto resource.
- * Covers api-contract §4.1–4.3, §4.6, §4.7:
- *   POST   /api/v1/proj/projetos                          → create (T02 "Novo projeto")
- *   GET    /api/v1/proj/projetos                          → list (T02 library)
- *   GET    /api/v1/proj/projetos/{projetoId}              → get (T08 header detail)
- *   POST   /api/v1/proj/projetos/{projetoId}/reopen       → reopen (T08 "Ajustar metadados/layout")
+ * Covers:
+ *   POST   /api/v1/proj/projetos                          → create ("Novo projeto")
+ *   GET    /api/v1/proj/projetos                          → list (library)
+ *   GET    /api/v1/proj/projetos/{projetoId}              → get (histórico header detail)
+ *   POST   /api/v1/proj/projetos/{projetoId}/reopen       → reopen (histórico "Ajustar metadados/layout")
  *   DELETE /api/v1/proj/projetos/{projetoId}              → delete (LGPD — UI deferred, port present)
- * Track D: created by fe-architect-promote PROJ @ cordele (D-494).
  */
 import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -20,7 +19,7 @@ export interface ProjetoPort {
   /** GET /api/v1/proj/projetos — list library cards (newest activity first). */
   list(params?: { status?: string }): Observable<ProjetoCard[]>;
 
-  /** GET /api/v1/proj/projetos/{projetoId} — full project detail (T08 header + history). */
+  /** GET /api/v1/proj/projetos/{projetoId} — full project detail (histórico header + history). */
   get(projetoId: string): Observable<ProjetoDetail>;
 
   /** POST /api/v1/proj/projetos — create a new project in status rascunho. */
@@ -28,7 +27,7 @@ export interface ProjetoPort {
 
   /**
    * POST /api/v1/proj/projetos/{projetoId}/reopen — return publicado/com_erros → em_composicao.
-   * api-contract §4.7: returns ProjetoDetail (updated status).
+   * Returns ProjetoDetail (updated status).
    * 409 if project is in rascunho (illegal); 200 with changed=false if already em_composicao.
    */
   reopen(projetoId: string): Observable<ProjetoDetail>;

@@ -1,6 +1,5 @@
 /**
- * preview-skeleton.component.ts — CLS-safe loading skeleton for T06 Editor de Layout / Preview.
- * FE-COMP-024 / SPEC-02 §2 / P8 UX Polish.
+ * preview-skeleton.component.ts — CLS-safe loading skeleton for editor de layout Editor de Layout / Preview.
  *
  * Replaces the inline spinner in EditorDeLayoutPreviewComponent when status='loading'.
  * Rendered inside the canvas area (flex-1 overflow-auto) — fills the available space.

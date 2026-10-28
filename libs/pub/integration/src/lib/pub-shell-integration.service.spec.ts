@@ -1,20 +1,16 @@
 /**
  * pub-shell-integration.service.spec.ts — Unit tests for PubShellIntegrationService.
- * FE-PUB-006 / P1 Foundation acceptance criteria.
- * FE-PUB-023 / P6 Navigation: nav registration + breadcrumb resolution.
- * FE-PUB-026 / P8 Observability: publishBreadcrumb() delegates to ObservabilityService.event().
+ * Navigation: nav registration + breadcrumb resolution.
+ * Observability: publishBreadcrumb() delegates to ObservabilityService.event().
  *
  * Verifies:
- *   P1:
  *     - start() activates the service (idempotent)
  *     - stop() deactivates the service (idempotent)
  *     - empresaChanged signal remains 0 before any empresa switch
- *   P6 (FE-PUB-023):
  *     - start() registers PUB_NAV_CONFIG (stores in registeredConfig)
  *     - stop() clears registeredConfig
- *     - updateBreadcrumb() resolves T07 and T08 breadcrumb segments
+ *     - updateBreadcrumb() resolves exportação and histórico breadcrumb segments
  *     - stop() resets resolvedBreadcrumbs to empty arrays
- *   P8 (FE-PUB-026):
  *     - publishBreadcrumb('export-requested', projetoId) → ObservabilityService.event('export-requested', {projetoId})
  *     - publishBreadcrumb('verdict-shown', projetoId) → ObservabilityService.event('verdict-shown', {projetoId})
  *     - publishBreadcrumb('downloaded', projetoId) → ObservabilityService.event('downloaded', {projetoId})
@@ -58,7 +54,7 @@ describe('PubShellIntegrationService', () => {
     expect(service.empresaChanged()).toBe(0);
   });
 
-  // ── P1: start() / stop() lifecycle ─────────────────────────────────────────
+  // ── start() / stop() lifecycle ─────────────────────────────────────────
 
   describe('start()', () => {
     it('should activate the service without throwing', () => {
@@ -87,13 +83,13 @@ describe('PubShellIntegrationService', () => {
       service.start();
       service.stop();
       service.stop(); // second stop — no-op (already inactive)
-      expect(service.empresaChanged()).toBe(1); // stop() increments count (INT-FE-PUB-006)
+      expect(service.empresaChanged()).toBe(1); // stop() increments count
     });
   });
 
-  // ── P6: nav registration (FE-PUB-023) ───────────────────────────────────────
+  // ── nav registration ───────────────────────────────────────
 
-  describe('nav registration (FE-PUB-023)', () => {
+  describe('nav registration', () => {
     it('start() should register the PUB nav config (registeredConfig is set)', () => {
       expect(service.registeredConfig).toBeNull();
       service.start();
@@ -118,22 +114,22 @@ describe('PubShellIntegrationService', () => {
     });
   });
 
-  // ── P6: breadcrumb resolution (FE-PUB-023) ──────────────────────────────────
+  // ── breadcrumb resolution ──────────────────────────────────
 
-  describe('updateBreadcrumb() (FE-PUB-023)', () => {
+  describe('updateBreadcrumb()', () => {
     it('resolvedBreadcrumbs should be empty before updateBreadcrumb is called', () => {
       expect(service.resolvedBreadcrumbs()['exportar']).toEqual([]);
       expect(service.resolvedBreadcrumbs()['download-historico']).toEqual([]);
     });
 
-    it('updateBreadcrumb("Meu Livro") should resolve T07 breadcrumb correctly', () => {
+    it('updateBreadcrumb("Meu Livro") should resolve exportação breadcrumb correctly', () => {
       service.updateBreadcrumb('Meu Livro');
       expect(service.resolvedBreadcrumbs()['exportar']).toEqual([
         'Projetos', 'Meu Livro', 'Exportar',
       ]);
     });
 
-    it('updateBreadcrumb("Meu Livro") should resolve T08 breadcrumb correctly', () => {
+    it('updateBreadcrumb("Meu Livro") should resolve histórico breadcrumb correctly', () => {
       service.updateBreadcrumb('Meu Livro');
       expect(service.resolvedBreadcrumbs()['download-historico']).toEqual([
         'Projetos', 'Meu Livro', 'Download e Histórico',
@@ -157,9 +153,9 @@ describe('PubShellIntegrationService', () => {
     });
   });
 
-  // ── P8: publishBreadcrumb() telemetry (FE-PUB-026) ──────────────────────────
+  // ── publishBreadcrumb() telemetry ──────────────────────────
 
-  describe('publishBreadcrumb() (FE-PUB-026)', () => {
+  describe('publishBreadcrumb()', () => {
     it('should call ObservabilityService.event with "export-requested" and projetoId', () => {
       service.publishBreadcrumb('export-requested', 'proj-123');
 

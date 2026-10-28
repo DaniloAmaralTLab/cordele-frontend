@@ -1,6 +1,6 @@
 /**
  * idioma-select.component.spec.ts
- * FE-COMP-012: IdiomaSelectComponent — lists exactly pt/en/es/fr, emits change.
+ * IdiomaSelectComponent — lists exactly pt/en/es/fr, emits change.
  */
 import { TestBed } from '@angular/core/testing';
 import { Component, signal } from '@angular/core';

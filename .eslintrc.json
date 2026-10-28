@@ -43,7 +43,7 @@
           "error",
           {
             "selector": "CatchClause[body.body.length=0]",
-            "message": "[SD-02] Empty or comment-only catch block swallows all errors silently. Either rethrow, log the error, or set a visible error state. If silence is intentional (SSR compatibility, best-effort cleanup, or a UX decision documented elsewhere), annotate: // eslint-disable-next-line no-restricted-syntax -- <explicit reason>"
+            "message": "Empty or comment-only catch block swallows all errors silently. Either rethrow, log the error, or set a visible error state. If silence is intentional (SSR compatibility, best-effort cleanup, or a UX decision documented elsewhere), annotate: // eslint-disable-next-line no-restricted-syntax -- <explicit reason>"
           }
         ]
       }

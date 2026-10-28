@@ -1,6 +1,5 @@
 /**
  * pub-breadcrumb.token.ts — Injection token for the telemetry breadcrumb callback.
- * FE-PUB-026 (P8 Observability).
  *
  * Decouples data-access facades (ExportFacade, HistoryFacade) and feature components
  * (ExportacaoEValidacaoComponent) from PubShellIntegrationService (type:feature).
@@ -19,7 +18,6 @@
  *
  * Tech-debt note: three injection tokens with the same shape (callback fn) in the same lib
  * suggest a future "PubIntegrationCallbacks" abstraction, but consolidation is out of scope
- * for P8 (FE-PUB-026). Tracked here for future refactor.
  *
  * Wiring pattern (app.config.ts):
  *   {
@@ -33,8 +31,6 @@
  *
  * Default factory: no-op — safe for test environments where PubShellIntegrationService
  * is not provided.
- *
- * Track D: FE-PUB-026 (P8 Observability).
  */
 import { InjectionToken } from '@angular/core';
 

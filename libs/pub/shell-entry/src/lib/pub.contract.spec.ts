@@ -1,6 +1,5 @@
 /**
  * pub.contract.spec.ts — Unit tests for PUB shell-entry contract constants.
- * FE-PUB-001 / P1 Foundation acceptance criteria.
  *
  * Verifies:
  *   - PUB_PERMISSION_MAP has exactly pub.view, pub.export, pub.download

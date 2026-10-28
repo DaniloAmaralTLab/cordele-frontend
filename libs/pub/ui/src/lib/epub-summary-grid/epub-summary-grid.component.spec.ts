@@ -1,5 +1,5 @@
 /**
- * epub-summary-grid.component.spec.ts — FE-PUB-015 — Unit tests for EpubSummaryGridComponent.
+ * epub-summary-grid.component.spec.ts — Unit tests for EpubSummaryGridComponent.
  *
  * Verifies:
  *   - Component creates without errors.
@@ -8,13 +8,11 @@
  *   - Stats grid (Section A) rendered with correct values when all stats provided.
  *   - hasKpis is false when all ePub KPI inputs (tamanho/capitulos/imagens) are null.
  *   - hasKpis is true when at least one KPI input is non-null.
- *   - KPI tiles (Section B, INT-FE-PUB-005) rendered and hidden correctly per null-safety.
+ *   - KPI tiles rendered and hidden correctly per null-safety.
  *
  * Boundary: type:ui — component receives data via @Input primitives only.
  * No mock of data-access services (pure presentational).
  *
- * Track D: FE-PUB-015 — P3 Feature Libs.
- * INT-FE-PUB-005 resolved: ePub KPI tiles (Tamanho/Capítulos/Imagens) now implemented.
  */
 import { TestBed } from '@angular/core/testing';
 import { EpubSummaryGridComponent } from './epub-summary-grid.component';
@@ -39,7 +37,7 @@ describe('EpubSummaryGridComponent', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('hasStats is false when all inputs are null (default — BLOCKED INT-FE-PUB-005)', async () => {
+  it('hasStats is false when all inputs are null (default)', async () => {
     const fixture = await build();
     expect(fixture.componentInstance.hasStats).toBe(false);
   });
@@ -61,7 +59,7 @@ describe('EpubSummaryGridComponent', () => {
     expect(fixture.componentInstance.hasStats).toBe(true);
   });
 
-  // ── Empty state (plan P3: "renderizar estado vazio explícito") ───────────
+  // ── Empty state ("renderizar estado vazio explícito") ───────────
 
   it('renders empty state when all inputs are null', async () => {
     // Neither stats nor KPI tiles → isEmpty = true → explicit empty state shown.
@@ -104,7 +102,7 @@ describe('EpubSummaryGridComponent', () => {
     expect(el.textContent).toContain('1');
   });
 
-  // ── Section B: ePub KPI tiles (INT-FE-PUB-005) ───────────────────────────
+  // ── ePub KPI tiles ───────────────────────────
 
   it('hasKpis is false when all KPI inputs are null', async () => {
     const fixture = await build();
@@ -176,7 +174,7 @@ describe('EpubSummaryGridComponent', () => {
     expect(el.textContent).toContain('95');
   });
 
-  it('does NOT render paginas tile (ADR-004 — ePub reflowable)', async () => {
+  it('does NOT render paginas tile (ePub reflowable)', async () => {
     const fixture = await build({ tamanho: '1.4 MB', capitulos: 10, imagens: 50 });
     const el: HTMLElement = fixture.nativeElement;
     // Ensure paginas is never rendered, even when other KPIs are present

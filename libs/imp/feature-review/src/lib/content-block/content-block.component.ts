@@ -1,5 +1,5 @@
 /**
- * content-block.component.ts — Presentational (FE-IMP-017).
+ * content-block.component.ts — Presentational.
  * Renders a single unparsed block row with reason label, source ref, ignore button.
  * The ignored state is passed via the parent (signal-derived in RevisaoDeEstruturaComponent).
  *

@@ -1,5 +1,5 @@
 /**
- * pub-projeto.guard.spec.ts — Unit tests for pubProjetoGuard (FE-PUB-021 / P5).
+ * pub-projeto.guard.spec.ts — Unit tests for pubProjetoGuard.
  *
  * Verifies:
  *   - Well-formed UUID → returns true (no HTTP call)

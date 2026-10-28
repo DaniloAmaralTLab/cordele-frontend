@@ -1,25 +1,23 @@
 /**
- * pub-status.guard.ts — Guards PUB routes by project status. Full implementation FE-PUB-022 (P5).
+ * pub-status.guard.ts — Guards PUB routes by project status.
  *
- * Modes (SPEC-01 §routes):
+ * Modes:
  *   export  — project must be in em_composicao for a fresh ePub generation to be valid.
  *             Any other status → redirect to /proj/biblioteca-de-projetos.
  *   history — always allow; the DownloadEHistoricoComponent renders empty state when there
  *             are no publications (no HTTP call needed for this mode).
  *
  * HTTP strategy (export mode):
- *   GET /api/v1/proj/projetos/{projetoId} via AccessHttpClient (RULE-NX-05).
+ * GET /api/v1/proj/projetos/{projetoId} via AccessHttpClient.
  *   em_composicao → true.
  *   any other status or HTTP error → redirect to /proj/biblioteca-de-projetos.
  *
- * This is a FE-only UX guard (SPEC-01 §3): the BE api-contract defines its own pre-flight
- * checks (409/422, api-contract §5). The guard pre-empts the navigation; it is not a
+ * This is a FE-only UX guard: the BE defines its own pre-flight
+ * checks (409/422). The guard pre-empts the navigation; it is not a
  * security boundary.
  *
- * HTTP: uses AccessHttpClient (not HttpClient directly) per RULE-NX-05 — empresa context
- * is resolved server-side from the JWT `empresa_id` claim (INT-FE-PUB-001).
- *
- * Track D: FE-PUB-022 (P5) — real implementation replacing P1 stub from @cordele/pub flat lib.
+ * HTTP: uses AccessHttpClient (not HttpClient directly) — empresa context
+ * is resolved server-side from the JWT `empresa_id` claim.
  */
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';
@@ -38,8 +36,8 @@ interface ProjetoStatusDto {
  * pubStatusGuard — returns a CanActivateFn for the given mode.
  *
  * Usage in PUB_ROUTES (pub-shell-entry):
- *   canActivate: [pubProjetoGuard, pubStatusGuard('export')]   // T07
- *   canActivate: [pubProjetoGuard, pubStatusGuard('history')]  // T08
+ *   canActivate: [pubProjetoGuard, pubStatusGuard('export')]   // exportação
+ *   canActivate: [pubProjetoGuard, pubStatusGuard('history')]  // histórico
  *
  * @param mode 'export' checks project status via proj-service; 'history' always allows.
  */

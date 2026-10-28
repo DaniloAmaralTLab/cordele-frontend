@@ -1,19 +1,17 @@
 /**
- * epub-summary-grid.component.ts — FE-PUB-015 — Grid de KPIs do ePub.
+ * epub-summary-grid.component.ts — Grid de KPIs do ePub.
  *
  * Section A — Publication stats (total / publicadas / comAvisos / comErros):
- *   Shown when ALL four inputs are non-null. Inputs come from PublicationStats (§6.3).
+ * Shown when ALL four inputs are non-null. Inputs come from PublicationStats.
  *
- * Section B — ePub KPI tiles (INT-FE-PUB-005 resolved — ADR-004 / api-contract §6.1):
+ * ePub KPI tiles:
  *   tamanho: formatted size string (e.g. "1.4 MB"); null → tile hidden.
  *   capitulos: chapter count; null → tile hidden.
  *   imagens: image count; null → tile hidden.
- *   paginas: PERMANENTLY absent from the grid — ADR-004 (ePub reflowable, no fixed pagination).
+ * paginas: PERMANENTLY absent from the grid (ePub reflowable, no fixed pagination).
  *   Each tile is null-safe: shown only when its value is non-null (never "N/D" or "--").
  *
  * Boundary: type:ui — accepts only primitives; does NOT import type:data-access.
- *
- * Track D: FE-PUB-015 — P3 Feature Libs.
  */
 import {
   ChangeDetectionStrategy,
@@ -48,7 +46,7 @@ import {
       </div>
     }
 
-    <!-- Section B: ePub KPI tiles (INT-FE-PUB-005 — each tile hidden when null) -->
+    <!-- ePub KPI tiles (each tile hidden when null) -->
     @if (hasKpis) {
       <div class="grid grid-cols-2 gap-3 mb-4" role="list" aria-label="KPIs do ePub gerado">
         @if (tamanho !== null) {
@@ -69,12 +67,12 @@ import {
             <p class="text-2xl font-bold" style="color:var(--text-primary)">{{ imagens }}</p>
           </div>
         }
-        <!-- paginas tile ABSENT by design — ADR-004: ePub reflowable has no fixed pagination -->
+        <!-- Paginas tile ABSENT by design — ePub reflowable has no fixed pagination -->
       </div>
     }
 
     <!-- Empty state — shown when NEITHER stats NOR KPI tiles have data to display.
-         Never omit silently (plan P3 rule: "renderizar estado vazio explícito"). -->
+         Never omit silently (rule: "renderizar estado vazio explícito"). -->
     @if (isEmpty) {
       <div class="rounded-xl p-4 mb-4 text-center text-sm"
            style="background:var(--bg-surface);border:1px dashed var(--border-subtle);color:var(--text-tertiary);"
@@ -95,14 +93,14 @@ export class EpubSummaryGridComponent {
   /** Publicações com erros críticos. */
   @Input() comErros:   number | null = null;
 
-  // ── Section B: ePub KPI tiles (INT-FE-PUB-005) ───────────────────────────
+  // ── ePub KPI tiles ───────────────────────────
   /** Formatted file size (e.g. "1.4 MB"). null → tile hidden (not "N/D"). */
   @Input() tamanho:   string | null = null;
   /** Chapter count. null → tile hidden. */
   @Input() capitulos: number | null = null;
   /** Image count. null → tile hidden. */
   @Input() imagens:   number | null = null;
-  // paginas: PERMANENTLY absent — ADR-004; no @Input() provided intentionally.
+  // paginas: PERMANENTLY absent; no @Input() provided intentionally.
 
   /** True when ALL four publication stats are present (Section A). */
   get hasStats(): boolean {
@@ -121,7 +119,7 @@ export class EpubSummaryGridComponent {
 
   /**
    * True when NEITHER section A (stats) NOR section B (KPI tiles) has data.
-   * Drives the explicit empty state — never renders a blank area (plan P3 rule).
+   * Drives the explicit empty state — never renders a blank area.
    */
   get isEmpty(): boolean {
     return !this.hasStats && !this.hasKpis;

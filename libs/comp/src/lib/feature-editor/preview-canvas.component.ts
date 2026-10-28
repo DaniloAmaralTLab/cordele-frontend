@@ -1,10 +1,9 @@
 /**
  * preview-canvas.component.ts — renders a single PreviewNode as a "paper page".
- * FE-COMP-016 / SPEC-02 §2 / SPEC-03 §2.
  *
  * Presentational:
- *   - One page at a time (never the full book in the DOM — perf, SPEC-03 §2).
- *   - Paper surface remains light regardless of the app's dark theme (ADR-COMP-001).
+ *   - One page at a time (never the full book in the DOM — perf).
+ *   - Paper surface remains light regardless of the app's dark theme.
  *   - For tipo='imagem': renders the 4 alignment layouts and embeds ImageAlignmentBadgeComponent.
  *   - Does NOT make HTTP calls; page navigation is external (PagePaginatorComponent).
  */
@@ -23,11 +22,11 @@ import { ImageAlignmentBadgeComponent } from './image-alignment-badge.component'
   imports: [ImageAlignmentBadgeComponent],
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [`:host {
-    /* Paper-surface tokens — light regardless of app chrome (ADR-COMP-001). */
+    /* Paper-surface tokens — light regardless of app chrome. */
     --paper-surface:     #ffffff;
     --paper-text:        var(--paper-text-override, #1a1a2e);
-    /* D-H / FE-COMP-022: oklch() literals replaced by design-system token references.
-     * Image placeholder accent maps to brand colour family (design-tokens.md §3). */
+    /* oklch() literals replaced by design-system token references.
+     * Image placeholder accent maps to brand colour family. */
     --paper-img-accent:      var(--color-brand);
     --paper-img-accent-dark: var(--color-brand-subtle);
   }`],

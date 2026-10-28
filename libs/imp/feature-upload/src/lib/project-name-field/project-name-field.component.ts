@@ -1,5 +1,5 @@
 /**
- * project-name-field.component.ts — Presentational (FE-IMP-012).
+ * project-name-field.component.ts — Presentational.
  * Renders the "Nome do projeto" input for the new-project upload flow.
  * Validation: required, minlength=3.
  * Emits valueChange on every keystroke so the smart UploadComponent keeps

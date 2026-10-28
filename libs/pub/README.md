@@ -1,6 +1,4 @@
-<!-- TODO[lote-6a]: scaffold via `npx nx generate @nx/angular:lib pub` -->
+# pub
 
-# @cordele/pub
-
-Library placeholder for module `pub`. The folder structure will be
-completed by the Nx generator after `npm install`.
+Publicação module: ePub export, validation and publication history,
+split into feature, data-access, ui and integration libs (`pub-*` projects).

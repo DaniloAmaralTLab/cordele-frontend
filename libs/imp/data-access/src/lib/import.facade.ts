@@ -1,13 +1,12 @@
 /**
- * import.facade.ts — drives the T03 Upload flow (signals-based, ADR-007).
+ * import.facade.ts — drives the upload Upload flow (signals-based).
  * Contracts honoured:
- *   - POST /api/v1/imp/manuscripts is SYNCHRONOUS (D-A): no polling, no parseJobId.
- *   - T03 sends file + EXACTLY ONE of {projetoTitulo | projetoId} (D-C).
- *   - UI shows indeterminate "analisando estrutura…" while POST is in flight (ADR-IMP-001 revised).
- * P5: reacts to empresaChanged from ImpShellIntegrationService (INT-FE-IMP-005).
- * P6: uses mapImpError for centralised error messages (FE-IMP-021);
- *     emits lifecycle telemetry events via ImpShellIntegrationService (FE-IMP-023).
- * Track D: created by fe-architect-promote IMP @ cordele (D-494).
+ *   - POST /api/v1/imp/manuscripts is SYNCHRONOUS: no polling, no parseJobId.
+ *   - upload sends file + EXACTLY ONE of {projetoTitulo | projetoId}.
+ *   - UI shows indeterminate "analisando estrutura…" while POST is in flight.
+ * Reacts to empresaChanged from ImpShellIntegrationService.
+ * Uses mapImpError for centralised error messages;
+ * Emits lifecycle telemetry events via ImpShellIntegrationService.
  */
 import { DestroyRef, Injectable, effect, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -29,10 +28,10 @@ export class ImportFacade {
   private readonly destroyRef       = inject(DestroyRef);
   private readonly integrationSvc   = inject(ImpShellIntegrationService);
 
-  // ── Cancellation (P7: empresa-cancel e2e contract) ────────────────────────
+  // ── Cancellation (empresa-cancel e2e contract) ────────────────────────
   // Emitting on this Subject cancels any in-flight importar() subscription.
   // Called from reset() so that when the empresa changes mid-upload the ongoing
-  // HTTP request is abandoned and navigation to T04 does NOT happen (INT-FE-IMP-005).
+  // HTTP request is abandoned and navigation to revisão de estrutura does NOT happen.
   private readonly _cancel$ = new Subject<void>();
 
   // ── State ─────────────────────────────────────────────────────────────────
@@ -45,7 +44,7 @@ export class ImportFacade {
   readonly result = this._result.asReadonly();
 
   constructor() {
-    // Cancel any upload in-flight when the active empresa changes (INT-FE-IMP-005).
+    // Cancel any upload in-flight when the active empresa changes.
     // empresaChanged() starts at 0 on boot — only reacts when it increments (> 0).
     effect(() => {
       if (this.integrationSvc.empresaChanged() > 0) {
@@ -60,7 +59,7 @@ export class ImportFacade {
     this._phase.set('uploading');
     this._error.set(null);
 
-    // FE-IMP-023: emit import:started lifecycle event
+    // Emit import:started lifecycle event
     this.integrationSvc.emitLifecycleEvent('imp.import.started');
 
     this.port.create(params)
@@ -73,12 +72,12 @@ export class ImportFacade {
           this._result.set(manuscrito);
           this._phase.set('done');
 
-          // FE-IMP-023: emit import:succeeded lifecycle event
+          // Emit import:succeeded lifecycle event
           this.integrationSvc.emitLifecycleEvent('imp.import.succeeded', {
             manuscritoId: manuscrito.id,
           });
 
-          // Navigate to T04 — pass manuscrito via router state (zero extra GET in happy path)
+          // Navigate to revisão de estrutura — pass manuscrito via router state (zero extra GET in happy path)
           this.router.navigate(
             ['/imp/manuscritos', manuscrito.id, 'revisao'],
             { state: { manuscrito } },
@@ -87,11 +86,11 @@ export class ImportFacade {
         error: (err: HttpErrorResponse) => {
           this._phase.set('error');
 
-          // FE-IMP-021: use centralised error mapper (SPEC-07)
+          // Use centralised error mapper
           const { message, traceId } = mapImpError(err);
           this._error.set(traceId ? `${message} [${traceId}]` : message);
 
-          // FE-IMP-023: emit import:failed lifecycle event
+          // Emit import:failed lifecycle event
           const urnType = (err.error as { type?: string } | null)?.type;
           this.integrationSvc.emitLifecycleEvent('imp.import.failed', {
             errorType: urnType ?? `http-${err.status}`,
@@ -104,7 +103,7 @@ export class ImportFacade {
   reset(): void {
     // Cancel any in-flight importar() subscription so that a POST response
     // arriving after reset() (e.g. empresa change mid-upload) does NOT
-    // trigger navigation to T04 (INT-FE-IMP-005 / imp-empresa-cancel e2e).
+    // trigger navigation to revisão de estrutura (imp-empresa-cancel e2e).
     this._cancel$.next();
     this._phase.set('idle');
     this._error.set(null);

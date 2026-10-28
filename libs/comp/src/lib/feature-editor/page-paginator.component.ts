@@ -1,6 +1,5 @@
 /**
- * page-paginator.component.ts — prev/next page controls for T06 preview.
- * FE-COMP-016 / SPEC-02 §2.
+ * page-paginator.component.ts — prev/next page controls for editor de layout preview.
  *
  * Presentational:
  *   - Prev disabled at index=0; Next disabled at index=total-1.

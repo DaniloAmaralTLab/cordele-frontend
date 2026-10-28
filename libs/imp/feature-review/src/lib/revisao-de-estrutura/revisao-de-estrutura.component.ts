@@ -1,15 +1,14 @@
 /**
- * revisao-de-estrutura.component.ts — T04 Revisão de Estrutura (smart component).
- * Promoted from prototype (D-494).
+ * revisao-de-estrutura.component.ts — revisão de estrutura Revisão de Estrutura (smart component).
  *
  * Contracts honoured:
- *   - Hydrates from 201 body (router state) in happy path — zero GET (M2 D-A).
+ *   - Hydrates from 201 body (router state) in happy path — zero GET.
  *   - Deep-link path: loadStructure(manuscritoId) via ReviewFacade.
- *   - ignorarSegmento / restaurarSegmento: PERSISTENT with rollback on 4xx/5xx (FE-IMP-011).
- *   - confirmarEstrutura: calls POST /confirm-estrutura before navigating (FE-IMP-011).
- *   - INT-FE-IMP-003: confirmarEstrutura navigates to /comp (fallback /proj/biblioteca).
+ *   - ignorarSegmento / restaurarSegmento: PERSISTENT with rollback on 4xx/5xx.
+ *   - confirmarEstrutura: calls POST /confirm-estrutura before navigating.
+ *   - confirmarEstrutura navigates to /comp (fallback /proj/biblioteca).
  *
- * P4 update: uses presentational sub-components (FE-IMP-017, FE-IMP-022).
+ * update: uses presentational sub-components.
  */
 import {
   ChangeDetectionStrategy,
@@ -55,7 +54,7 @@ const STEPS = ['Importar', 'Configurar', 'Visualizar', 'Exportar'];
 
       @if (facade.manuscrito(); as ms) {
 
-        <!-- Step progress bar (inline — StepBarComponent from imp-navigation goes here in P5) -->
+        <!-- Step progress bar (inline — StepBarComponent from imp-navigation goes here) -->
         <nav class="flex items-center gap-1 mb-10 text-sm">
           @for (step of steps; track $index) {
             <span class="flex items-center gap-1.5" [style]="stepStyle($index)">
@@ -153,7 +152,7 @@ const STEPS = ['Importar', 'Configurar', 'Visualizar', 'Exportar'];
 
       }
 
-      <!-- Zero-chapters warning modal (imp-zero-chapters EARS / FE-IMP-011) -->
+      <!-- Zero-chapters warning modal (imp-zero-chapters) -->
       @if (showZeroChaptersModal()) {
         <div class="fixed inset-0 z-50 flex items-center justify-center"
              style="background:oklch(0% 0 0 / 0.5);">
@@ -196,7 +195,7 @@ export class RevisaoDeEstruturaComponent implements OnInit {
   readonly route  = inject(ActivatedRoute);
   readonly steps  = STEPS;
 
-  // ── Zero-chapters modal state (imp-zero-chapters EARS / FE-IMP-011) ───────
+  // ── Zero-chapters modal state (imp-zero-chapters) ───────
   /** True when the zero-chapters warning modal is visible. */
   readonly showZeroChaptersModal = signal(false);
 
@@ -251,7 +250,7 @@ export class RevisaoDeEstruturaComponent implements OnInit {
   /**
    * Handles "Confirmar estrutura" click from ActionBarComponent.
    * If the manuscrito has zero chapters, shows the zero-chapters warning modal
-   * instead of proceeding immediately (EARS criterion imp-zero-chapters).
+   * instead of proceeding immediately (imp-zero-chapters).
    * Otherwise calls confirmarEstrutura() directly.
    */
   confirmar(): void {

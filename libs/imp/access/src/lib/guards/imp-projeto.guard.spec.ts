@@ -1,5 +1,5 @@
 /**
- * imp-projeto.guard.spec.ts — unit tests for impProjetoGuard (FE-IMP-019).
+ * imp-projeto.guard.spec.ts — unit tests for impProjetoGuard.
  *
  * Criteria:
  *   - UUID v4 valid  → returns true

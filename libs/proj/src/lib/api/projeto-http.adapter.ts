@@ -1,8 +1,7 @@
 /**
  * projeto-http.adapter.ts — HTTP adapter stub for ProjetoPort.
- * URLs from api-contract.md §4 (base path /api/v1/proj/projetos).
+ * URLs (base path /api/v1/proj/projetos).
  * Activate via provideProj({ adapter: 'http' }) in production app.config.ts.
- * Track D: created by fe-architect-promote PROJ @ cordele (D-494).
  */
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -17,7 +16,7 @@ import { ProjetoPort } from './projeto.port';
 
 @Injectable({ providedIn: 'root' })
 export class ProjetoHttpAdapter implements ProjetoPort {
-  /** AccessHttpClient (not HttpClient) per RULE-NX-05 — empresa context from JWT `empresa_id` claim. */
+  /** AccessHttpClient (not HttpClient) — empresa context from JWT `empresa_id` claim. */
   private readonly http = inject(AccessHttpClient);
   /** Derives from ACCESS_HTTP_BASE via moduleBase() — /v1 prefix lives in one place. */
   private readonly base = `${moduleBase('proj')}/projetos`;
@@ -36,7 +35,7 @@ export class ProjetoHttpAdapter implements ProjetoPort {
   }
 
   /**
-   * POST /api/v1/proj/projetos/{projetoId}/reopen (api-contract §4.7).
+   * POST /api/v1/proj/projetos/{projetoId}/reopen.
    * Empty body; returns ProjetoDetail (200). 409 if rascunho. Idempotent if already em_composicao.
    */
   reopen(projetoId: string): Observable<ProjetoDetail> {

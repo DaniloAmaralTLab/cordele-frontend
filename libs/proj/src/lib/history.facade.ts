@@ -1,13 +1,12 @@
 /**
- * history.facade.ts — drives the T08 Download e Histórico screen (signals-based, ADR-007).
- * VM contract: SPEC-03 §2 HistoryVM.
+ * history.facade.ts — drives the histórico Download e Histórico screen (signals-based).
+ * VM contract: HistoryVM.
  * Behavioural contracts:
  *   - Reopen pessimistic (spec requirement): POST .../reopen, await 200 ProjetoDetail,
  *     then navigate to COMP; 409 (projeto em rascunho) resets reopenPending with toast.
- *   - degraded=true: render identity + status, never error state (api-contract §4.3).
- *   - Download: resolve signed URL, open in new tab (D-F — no byte proxy).
- * P2: uses ProjetoApiService (standardised, multi-empresa, ProblemDetail mapping).
- * Track D: created by fe-architect-promote PROJ @ cordele (D-494).
+ *   - degraded=true: render identity + status, never error state.
+ *   - Download: resolve signed URL, open in new tab (no byte proxy).
+ * Uses ProjetoApiService (standardised, multi-empresa, ProblemDetail mapping).
  */
 import { DestroyRef, Injectable, inject, signal, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -80,8 +79,8 @@ export class HistoryFacade {
   readonly publications = computed<PublicacaoRowVM[]>(() =>
     this._rawPubs().map((pub, idx) => ({
       ...pub,
-      isCurrent:   idx === 0,                        // newest = "versão atual" chip (SPEC-03 §2)
-      canDownload: pub.arquivoUrl != null,            // derived solely from arquivoUrl (SPEC-03 §2)
+      isCurrent:   idx === 0,                        // newest = "versão atual" chip
+      canDownload: pub.arquivoUrl != null,            // derived solely from arquivoUrl
       statusLabel: this.buildStatusLabel(pub),
     })),
   );
@@ -103,7 +102,7 @@ export class HistoryFacade {
           if (detail.degraded) {
             this._degraded.set(true);
           }
-          // Publications come from the separate /publicacoes endpoint for full list (T08)
+          // Publications come from the separate /publicacoes endpoint for full list (histórico)
           this.loadPublications(projetoId);
         },
         error: (err: { httpStatus?: number; message?: string }) => {
@@ -121,7 +120,7 @@ export class HistoryFacade {
           this._status.set('ready');
         },
         error: () => {
-          // PUB degraded — still render project header (api-contract §4.3 + SPEC-03 §2)
+          // PUB degraded — still render project header
           this._rawPubs.set([]);
           this._degraded.set(true);
           this._status.set('ready');
@@ -133,7 +132,7 @@ export class HistoryFacade {
    * Pessimistic reopen (spec requirement from prompt):
    *   POST .../reopen → await 200 ProjetoDetail → navigate to COMP.
    *   409 (rascunho) → reset reopenPending, show error toast.
-   * reopenPending gates CTAs so double-click cannot fire two writes (SPEC-03 §2).
+   * reopenPending gates CTAs so double-click cannot fire two writes.
    */
   async onReopen(destination: 'metadata' | 'layout'): Promise<void> {
     const projetoId = this._currentProjetoId;
@@ -163,7 +162,7 @@ export class HistoryFacade {
   }
 
   /**
-   * Download: resolve signed URL, open directly in new tab (D-F — no byte proxy).
+   * Download: resolve signed URL, open directly in new tab (no byte proxy).
    * arquivoUrl from the list is a placeholder; getDownloadUrl mints a fresh signed URL.
    */
   async onDownload(row: PublicacaoRowVM): Promise<void> {

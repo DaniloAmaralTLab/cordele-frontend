@@ -1,19 +1,17 @@
 /**
  * proj-projeto.guard.ts — Guards that :projetoId is a well-formed UUID before
- * activating the T08 (Download e Histórico) route. FE-PROJ-017.
+ * activating the histórico (Download e Histórico) route.
  *
- * Strategy (SPEC-01 §3):
+ * Strategy:
  *   1. Extract projetoId from ActivatedRouteSnapshot.paramMap.
  *   2. Validate UUID format (RFC 4122 regex). If malformed → redirect to
  *      /proj/biblioteca-de-projetos without any HTTP call.
  *   3. If UUID is well-formed → return true. HistoryFacade.load() handles the
- *      404 case by rendering a 'not-found' state (api-contract §4.3).
+ * 404 case by rendering a 'not-found' state.
  *
  * Non-goals:
- *   - Does NOT call proj-service (FE-PROJ-017 requirement — no duplicate HTTP).
+ *   - Does NOT call proj-service (no duplicate HTTP).
  *   - Does NOT verify project existence (HistoryFacade owns the 404 UX).
- *
- * Track D: implemented in P1 — FE-PROJ-017.
  */
 import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router } from '@angular/router';

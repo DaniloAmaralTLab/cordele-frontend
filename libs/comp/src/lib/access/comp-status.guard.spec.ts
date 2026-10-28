@@ -1,6 +1,6 @@
 /**
  * comp-status.guard.spec.ts — unit tests for compStatusGuard.
- * INT-FE-COMP-003 (P4): verifies real proj-service integration via AccessHttpClient.
+ * Verifies real proj-service integration via AccessHttpClient.
  *
  * Tests:
  *   - em_composicao → returns true (access granted)

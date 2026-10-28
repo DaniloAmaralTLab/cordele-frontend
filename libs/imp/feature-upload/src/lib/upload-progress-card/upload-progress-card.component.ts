@@ -1,6 +1,6 @@
 /**
- * upload-progress-card.component.ts — Presentational (FE-IMP-014).
- * Shows upload/analysis in-progress state (indeterminate — POST is synchronous per D-A)
+ * upload-progress-card.component.ts — Presentational.
+ * Shows upload/analysis in-progress state (indeterminate — POST is synchronous)
  * and error state with a retry action.
  *
  * Inputs:
@@ -27,7 +27,7 @@ import { UploadPhase } from '@cordele/imp/data-access';
   imports: [],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
-    <!-- Uploading / analysing (indeterminate — D-A synchronous POST) -->
+    <!-- Uploading / analysing (indeterminate — synchronous POST) -->
     @if (phase === 'uploading') {
       <div class="rounded-xl p-5" style="background:var(--bg-surface);border:1px solid var(--border-subtle);">
         <div class="flex items-center gap-3 mb-3">

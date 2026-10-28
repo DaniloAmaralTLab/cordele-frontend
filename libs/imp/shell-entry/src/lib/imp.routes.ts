@@ -1,25 +1,23 @@
 /**
- * imp.routes.ts — IMP module routes with guards (FE-IMP-003, FE-IMP-013, INT-FE-IMP-004).
- * P3 — Shell Entry + Bootstrap.
- * P5 — Real guards wired (FE-IMP-019, INT-FE-IMP-004).
+ * imp.routes.ts — IMP module routes with guards.
+ * Shell Entry + Bootstrap.
  *
  * Registered in app.routes.ts as:
  *   { path: 'imp', loadChildren: () => import('@cordele/imp/shell-entry').then(r => r.IMP_ROUTES) }
  *
- * Routes (SPEC-01 §routes):
- *   /imp/upload                              → UploadComponent (T03, new project)
- *   /imp/projetos/:projetoId/importar        → UploadComponent (T03, existing project)
- *   /imp/manuscritos/:manuscritoId/revisao   → RevisaoDeEstruturaComponent (T04, deep-linkable)
+ * Routes:
+ *   /imp/upload                              → UploadComponent (upload, new project)
+ *   /imp/projetos/:projetoId/importar        → UploadComponent (upload, existing project)
+ *   /imp/manuscritos/:manuscritoId/revisao   → RevisaoDeEstruturaComponent (revisão de estrutura, deep-linkable)
  *
  * Guards (ordered — all must pass):
  *   authGuard           — JWT present and valid   (@cordele/shared/access-decision)
  *   empresaGuard        — EmpresaContext resolved  (@cordele/shared/empresa-context)
  *   accessGuard(perm)   — named permission check   (@cordele/shared/access-decision)
- *   impProjetoGuard     — UUID-v4 format check     (@cordele/imp/access, FE-IMP-019)
+ * impProjetoGuard — UUID-v4 format check (@cordele/imp/access)
  *
- * Track D: created by fe-architect-promote IMP @ cordele (D-494).
- * Updated: P3 (FE-IMP-003/005) — guards wired; loadComponent kept for code-splitting.
- * Updated: P5 (INT-FE-IMP-004, FE-IMP-019) — real impProjetoGuard from imp-access.
+ * Guards wired; loadComponent kept for code-splitting.
+ * Real impProjetoGuard from imp-access.
  */
 import { Routes } from '@angular/router';
 import { authGuard, accessGuard } from '@cordele/shared/access-decision';
@@ -41,7 +39,7 @@ export const IMP_ROUTES: Routes = [
     path: 'projetos/:projetoId/importar',
     loadComponent: () =>
       import('@cordele/imp/feature-upload').then(m => m.UploadComponent),
-    // impProjetoGuard validates UUID-v4 format of :projetoId (wired in P5 — FE-IMP-019)
+    // impProjetoGuard validates UUID-v4 format of :projetoId (wired)
     canActivate: [...IMP_BASE_GUARDS, impProjetoGuard, accessGuard('imp.import')],
     title: 'Importar para Projeto',
   },

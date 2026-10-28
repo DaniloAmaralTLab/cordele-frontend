@@ -1,15 +1,15 @@
 /**
- * upload.component.ts — T03 Upload (smart component).
- * Promoted from prototype, connected to ImportFacade (D-494).
+ * upload.component.ts — upload Upload (smart component).
+ * Connected to ImportFacade.
  *
  * Contracts honoured:
- *   - POST is SYNCHRONOUS (D-A): phase='uploading' shows indeterminate "analisando estrutura…"
- *   - File + EXACTLY ONE of {projetoTitulo | projetoId} (D-C).
+ *   - POST is SYNCHRONOUS: phase='uploading' shows indeterminate "analisando estrutura…"
+ *   - File + EXACTLY ONE of {projetoTitulo | projetoId}.
  *   - Route /imp/upload → projetoTitulo (new project); /imp/projetos/:projetoId/importar → projetoId.
  *   - On 'done': ImportFacade navigates to /imp/manuscritos/{id}/revisao (zero extra GET).
  *
- * P4 update: uses presentational sub-components (FE-IMP-012..015).
- * P5 update: StepBarComponent now imports from @cordele/imp/navigation (real component, FE-IMP-018).
+ * update: uses presentational sub-components.
+ * update: StepBarComponent now imports from @cordele/imp/navigation (real component).
  */
 import {
   ChangeDetectionStrategy,
@@ -44,7 +44,7 @@ const STEPS = ['Importar', 'Configurar', 'Visualizar', 'Exportar'];
   template: `
     <div class="px-8 py-8 max-w-[var(--content-max-width)] mx-auto">
 
-      <!-- Step bar (real — imp-navigation/StepBarComponent, FE-IMP-018/P5) -->
+      <!-- Step bar (real — imp-navigation/StepBarComponent) -->
       <imp-step-bar [steps]="STEPS" [activeIndex]="0" />
 
       <div class="mb-8" style="border-left:4px solid oklch(42% 0.20 245);padding-left:14px;">
@@ -150,7 +150,7 @@ export class UploadComponent implements OnInit {
     const params = this.projetoId()
       ? { file: this.selectedFile, projetoId: this.projetoId() ?? '' }
       : { file: this.selectedFile, projetoTitulo: this.nome().trim() };
-    // Navigation to T04 is handled by ImportFacade.importar() on success
+    // Navigation to revisão de estrutura is handled by ImportFacade.importar() on success
     this.facade.importar(params);
   }
 }

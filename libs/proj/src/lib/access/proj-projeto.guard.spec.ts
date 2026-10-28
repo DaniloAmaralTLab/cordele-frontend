@@ -1,6 +1,6 @@
 /**
  * proj-projeto.guard.spec.ts — unit tests for projProjetoGuard.
- * FE-PROJ-017 (P1): UUID format validation + redirect behaviour.
+ * UUID format validation + redirect behaviour.
  *
  * Tests:
  *   - Well-formed UUID → returns true (no HTTP)
@@ -15,7 +15,7 @@ import { projProjetoGuard } from './proj-projeto.guard';
 
 // ── Test fixtures ─────────────────────────────────────────────────────────────
 
-/** Valid RFC 4122 UUID (from plan §1c) */
+/** Valid RFC 4122 UUID */
 const VALID_UUID     = '123e4567-e89b-12d3-a456-426614174000';
 /** Same UUID in uppercase — guard must accept (case-insensitive) */
 const VALID_UUID_UC  = '123E4567-E89B-12D3-A456-426614174000';

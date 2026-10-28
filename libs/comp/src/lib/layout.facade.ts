@@ -1,13 +1,12 @@
 /**
- * layout.facade.ts — drives the T06 Editor de Layout / Preview screen (signals-based, ADR-007).
- * VM contract: SPEC-03 §2 LayoutVM / SPEC-04 §2 LayoutFacade state machine.
- * FE-COMP-009: forkJoin load, signals, canExport, pessimistic export, stale-override filtering.
- * FE-COMP-025: injects CompShellIntegrationService to emit comp-exported telemetry on success.
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Updated: FE-COMP-009 (P2) — forkJoin; 409→empty; canExport; onExport pessimistic;
+ * layout.facade.ts — drives the editor de layout Editor de Layout / Preview screen (signals-based).
+ * VM contract: LayoutVM / LayoutFacade state machine.
+ * forkJoin load, signals, canExport, pessimistic export, stale-override filtering.
+ * Injects CompShellIntegrationService to emit comp-exported telemetry on success.
+ * forkJoin; 409→empty; canExport; onExport pessimistic;
  *          onStyleChange/onAlignmentChange local-only (no network); stale override filtering;
- *          §7.2 defaults; error mapper integration.
- * Updated: FE-COMP-025 (P9) — trackCompExported on export success.
+ * Defaults; error mapper integration.
+ * trackCompExported on export success.
  */
 import { DestroyRef, Injectable, inject, signal, computed } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -30,7 +29,7 @@ import { CompUiError, COMP_URNS, mapCompError, normalizeError } from './comp-err
 
 export type LayoutStatus = 'idle' | 'loading' | 'ready' | 'error' | 'empty';
 
-// ── Layout parameter limits (§7.2 / SPEC-04) ─────────────────────────────────
+// ── Layout parameter limits ─────────────────────────────────
 
 export const LAYOUT_LIMITS = {
   fonteCorpoTamanho: { min: 8,   max: 24  },
@@ -39,7 +38,7 @@ export const LAYOUT_LIMITS = {
   headingTamanho:    { min: 10,  max: 40  },
 } as const;
 
-// ── Defaults (§7.2 — serif/12/1.5/20/28/22/18) ───────────────────────────────
+// ── Defaults (serif/12/1.5/20/28/22/18) ───────────────────────────────
 
 const DEFAULT_LAYOUT: ConfiguracaoLayoutDto = {
   fonteCorpoFamilia: 'serif',
@@ -93,7 +92,7 @@ export class LayoutFacade {
 
   /**
    * Non-stale overrides: those whose nodeId exists in the current page tree.
-   * Only tipo='imagem' overrides are ever sent (D-H / ADR-COMP-001).
+   * Only tipo='imagem' overrides are ever sent.
    */
   readonly nonStaleOverrides = computed(() => {
     const nodeIds = new Set(this._paginas().map(p => p.nodeId));
@@ -105,7 +104,6 @@ export class LayoutFacade {
 
   /**
    * canExport: layout params within limits AND heading hierarchy maintained (h1≥h2≥h3).
-   * SPEC-04 §2 / FE-COMP-009.
    */
   readonly canExport = computed(() => {
     const l = this._layout();
@@ -125,9 +123,8 @@ export class LayoutFacade {
   // ── Actions ───────────────────────────────────────────────────────────────
 
   /**
-   * Load layout + preview-context in parallel on T06 entry.
+   * Load layout + preview-context in parallel on editor de layout entry.
    * Uses forkJoin; 409 manuscript-missing on preview → empty state (panel still shown).
-   * SPEC-04 §2 [comp-layout-refetch].
    */
   loadData(projetoId: string): void {
     this._projetoId = projetoId;
@@ -183,7 +180,6 @@ export class LayoutFacade {
   /**
    * Update a typography parameter locally — NO network call.
    * Clamps to LAYOUT_LIMITS and enforces h1≥h2≥h3.
-   * SPEC-04 §2 [comp-no-optimistic].
    */
   onStyleChange<K extends keyof ConfiguracaoLayoutDto>(
     param: K,
@@ -205,7 +201,6 @@ export class LayoutFacade {
   /**
    * Update the alignment override for an image node — NO network call.
    * Persisted only when the user exports (onExport).
-   * SPEC-04 §2 [comp-alignment-writeback] / [comp-no-optimistic].
    */
   onAlignmentChange(nodeId: string, alinhamento: Alinhamento): void {
     // Update the local paginas signal (live preview)
@@ -230,31 +225,30 @@ export class LayoutFacade {
     this._paginaIdx.update(i => Math.min(this._paginas().length - 1, i + 1));
   }
 
-  // ── Legacy aliases (backward-compat with P1 prototype components) ─────────
+  // ── Legacy aliases (backward compatibility) ─────────
 
-  /** @deprecated Use loadData(). Kept for T06 prototype component compatibility. */
+  /** @deprecated Use loadData(). Kept for backward compatibility. */
   load(projetoId: string): void { this.loadData(projetoId); }
 
-  /** @deprecated Use onPrevPage(). Kept for T06 prototype component compatibility. */
+  /** @deprecated Use onPrevPage(). Kept for backward compatibility. */
   anterior(): void { this.onPrevPage(); }
 
-  /** @deprecated Use onNextPage(). Kept for T06 prototype component compatibility. */
+  /** @deprecated Use onNextPage(). Kept for backward compatibility. */
   proximo(): void { this.onNextPage(); }
 
-  /** @deprecated Use onStyleChange(). Kept for T06 prototype component compatibility. */
+  /** @deprecated Use onStyleChange(). Kept for backward compatibility. */
   setLayoutParam<K extends keyof ConfiguracaoLayoutDto>(campo: K, valor: ConfiguracaoLayoutDto[K]): void {
     this.onStyleChange(campo, valor);
   }
 
-  /** @deprecated Use onAlignmentChange(). Kept for T06 prototype component compatibility. */
+  /** @deprecated Use onAlignmentChange(). Kept for backward compatibility. */
   setAlinhamento(nodeId: string, alinhamento: Alinhamento): void {
     this.onAlignmentChange(nodeId, alinhamento);
   }
 
   /**
    * Pessimistic export: PUT layout with non-stale image overrides, then navigate to PUB.
-   * Body never includes tipo='em-branco' (D-H / ADR-COMP-001).
-   * SPEC-04 §2 [comp-export-persist] / [comp-export-persist-fail].
+   * Body never includes tipo='em-branco'.
    */
   onExport(): void {
     if (!this.canExport()) return;
@@ -280,7 +274,7 @@ export class LayoutFacade {
       .subscribe({
         next: () => {
           this._saving.set(false);
-          // FE-COMP-025: telemetry — export succeeded; emit before navigation.
+          // Telemetry — export succeeded; emit before navigation.
           this.shellIntegration.trackCompExported(this._projetoId);
           // Navigate to PUB only after 200 is received (pessimistic).
           void this.router.navigate([

@@ -1,8 +1,6 @@
 /**
- * warnings-details.component.ts — FE-PUB-016 — Detalhes de Avisos / Erros do epubcheck.
+ * warnings-details.component.ts — Detalhes de Avisos / Erros do epubcheck.
  *
- * INT-FE-PUB-004 (2026-09-03): lista detalhada de avisos DESBLOQUEADA.
- * PUB-016 BE entregue; ratificação FE dispensada (autorização 2026-08-29).
  * - Recebe `avisos: AvisoRow[]` (mapeados de ValidationMessageItem via toAvisoVM).
  * - Renderiza a lista detalhada quando avisos.length > 0.
  * - Renderiza contagens + resumoErro quando avisos está vazio (fallback de compatibilidade).
@@ -13,8 +11,6 @@
  * `AvisoRow` é compatível structurally com `AvisoVM` de @cordele/pub-data-access.
  *
  * Renderiza estado vazio explícito quando totalErros=0 E totalAvisos=0 E avisos=[].
- *
- * Track D: FE-PUB-016 — P3 Feature Libs / INT-FE-PUB-004 — P4 Hub Integrations.
  */
 import {
   ChangeDetectionStrategy,
@@ -65,7 +61,7 @@ export interface AvisoRow {
     }
 
     @if (avisos.length > 0) {
-      <!-- Lista detalhada de mensagens do epubcheck (§4.6 / INT-FE-PUB-004) -->
+      <!-- Lista detalhada de mensagens do epubcheck -->
       <div class="rounded-xl overflow-hidden mb-3"
            style="border:1px solid var(--border-default)">
         <table class="w-full text-xs">
@@ -113,14 +109,14 @@ export interface AvisoRow {
   `,
 })
 export class WarningsDetailsComponent {
-  /** Total de erros críticos reportados pelo epubcheck (api-contract §6.1). */
+  /** Total de erros críticos reportados pelo epubcheck. */
   @Input() totalErros = 0;
-  /** Total de avisos não-bloqueantes reportados pelo epubcheck (api-contract §6.1). */
+  /** Total de avisos não-bloqueantes reportados pelo epubcheck. */
   @Input() totalAvisos = 0;
-  /** Resumo do primeiro erro crítico (null se sem erros — api-contract §6.1). */
+  /** Resumo do primeiro erro crítico (null se sem erros). */
   @Input() resumoErro: string | null = null;
   /**
-   * Lista detalhada de mensagens do epubcheck (api-contract §4.6 / INT-FE-PUB-004).
+   * Lista detalhada de mensagens do epubcheck.
    * Mapeado de ValidationMessageItem[] → AvisoVM[] → AvisoRow[] via facade.
    * `local: null` é renderizado como "—" no template (nunca exibe "null").
    */

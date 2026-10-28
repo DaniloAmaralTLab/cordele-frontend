@@ -1,8 +1,8 @@
 /**
- * step-bar.component.ts — P4 stub (FE-IMP-018).
- * Real StepBarComponent lives in imp-navigation (P5) and will replace this stub.
+ * step-bar.component.ts — stub.
+ * Real StepBarComponent lives in imp-navigation and will replace this stub.
  * Implements the minimum @Input() contract so UploadComponent can compile now.
- * Do NOT move this file to imp-navigation — it will be deleted in P5.
+ * Do NOT move this file to imp-navigation — it will be deleted.
  */
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 

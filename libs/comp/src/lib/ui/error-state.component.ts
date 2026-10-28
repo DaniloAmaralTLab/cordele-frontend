@@ -1,9 +1,8 @@
 /**
  * error-state.component.ts — local placeholder for the shared ErrorStateComponent.
- * FE-COMP-024 / SPEC-07 §2 / P8 UX Polish.
  *
  * NOTE: @cordele/shared/ui-feedback does not yet export ErrorStateComponent (stub only,
- * Wave-0, D-328). This local implementation satisfies COMP's P8 UX requirement.
+ * ). This local implementation satisfies COMP's UX requirement.
  * TODO: replace with import from @cordele/shared/ui-feedback when that lib ships ErrorStateComponent.
  *
  * Inputs:

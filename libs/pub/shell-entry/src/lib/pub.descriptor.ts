@@ -1,6 +1,5 @@
 /**
  * pub.descriptor.ts — static descriptor for shell lazy-loading and step-bar registration.
- * FE-PUB-003 / FE-PUB-004 / SPEC-06 §shell
  *
  * Consumed by:
  *   - apps/cordele-web/src/app/module-descriptors.ts (MODULE_DESCRIPTORS registry).
@@ -10,8 +9,6 @@
  *   order: 3 → third step (IMP=1, COMP=2, PUB=3)
  *   hiddenFromNav: false → visible in global left-nav
  *   isHome: false → default landing module is IMP
- *
- * Track D: FE-PUB-003 / FE-PUB-004 (P1 Foundation).
  */
 import {
   ModuleMenuMetadata,

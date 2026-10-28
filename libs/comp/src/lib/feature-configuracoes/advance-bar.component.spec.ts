@@ -1,6 +1,6 @@
 /**
  * advance-bar.component.spec.ts
- * FE-COMP-012: AdvanceBarComponent — button state and emit.
+ * AdvanceBarComponent — button state and emit.
  */
 import { TestBed } from '@angular/core/testing';
 import { Component, signal } from '@angular/core';

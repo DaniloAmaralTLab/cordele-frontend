@@ -1,6 +1,6 @@
 /**
  * comp-error.mapper.spec.ts — unit tests for mapCompError and normalizeError.
- * FE-COMP-010: 9 URNs, correlationId propagation, normalizeError HTTP→AppError.
+ * 9 URNs, correlationId propagation, normalizeError HTTP→AppError.
  */
 import { describe, it, expect } from 'vitest';
 import { mapCompError, normalizeError, COMP_URNS } from './comp-error.mapper';
@@ -83,7 +83,7 @@ describe('mapCompError', () => {
   });
 
   it('illegal-status does NOT exist — not mapped', () => {
-    // api-contract §5 / SPEC-07 §2: urn:cordele:comp:illegal-status was removed.
+    // urn:cordele:comp:illegal-status was removed.
     const err: AppError = { code: 'urn:cordele:comp:illegal-status', message: '' };
     const result = mapCompError(err);
     // Falls through to default (error-state) — no dedicated mapping

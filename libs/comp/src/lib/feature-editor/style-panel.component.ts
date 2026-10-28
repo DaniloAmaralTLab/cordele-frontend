@@ -1,6 +1,5 @@
 /**
- * style-panel.component.ts — typography style panel for T06.
- * FE-COMP-015 / SPEC-02 §2 / api-contract §7.3.
+ * style-panel.component.ts — typography style panel for editor de layout.
  *
  * Exposes EXACTLY the 7 PUB-honoured parameters:
  *   fonteCorpoFamilia · fonteCorpoTamanho · espacamentoLinha · margemLateral
@@ -18,7 +17,7 @@ import {
 } from '@angular/core';
 import { ConfiguracaoLayoutDto, FonteCorpoFamilia } from '../models/comp.models';
 
-/** Slider/select range config per parameter — api-contract §7.3 / SPEC-02 §2. */
+/** Slider/select range config per parameter */
 const STYLE_LIMITS = {
   fonteCorpoTamanho: { min: 12, max: 20, step: 1 },
   espacamentoLinha:  { min: 1.2, max: 2.0, step: 0.1 },

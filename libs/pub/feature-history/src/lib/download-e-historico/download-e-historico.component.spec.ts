@@ -1,5 +1,5 @@
 /**
- * download-e-historico.component.spec.ts — FE-PUB-018 / FE-PUB-024 / FE-PUB-025.
+ * download-e-historico.component.spec.ts.
  *
  * Verifies:
  *   - Component renders without errors.
@@ -8,9 +8,9 @@
  *   - canDownload() returns true only for valido|avisos, false for erros_criticos|pendente.
  *   - statusLabel() returns correct string per EpubcheckStatus.
  *   - Empty state rendered when facade.isEmpty() = true.
- *   - FE-PUB-025: row with erros_criticos shows "inválido" label and no download button (gate disabled).
- *   - FE-PUB-024: error block shows trace id when facade.errorTraceId() is set.
- *   - FE-PUB-025: refetch notice banner displayed when facade.refetchNotice() is set.
+ *   - row with erros_criticos shows "inválido" label and no download button (gate disabled).
+ *   - error block shows trace id when facade.errorTraceId() is set.
+ *   - refetch notice banner displayed when facade.refetchNotice() is set.
  */
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute } from '@angular/router';
@@ -109,7 +109,7 @@ describe('DownloadEHistoricoComponent', () => {
     expect(el.textContent).toContain('Nenhuma exportação realizada');
   });
 
-  it('FE-PUB-025: erros_criticos row shows "inválido" label and no download button (gate)', async () => {
+  it('erros_criticos row shows "inválido" label and no download button (gate)', async () => {
     const errosRow: PublicacaoHistoryItem = {
       publicacaoId:    'pub-erros',
       projetoId:       'proj-001',
@@ -147,7 +147,7 @@ describe('DownloadEHistoricoComponent', () => {
     expect(downloadBtns.length).toBe(0);
   });
 
-  it('FE-PUB-024: error block shows Trace id when errorTraceId is set', async () => {
+  it('error block shows Trace id when errorTraceId is set', async () => {
     const traceId = signal<string | null>('trace-show-me-001');
     const status = signal<'idle' | 'loading' | 'loaded' | 'error'>('error');
     const lista = signal<PublicacaoHistoryItem[]>([]);
@@ -174,7 +174,7 @@ describe('DownloadEHistoricoComponent', () => {
     expect(el.textContent).toContain('trace-show-me-001');
   });
 
-  it('FE-PUB-025: refetch notice banner shown when refetchNotice is set', async () => {
+  it('refetch notice banner shown when refetchNotice is set', async () => {
     const lista = signal<PublicacaoHistoryItem[]>([]);
     const status = signal<'idle' | 'loading' | 'loaded' | 'error'>('loaded');
     const facade = makeHistoryFacade({

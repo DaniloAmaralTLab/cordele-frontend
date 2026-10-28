@@ -1,22 +1,20 @@
 /**
- * pub.routes.ts — PUB module routes with full guards (FE-PUB-002).
- * P3 update: components migrated from flat lib to feature sub-libs (FE-PUB-012, FE-PUB-018).
+ * pub.routes.ts — PUB module routes with full guards.
+ * update: components migrated from flat lib to feature sub-libs.
  *
  * Registered in app.routes.ts as:
  *   { path: 'pub', loadChildren: () => import('@cordele/pub-shell-entry').then(r => r.PUB_ROUTES) }
  *
- * Routes (SPEC-01 §routes):
- *   /pub/projetos/:projetoId/exportacao-e-validacao   → ExportacaoEValidacaoComponent (T07)
- *   /pub/projetos/:projetoId/download-e-historico     → DownloadEHistoricoComponent (T08)
+ * Routes:
+ *   /pub/projetos/:projetoId/exportacao-e-validacao   → ExportacaoEValidacaoComponent (exportação)
+ *   /pub/projetos/:projetoId/download-e-historico     → DownloadEHistoricoComponent (histórico)
  *
  * Guards (ordered — all must pass):
  *   authGuard           — JWT present and valid   (@cordele/shared/access-decision)
  *   empresaGuard        — EmpresaContext resolved  (@cordele/shared/empresa-context)
  *   accessGuard(perm)   — named permission check   (@cordele/shared/access-decision)
- *   pubProjetoGuard     — UUID-v4 format check     (@cordele/pub-access, FE-PUB-021 stub)
- *   pubStatusGuard      — project status check     (@cordele/pub-access, FE-PUB-022 stub)
- *
- * Track D: FE-PUB-002 — P1 Foundation; FE-PUB-012/018 — P3 Feature Libs migration.
+ * pubProjetoGuard — UUID-v4 format check (@cordele/pub-access, stub)
+ * pubStatusGuard — project status check (@cordele/pub-access, stub)
  */
 import { Routes } from '@angular/router';
 import { authGuard, accessGuard } from '@cordele/shared/access-decision';
@@ -29,7 +27,7 @@ const PUB_BASE_GUARDS = [authGuard, empresaGuard];
 export const PUB_ROUTES: Routes = [
   {
     path: 'projetos/:projetoId/exportacao-e-validacao',
-    // P3: loadComponent from @cordele/pub-feature-export (FE-PUB-012)
+    // loadComponent from @cordele/pub-feature-export
     loadComponent: () =>
       import('@cordele/pub-feature-export').then(m => m.ExportacaoEValidacaoComponent),
     canActivate: [
@@ -42,7 +40,7 @@ export const PUB_ROUTES: Routes = [
   },
   {
     path: 'projetos/:projetoId/download-e-historico',
-    // P3: loadComponent from @cordele/pub-feature-history (FE-PUB-018)
+    // loadComponent from @cordele/pub-feature-history
     loadComponent: () =>
       import('@cordele/pub-feature-history').then(m => m.DownloadEHistoricoComponent),
     canActivate: [

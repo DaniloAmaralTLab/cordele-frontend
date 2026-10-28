@@ -6,12 +6,12 @@
  *   - Provide `empresaGuard` to protect routes that require an active empresa.
  *   - Support empresa switching (triggers signal update; callers re-evaluate decisions).
  *
- * Multi-empresa contract (multi-empresa.md §3):
+ * Multi-empresa contract:
  *   - empresa_id is carried in the JWT claim `empresa_id`.
  *   - The FE does NOT send `X-Empresa-Id`; empresa context is resolved server-side from the JWT claim.
  *   - `EmpresaContextService` is the single source of truth for empresa_id on the FE.
  *
- * INT-FE-COMP-006: initial implementation wired to AuthSessionService.
+ * Initial implementation wired to AuthSessionService.
  */
 import { Injectable, NgZone, computed, inject, signal } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
@@ -120,7 +120,7 @@ export class EmpresaContextService {
 
 /**
  * empresaGuard — blocks COMP routes when no active empresa is set.
- * Source: @cordele/shared/empresa-context (SPEC-01 §3 / INT-FE-COMP-006).
+ * Source: @cordele/shared/empresa-context.
  *
  * An active empresa is required to scope all COMP API calls server-side.
  * The guard does NOT set the empresa; it only verifies that one is set.

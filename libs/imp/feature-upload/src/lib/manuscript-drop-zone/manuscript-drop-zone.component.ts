@@ -1,5 +1,5 @@
 /**
- * manuscript-drop-zone.component.ts — Presentational (FE-IMP-013).
+ * manuscript-drop-zone.component.ts — Presentational.
  * Drag-and-drop + click-to-select area for manuscript files (.docx / .md).
  * Validates format and size; emits fileSelected(File) or validationError(string).
  * Displays the selected-file confirmation card while a file is chosen.

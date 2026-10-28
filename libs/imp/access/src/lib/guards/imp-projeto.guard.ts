@@ -1,5 +1,5 @@
 /**
- * imp-projeto.guard.ts — impProjetoGuard (FE-IMP-019).
+ * imp-projeto.guard.ts — impProjetoGuard.
  *
  * Validates that the :projetoId route parameter is a well-formed UUID v4.
  * Redirects to /projetos if the value is absent, empty, or not a UUID v4.

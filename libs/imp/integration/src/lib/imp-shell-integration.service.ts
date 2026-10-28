@@ -1,12 +1,12 @@
 /**
- * imp-shell-integration.service.ts — IMP shell bridge (INT-FE-IMP-005, INT-FE-IMP-006).
+ * imp-shell-integration.service.ts — IMP shell bridge.
  *
  * Responsibilities:
  *   - init(): register IMP permissions + feature flags with AccessDecisionService.
  *   - Track empresa changes: exposes `empresaChanged` signal (increments on each switch).
  *   - Callers (e.g. ImportFacade via effect()) react to `empresaChanged` to cancel in-flight ops.
  *
- * Boundaries (RULE-NX-01 / RULE-NX-03):
+ * Boundaries:
  *   - type:domain — may import scope:shared type:domain libs only.
  *   - No HttpClient.
  *   - No imports from imp-data-access or imp-shell-entry.
@@ -14,7 +14,7 @@
  * Bootstrap: call `init()` once at module bootstrap (e.g. in app.config.ts APP_INITIALIZER
  * or from the IMP route canActivate chain).
  *
- * Multi-empresa (multi-empresa.md §3):
+ * Multi-empresa:
  *   EmpresaContextService is the single source of truth. When the empresa switches,
  *   `empresaChanged` increments and callers cancel in-flight uploads/requests.
  */
@@ -73,7 +73,7 @@ export class ImpShellIntegrationService {
    * `accessGuard('imp.import')`, `accessGuard('imp.review')` etc. can evaluate correctly.
    *
    * Defined inline to avoid importing from imp-shell-entry (type:app) which would
-   * violate the type:domain boundary (RULE-NX-01).
+   * violate the type:domain boundary.
    */
   init(): void {
     // Register IMP FE→BE permission mappings
@@ -94,12 +94,11 @@ export class ImpShellIntegrationService {
   /**
    * emitLifecycleEvent — publish an IMP lifecycle breadcrumb to the pipeline event stream.
    *
-   * FE-IMP-023 / SPEC-06 §2: ImpShellIntegrationService publishes import lifecycle
+   * ImpShellIntegrationService publishes import lifecycle
    * breadcrumbs to the pipeline event stream. The correlation id is carried by the
    * `access-http-base` interceptor via `X-Correlation-Id` header.
    *
    * Current implementation uses console.info as a stub.
-   * TODO[lote-X]: replace stub with real telemetry service once
    * `@cordele/shared/observability` exposes an injectable TelemetryService.
    *
    * Called by:
@@ -110,7 +109,6 @@ export class ImpShellIntegrationService {
    * @param data      - optional payload (manuscritoId, errorType, traceId, …)
    */
   emitLifecycleEvent(eventName: string, data?: Record<string, unknown>): void {
-    // TODO[lote-X]: replace with real TelemetryService from @cordele/shared/observability
     // eslint-disable-next-line no-console
     console.info('[IMP telemetry]', eventName, data ?? {});
   }

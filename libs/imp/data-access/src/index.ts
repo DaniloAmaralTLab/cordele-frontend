@@ -34,7 +34,7 @@ export type {
   UploadParams,
   SegmentoCuradoriaDto,
   IgnoredSegmentsResponse,
-  // P2 additions
+  // Additions
   ManuscritoHistoryDto,
   ConfirmResponseDto,
   FragmentIgnoreDto,
@@ -42,7 +42,7 @@ export type {
 
 export { UNPARSED_REASON_LABEL } from './lib/models/imp.models';
 
-// Error mapper (FE-IMP-021)
+// Error mapper
 export { mapImpError } from './lib/error/imp-error.mapper';
 export type { ImpErrorResult, ImpErrorChannel } from './lib/error/imp-error.mapper';
 export { IMP_KNOWN_URNS } from './lib/error/imp-error.mapper';

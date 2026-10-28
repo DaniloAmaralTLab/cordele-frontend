@@ -1,6 +1,6 @@
 /**
  * comp-projeto.guard.spec.ts — unit tests for compProjetoGuard.
- * FE-COMP-019 (P5): UUID format validation + redirect behaviour.
+ * UUID format validation + redirect behaviour.
  *
  * Tests:
  *   - Well-formed UUID → returns true (no HTTP)

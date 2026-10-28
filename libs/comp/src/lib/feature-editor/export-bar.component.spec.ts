@@ -1,6 +1,6 @@
 /**
  * export-bar.component.spec.ts
- * FE-COMP-017: ExportBarComponent — button state and emit.
+ * ExportBarComponent — button state and emit.
  */
 import { TestBed } from '@angular/core/testing';
 import { Component, signal } from '@angular/core';

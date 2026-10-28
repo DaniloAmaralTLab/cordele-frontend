@@ -1,8 +1,8 @@
 /**
  * layout-http.adapter.spec.ts — HttpTestingController tests for LayoutHttpAdapter.
- * FE-COMP-007: GET layout, PUT layout (upsertLayout body), GET preview-context.
- * Key constraint: PUT /layout payload NEVER includes tipo='em-branco' (D-H / ADR-COMP-001).
- * INT-FE-COMP-001 (P4): verifies X-Empresa-Id header is NOT sent — empresa context comes from JWT claim.
+ * GET layout, PUT layout (upsertLayout body), GET preview-context.
+ * Key constraint: PUT /layout payload NEVER includes tipo='em-branco'.
+ * Verifies X-Empresa-Id header is NOT sent — empresa context comes from JWT claim.
  */
 import { TestBed } from '@angular/core/testing';
 import { provideHttpClient } from '@angular/common/http';
@@ -59,7 +59,7 @@ describe('LayoutHttpAdapter', () => {
     req.flush(MOCK_LAYOUT);
   });
 
-  it('GET /layout — does NOT send X-Empresa-Id header (INT-FE-COMP-001 — empresa from JWT)', () => {
+  it('GET /layout — does NOT send X-Empresa-Id header (empresa from JWT)', () => {
     // Even when ACCESS_EMPRESA_ID token is provided, the header must be absent.
     // Server resolves empresa from JWT `empresa_id` claim (EmpresaContextInterceptor).
     adapter.getLayout(PROJECT_ID).subscribe();
@@ -91,7 +91,7 @@ describe('LayoutHttpAdapter', () => {
     expect(req.request.method).toBe('PUT');
     expect(req.request.body).toEqual(body);
 
-    // Critical: body must NOT contain tipo='em-branco' (D-H)
+    // Critical: body must NOT contain tipo='em-branco'
     const payload = req.request.body as UpsertLayoutBody;
     const hasBranco = payload.overrides.some(o => o.tipo === ('em-branco' as string));
     expect(hasBranco).toBe(false);
@@ -99,7 +99,7 @@ describe('LayoutHttpAdapter', () => {
     req.flush({ ...MOCK_LAYOUT, materialized: true });
   });
 
-  it('PUT /layout — does NOT send X-Empresa-Id header (INT-FE-COMP-001 — empresa from JWT)', () => {
+  it('PUT /layout — does NOT send X-Empresa-Id header (empresa from JWT)', () => {
     // Even when ACCESS_EMPRESA_ID token is provided, the header must be absent.
     // Server resolves empresa from JWT `empresa_id` claim (EmpresaContextInterceptor).
     const body: UpsertLayoutBody = {

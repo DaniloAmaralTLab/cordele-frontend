@@ -1,6 +1,5 @@
 /**
  * module-descriptors.ts — static registry of all module descriptors.
- * FE-COMP-005 / FE-IMP-005 / SPEC-06 §1
  *
  * The shell uses MODULE_DESCRIPTORS to:
  * - Lazy-load module chunks on demand.
@@ -9,12 +8,12 @@
  *
  * Order: IMP(1) → COMP(2) → PUB(3). PROJ is not in the step-bar.
  *
- * IMP is registered at order:1 (FE-IMP-005, P3).
+ * IMP is registered at order:1.
  * COMP is registered at order:2 (after IMP=1, before PUB=3).
  * hiddenFromNav: true → COMP never appears in the global left-nav;
  * it is accessed only via handoff from PROJ or IMP with projetoId.
  *
- * INT-FE-COMP-006 (P6): COMP descriptor is assembled inline using constants from
+ * COMP descriptor is assembled inline using constants from
  * @cordele/comp/data-access (non-lazy) to avoid static import of lazy @cordele/comp.
  * loadChildren uses a dynamic import (allowed — type:app can depend on type:feature).
  *
@@ -57,9 +56,9 @@ import {
  * PROJ does not appear in the step-bar (it is the orchestrator module).
  */
 export const MODULE_DESCRIPTORS: ModuleDescriptor[] = [
-  // IMP (order:1) — entry point of the pipeline; visible in global left-nav (FE-IMP-005, P3)
+  // IMP (order:1) — entry point of the pipeline; visible in global left-nav
   // Assembled inline (non-lazy constants from @cordele/imp/data-access) to avoid
-  // static import of lazy @cordele/imp/shell-entry (INT-FE-COMP-006 pattern).
+  // static import of lazy @cordele/imp/shell-entry (pattern).
   {
     key: IMP_MODULE_KEY,
     menu: IMP_MENU_METADATA,
@@ -69,7 +68,7 @@ export const MODULE_DESCRIPTORS: ModuleDescriptor[] = [
       import('@cordele/imp/shell-entry').then(m => m.IMP_ROUTES),
   } as ModuleDescriptor,
   // COMP (order:2) — mid-pipeline; hiddenFromNav=true; accessed via projetoId handoff
-  // Assembled inline to avoid static import of lazy @cordele/comp (INT-FE-COMP-006 P6).
+  // assembled inline to avoid static import of lazy @cordele/comp.
   // loadChildren uses a dynamic import — evaluated at navigation time, not at bundle load.
   {
     key: MODULE_KEY,

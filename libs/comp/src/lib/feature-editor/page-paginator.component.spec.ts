@@ -1,6 +1,6 @@
 /**
  * page-paginator.component.spec.ts
- * FE-COMP-016: PagePaginatorComponent — boundary states.
+ * PagePaginatorComponent — boundary states.
  */
 import { TestBed } from '@angular/core/testing';
 import { Component, signal } from '@angular/core';

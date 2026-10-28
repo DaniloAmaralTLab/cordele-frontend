@@ -1,18 +1,18 @@
 /**
  * publicacao-http.adapter.ts — HTTP adapter for PublicacaoPort (real backend integration).
- * FE-PUB-009 / FE-PUB-010 — real impl replacing the stub from the flat lib.
+ * Real impl replacing the stub from the flat lib.
  *
- * RULE-NX-05: no raw HttpClient injection — extends AccessHttpClient from
+ * No raw HttpClient injection — extends AccessHttpClient from
  * @cordele/shared/access-http-base. Empresa context is resolved server-side from the
  * JWT `empresa_id` claim; no X-Empresa-Id header is sent.
  *
- * Endpoints follow api-contract §4.1–4.6:
- *   POST /api/v1/pub/projetos/{id}/publicacoes                          — trigger (§4.1)
- *   GET  /api/v1/pub/projetos/{id}/publicacoes/{id}/status              — poll (§4.2)
- *   GET  /api/v1/pub/projetos/{id}/publicacoes                          — history list (§4.3)
- *   GET  /api/v1/pub/projetos/{id}/publicacoes/{id}/download            — signed URL (§4.4)
- *   GET  /api/v1/pub/projetos/{id}/publicacoes/stats                    — KPIs (§4.5)
- *   GET  /api/v1/pub/projetos/{id}/publicacoes/{id}/validation-messages — detail list (§4.6, INT-FE-PUB-004)
+ * Endpoints:
+ * POST /api/v1/pub/projetos/{id}/publicacoes — trigger
+ * GET  /api/v1/pub/projetos/{id}/publicacoes/{id}/status — poll
+ * GET  /api/v1/pub/projetos/{id}/publicacoes — history list
+ * GET  /api/v1/pub/projetos/{id}/publicacoes/{id}/download — signed URL
+ * GET  /api/v1/pub/projetos/{id}/publicacoes/stats — KPIs
+ * GET  /api/v1/pub/projetos/{id}/publicacoes/{id}/validation-messages — detail list
  *
  * Base path: /api/v1/pub — NestJS URI versioning (setGlobalPrefix('api') + enableVersioning({defaultVersion:'1'}))
  * verified against pub-service main.ts:39-40.
@@ -50,7 +50,7 @@ export class PublicacaoHttpAdapter extends AccessHttpClient implements Publicaca
 
   /**
    * POST /api/v1/pub/projetos/{projetoId}/publicacoes — trigger export.
-   * 202 Accepted (new build) or 200 OK (idempotent in-flight, D-R).
+   * 202 Accepted (new build) or 200 OK (idempotent in-flight).
    * Both return PublicacaoStatus with status=gerando.
    */
   triggerExport(projetoId: string): Observable<PublicacaoStatus> {
@@ -76,7 +76,7 @@ export class PublicacaoHttpAdapter extends AccessHttpClient implements Publicaca
 
   /**
    * GET /api/v1/pub/projetos/{projetoId}/publicacoes/{publicacaoId}/download
-   * Mints a short-TTL signed URL. Browser opens it; SPA never proxies bytes (D-F).
+   * mints a short-TTL signed URL. Browser opens it; SPA never proxies bytes.
    */
   getDownloadUrl(projetoId: string, publicacaoId: string): Observable<SignedDownloadUrl> {
     return this.get<SignedDownloadUrl>(
@@ -86,7 +86,7 @@ export class PublicacaoHttpAdapter extends AccessHttpClient implements Publicaca
 
   /**
    * GET /api/v1/pub/projetos/{projetoId}/publicacoes/stats
-   * Live KPI projection (§4.5 / D-O).
+   * live KPI projection.
    */
   getStats(projetoId: string): Observable<PublicationStats> {
     return this.get<PublicationStats>(`${this.projectBase(projetoId)}/stats`);
@@ -94,7 +94,7 @@ export class PublicacaoHttpAdapter extends AccessHttpClient implements Publicaca
 
   /**
    * GET /api/v1/pub/projetos/{projetoId}/publicacoes/{publicacaoId}/validation-messages
-   * Epubcheck message rows ordered by `ordem ASC` (api-contract §4.6 — INT-FE-PUB-004).
+   * epubcheck message rows ordered by `ordem ASC`.
    *
    * `severity` is an optional query parameter.  When omitted all severities are returned.
    * Returns 404 (urn:cordele:pub:publicacao-not-found) when the publicacao does not belong

@@ -1,5 +1,5 @@
 /**
- * content-tree.component.ts — Presentational (FE-IMP-017).
+ * content-tree.component.ts — Presentational.
  * Renders the full list of unparsed blocks extracted from the ContentTree.
  * Computes the flat list from the tree internally (chapters → sections → blocks).
  * Ignores/restore events bubble up via the `ignore(fragmentId)` output to the

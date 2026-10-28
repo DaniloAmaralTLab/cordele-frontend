@@ -1,24 +1,20 @@
 /**
- * comp-shell-integration.service.ts — registers COMP nav config with the shell.
- * FE-COMP-004 / SPEC-06 §2
- * FE-COMP-023 — dynamic breadcrumb resolution (P7).
- * FE-COMP-025 — observability telemetry (P9).
+ * comp-shell-integration.service.ts — registers COMP nav config with the shell,
+ * resolves breadcrumbs and emits telemetry.
  *
  * Responsibilities:
  * - Register COMP_NAV_CONFIG (step-bar + breadcrumbs) with the navigation layer.
  * - Resolve `{nome}` in breadcrumbs dynamically from the active projetoId.
- * - Emit telemetry events for module navigation milestones (P9).
- * - No UI state; no prefetch of editorial data (ADR-COMP-001).
+ * - Emit telemetry events for module navigation milestones.
+ * - No UI state; no prefetch of editorial data.
  *
  * Called by:
- * - compInit() in comp.bootstrap.ts — module-level registration (FE-COMP-003).
+ * - compInit() in comp.bootstrap.ts — module-level registration.
  * - ConfiguracoesComponent.ngOnInit() — breadcrumb resolution + metadata-opened event.
  * - EditorDeLayoutPreviewComponent.ngOnInit() — breadcrumb resolution + layout-opened event.
  * - LayoutFacade.onExport() success — comp-exported event.
  *
- * NOTE: NavigationService integration with @cordele/shared is a P4 hub task
- * (INT-FE-COMP-001). This service stores the resolved state so components can
- * consume it via signals until the shared NavigationService is available.
+ * This service stores the resolved state so components can consume it via signals.
  */
 import { Injectable, inject, signal } from '@angular/core';
 import {
@@ -56,17 +52,15 @@ export class CompShellIntegrationService {
   /**
    * register() — called by compInit() on module activation.
    * Registers COMP_NAV_CONFIG with the shell navigation layer.
-   * Full hub integration in INT-FE-COMP-001 (P4).
    */
   register(): void {
     this._registeredConfig = COMP_NAV_CONFIG;
-    // TODO[INT-FE-COMP-001]: inject NavigationService from @cordele/shared/access-decision
-    // and call: this.nav.registerModuleNav(COMP_NAV_CONFIG);
+    // TODO: registrar a navegação do módulo no shell
   }
 
   /**
    * setActiveProject() — resolves `{nome}` in breadcrumbs for a given projetoId.
-   * FE-COMP-023: called by smart components (T05, T06) in ngOnInit once projetoId is known.
+   * Called by smart components (configurações, editor de layout) in ngOnInit once projetoId is known.
    * Uses projetoId as the display label when the project name store is unavailable.
    *
    * @param projetoId - route param; used as display label until ProjFacade exposes project name
@@ -78,10 +72,10 @@ export class CompShellIntegrationService {
     });
   }
 
-  // ── Telemetry (FE-COMP-025 / P9) ─────────────────────────────────────────────
+  // ── Telemetry ─────────────────────────────────────────────
 
   /**
-   * trackMetadataOpened() — emits telemetry when the user enters T05 (Configurações).
+   * trackMetadataOpened() — emits telemetry when the user enters configurações (Configurações).
    * Called by ConfiguracoesComponent.ngOnInit().
    * Event: metadata-opened. No PII included.
    */
@@ -94,7 +88,7 @@ export class CompShellIntegrationService {
   }
 
   /**
-   * trackLayoutOpened() — emits telemetry when the user enters T06 (Editor de Layout).
+   * trackLayoutOpened() — emits telemetry when the user enters editor de layout (Editor de Layout).
    * Called by EditorDeLayoutPreviewComponent.ngOnInit().
    * Event: layout-opened. No PII included.
    */
@@ -128,6 +122,5 @@ export class CompShellIntegrationService {
   unregister(): void {
     this._registeredConfig = null;
     this._resolvedBreadcrumbs.set({ configurar: [], edicao: [] });
-    // TODO[INT-FE-COMP-001]: this.nav.unregisterModuleNav(MODULE_KEY);
   }
 }

@@ -1,7 +1,6 @@
 /**
  * comp.routes.spec.ts — smoke test: COMP_ROUTES array is defined and non-empty.
- * Full route/guard integration tested by Layer 2 (FE-COMP-013, FE-COMP-019, FE-COMP-020).
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
+ * Full route/guard integration covered by the e2e suite.
  */
 import { describe, expect, it } from 'vitest';
 import { COMP_ROUTES } from './comp.routes';
@@ -12,13 +11,13 @@ describe('COMP_ROUTES', () => {
     expect(namedRoutes.length).toBeGreaterThanOrEqual(2);
   });
 
-  it('should include the config route for T05', () => {
+  it('should include the config route for configurações', () => {
     const route = COMP_ROUTES.find(r => r.path?.includes('config'));
     expect(route).toBeDefined();
     expect(route?.loadComponent).toBeDefined();
   });
 
-  it('should include the editor route for T06', () => {
+  it('should include the editor route for editor de layout', () => {
     const route = COMP_ROUTES.find(r => r.path?.includes('editor-de-layout-preview'));
     expect(route).toBeDefined();
     expect(route?.loadComponent).toBeDefined();

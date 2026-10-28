@@ -1,6 +1,5 @@
 /**
- * cover-drop-zone.component.ts — cover image upload drop zone for T05.
- * FE-COMP-013 / SPEC-02 §1 / SPEC-07 §1.
+ * cover-drop-zone.component.ts — cover image upload drop zone for configurações.
  *
  * Presentational:
  *   - Accepts image/jpeg|png|webp ≤ 10 MB (client-side validation before emitting).
@@ -9,7 +8,7 @@
  *   - Hidden when canEdit=false (write affordances masked).
  *   - Does NOT make HTTP calls; delegates to MetadataFacade via parent.
  *
- * Note: comp.coverUpload flag gate is handled by the parent (INT-FE-COMP-005, P4).
+ * Note: comp.coverUpload flag gate is handled by the parent.
  */
 import {
   ChangeDetectionStrategy,

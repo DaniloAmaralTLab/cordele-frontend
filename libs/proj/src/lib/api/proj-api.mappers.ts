@@ -1,6 +1,5 @@
 /**
  * proj-api.mappers.ts — mappers between raw API responses and domain models.
- * FE-PROJ-008 (P2).
  *
  * - mapProblemDetailToAppError: RFC 7807 ProblemDetail → AppError
  * - mapProjetoCard: raw unknown → ProjetoCard (basic pass-through with type guard)

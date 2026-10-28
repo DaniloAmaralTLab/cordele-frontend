@@ -1,6 +1,5 @@
 /**
- * pub.bootstrap.ts — PUB module lifecycle hooks (FE-PUB-004).
- * P1 — Foundation.
+ * pub.bootstrap.ts — PUB module lifecycle hooks.
  *
  * Provides init/destroy factory functions for use in APP_INITIALIZER providers.
  *
@@ -12,9 +11,7 @@
  *   can evaluate correctly.
  *
  * destroy(): called when the PUB module chunk is unloaded (optional teardown).
- *   In P1 this is a no-op; full teardown via PubShellIntegrationService in P2.
- *
- * SPEC-06 §shell / FE-PUB-004
+ * Currently a no-op; full teardown via PubShellIntegrationService.
  */
 import { AccessDecisionService } from '@cordele/shared/access-decision';
 import { PUB_PERMISSION_MAP, PUB_FEATURE_FLAGS } from './pub.contract';
@@ -38,9 +35,8 @@ export function initPub(accessDecision: AccessDecisionService): void {
 }
 
 /**
- * destroyPub — teardown hook (P1 no-op).
- * Full teardown is managed by PubShellIntegrationService.stop() in P2.
+ * destroyPub — teardown hook (no-op).
+ * Full teardown is managed by PubShellIntegrationService.stop().
  */
 export function destroyPub(): void {
-  // no-op in P1
 }

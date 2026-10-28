@@ -1,18 +1,17 @@
 /**
  * metadados-http.adapter.ts — HTTP adapter for MetadadosPort.
- * URLs from api-contract.md §4.1/§4.3 (base path /api/v1/comp/projetos/{projetoId}).
+ * URLs (base path /api/v1/comp/projetos/{projetoId}).
  * Activate via provideComp({ adapter: 'http' }) in production app.config.ts.
  *
- * INT-FE-COMP-001 (P4): injects AccessHttpClient per RULE-NX-05 — no module adapter
+ * Injects AccessHttpClient — no module adapter
  * may inject HttpClient directly. Empresa context is resolved server-side from the JWT
  * `empresa_id` claim; AccessHttpClient does not send X-Empresa-Id.
  *
  * Pattern: composition (inject AccessHttpClient) rather than inheritance, to avoid
  * naming conflicts between MetadadosPort.get() and AccessHttpClient.get<T>().
  *
- * Track D: created by fe-architect-promote COMP @ cordele (D-494).
- * Updated: INT-FE-COMP-001 (P4) — delegates to AccessHttpClient (RULE-NX-05).
- * Moved to @cordele/comp/data-access (P6 boundary fix — INT-FE-COMP-006).
+ * Delegates to AccessHttpClient.
+ * Moved to @cordele/comp/data-access.
  */
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';

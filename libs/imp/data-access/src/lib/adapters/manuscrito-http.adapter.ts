@@ -2,11 +2,10 @@
  * manuscrito-http.adapter.ts — HTTP adapter for the Manuscrito resource.
  * Activated by imp.providers.ts when adapter: 'http'.
  *
- * Track D: created by fe-architect-promote IMP @ cordele (D-494).
- * P2: replaced HttpClient with ImpHttpClient (INT-FE-IMP-001 resolved).
+ * Replaced HttpClient with ImpHttpClient.
  *
- * Endpoints (api-contract §4):
- *   POST   /api/v1/imp/manuscripts                          → create (sync parse, D-A)
+ * Endpoints:
+ * POST   /api/v1/imp/manuscripts → create (sync parse)
  *   GET    /api/v1/imp/manuscripts/{id}                    → get
  *   GET    /api/v1/imp/manuscripts/{id}/estrutura          → getEstrutura
  *   GET    /api/v1/imp/projetos/{projetoId}/manuscritos    → listByProjeto
@@ -28,7 +27,7 @@ const BASE = moduleBase('imp');
 
 @Injectable({ providedIn: 'root' })
 export class ManuscritoHttpAdapter implements ManuscritoPort {
-  /** ImpHttpClient (not HttpClient) per RULE-NX-05 — empresa context from JWT `empresa_id` claim. */
+  /** ImpHttpClient (not HttpClient) — empresa context from JWT `empresa_id` claim. */
   private readonly http = inject(ImpHttpClient);
 
   create(params: UploadParams): Observable<ManuscritoDetail> {

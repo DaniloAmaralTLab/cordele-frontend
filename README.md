@@ -13,8 +13,6 @@ libs/comp/               Composição (metadata, layout, preview)
 libs/pub/                Publicação (export, validation, history)
 libs/proj/               Projetos (library, download & history)
 libs/shared/             auth session, empresa context, access decision, HTTP base, UI
-docs/                    architecture: lib specs, ADRs, standards, issues
-design-reference/        design prototypes
 ```
 
 ## Setup (Node 22)

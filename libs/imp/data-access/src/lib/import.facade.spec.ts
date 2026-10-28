@@ -35,7 +35,7 @@ describe('ImportFacade', () => {
   let navigateSpy: any;
 
   beforeEach(() => {
-    // FE-IMP-023: include emitLifecycleEvent in the mock (P6 addition)
+    // Include emitLifecycleEvent in the mock
     const mockIntegrationSvc = {
       empresaChanged: signal(0),
       emitLifecycleEvent: vi.fn(),

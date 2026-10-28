@@ -1,7 +1,6 @@
 /**
  * projeto-mock.adapter.ts — In-memory mock for ProjetoPort (dev default, 400ms delay).
- * Seed data aligned with design-reference/shared/mock-data.ts (projetos array).
- * Track D: created by fe-architect-promote PROJ @ cordele (D-494).
+ * Dados de exemplo (projetos).
  */
 import { Injectable } from '@angular/core';
 import { Observable, delay, of, throwError } from 'rxjs';
