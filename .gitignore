@@ -12,8 +12,6 @@ tmp/
 out-tsc/
 
 # Test run output
-playwright-report/
-test-results/
 *.log
 
 # Local environment

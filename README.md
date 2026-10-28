@@ -8,7 +8,6 @@ workspace.
 
 ```
 apps/cordele-web/        shell application
-apps/*-e2e/              Playwright suites per module
 libs/imp/                Importação (upload, structure review)
 libs/comp/               Composição (metadata, layout, preview)
 libs/pub/                Publicação (export, validation, history)
@@ -21,7 +20,7 @@ design-reference/        design prototypes
 ## Setup (Node 22)
 
 ```bash
-npm ci
+npm install
 npx nx serve cordele-web
 npx nx run-many -t test
 npx nx run-many -t lint
