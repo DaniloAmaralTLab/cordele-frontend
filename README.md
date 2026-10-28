@@ -29,3 +29,7 @@ npx nx build cordele-web
 
 Each module lib ships mock and HTTP adapters (`provideImp({ adapter: 'mock' })` etc.).
 The session is read from a JWT in `localStorage['cordele_access_token']`.
+
+## License
+
+MIT — see [LICENSE](LICENSE).
